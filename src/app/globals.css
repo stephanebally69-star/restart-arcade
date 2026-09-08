@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #07070d;
+  --color-surface: #0e0e18;
+  --color-surface-2: #16162a;
+  --color-line: #26263f;
+  --color-line-soft: #1c1c30;
+  --color-fog: #a5a3bd;
+  --color-chalk: #f3f1fb;
+
+  --color-neon: #ff2e8b;
+  --color-neon-soft: #ff2e8b1f;
+  --color-cyan: #24e0d0;
+  --color-cyan-soft: #24e0d01f;
+  --color-amber: #ffc247;
+
+  --font-display: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 16px;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-neon);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Halo néon diffus utilisé en fond de section. */
+  .glow-neon {
+    background: radial-gradient(60% 60% at 50% 0%, #ff2e8b26 0%, transparent 70%);
+  }
+  .glow-cyan {
+    background: radial-gradient(50% 50% at 80% 20%, #24e0d01f 0%, transparent 70%);
+  }
+
+  /* Grille type écran cathodique, très discrète. */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, #ffffff08 1px, transparent 1px),
+      linear-gradient(to bottom, #ffffff08 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .card {
+    border: 1px solid var(--color-line-soft);
+    background: linear-gradient(180deg, #16162a 0%, #101020 100%);
+    border-radius: var(--radius-card);
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--color-line);
+    transform: translateY(-2px);
+  }
+}
