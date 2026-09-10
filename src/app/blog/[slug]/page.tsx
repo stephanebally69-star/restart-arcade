@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { blogPosts, findPost, readingTime } from '@/data/blog'
+import { blogImage } from '@/data/images'
 import { Breadcrumbs, Eyebrow, JsonLd, Section } from '@/components/ui'
 import { site } from '@/lib/site'
 
@@ -47,7 +48,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <>
-      <Section className="pb-6">
+      <Section className="pb-6 pt-10 md:pt-14">
         <Breadcrumbs
           items={[
             { href: '/blog/', label: 'Blog' },
@@ -55,8 +56,8 @@ export default async function ArticlePage({ params }: Props) {
           ]}
         />
         <Eyebrow>{post.category}</Eyebrow>
-        <h1 className="max-w-4xl font-display text-4xl sm:text-5xl">{post.title}</h1>
-        <p className="mt-5 text-sm text-fog">
+        <h1 className="max-w-4xl font-serif text-4xl font-normal leading-[1.05] sm:text-5xl">{post.title}</h1>
+        <p className="mt-5 text-sm text-ink-soft">
           <time dateTime={post.date}>
             {new Date(post.date).toLocaleDateString('fr-FR', {
               day: 'numeric',
@@ -66,7 +67,14 @@ export default async function ArticlePage({ params }: Props) {
           </time>{' '}
           · {readingTime(post.words)} min de lecture
         </p>
-        <p className="mt-6 max-w-3xl text-lg text-fog">{post.description}</p>
+        <p className="mt-6 max-w-3xl text-lg text-ink-soft">{post.description}</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={blogImage(post.slug)}
+          alt=""
+          fetchPriority="high"
+          className="mt-10 aspect-[2/1] w-full rounded-3xl border border-border object-cover shadow-[var(--shadow-paper-md)]"
+        />
       </Section>
 
       <Section className="pt-4">
@@ -78,14 +86,14 @@ export default async function ArticlePage({ params }: Props) {
                   <h2
                     key={i}
                     id={slugify(b.text)}
-                    className="mt-12 scroll-mt-24 font-display text-2xl first:mt-0 sm:text-3xl"
+                    className="mt-12 scroll-mt-24 font-serif text-2xl first:mt-0 sm:text-3xl"
                   >
                     {b.text}
                   </h2>
                 )
               if (b.type === 'h3')
                 return (
-                  <h3 key={i} className="mt-8 font-display text-xl">
+                  <h3 key={i} className="mt-8 font-serif text-xl">
                     {b.text}
                   </h3>
                 )
@@ -93,8 +101,8 @@ export default async function ArticlePage({ params }: Props) {
                 return (
                   <ul key={i} className="mt-5 space-y-2.5">
                     {b.items.map((it) => (
-                      <li key={it} className="flex gap-3 text-fog">
-                        <span className="mt-0.5 shrink-0 text-cyan" aria-hidden="true">
+                      <li key={it} className="flex gap-3 text-ink-soft">
+                        <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden="true">
                           ✦
                         </span>
                         <span>{it}</span>
@@ -103,21 +111,23 @@ export default async function ArticlePage({ params }: Props) {
                   </ul>
                 )
               return (
-                <p key={i} className="mt-5 leading-relaxed text-fog">
+                <p key={i} className="mt-5 leading-relaxed text-ink-soft">
                   {b.text}
                 </p>
               )
             })}
 
-            <div className="mt-14 rounded-card border border-neon/25 bg-neon-soft p-6 sm:p-8">
-              <h2 className="font-display text-xl">Un projet d&apos;aménagement en tête ?</h2>
-              <p className="mt-2 text-sm text-fog">
+            <div className="mt-14 rounded-3xl bg-indigo-900 p-7 sm:p-9">
+              <h2 className="font-serif text-2xl text-paper">
+                Un projet d&apos;aménagement <em className="text-amber-400">en tête ?</em>
+              </h2>
+              <p className="mt-2 text-sm text-amber-50/70">
                 Devis gratuit sous 48 heures, sans engagement, y compris si votre idée est encore
                 floue.
               </p>
               <Link
                 href="/contact/"
-                className="mt-5 inline-block rounded-xl bg-neon px-6 py-3 font-semibold text-white transition hover:bg-neon/90"
+                className="mt-6 inline-flex h-12 items-center justify-center rounded-[10px] bg-amber-400 px-6 text-sm font-semibold text-indigo-900 transition hover:bg-amber-200"
               >
                 Demander un devis
               </Link>
@@ -128,9 +138,9 @@ export default async function ArticlePage({ params }: Props) {
             <aside className="order-first lg:order-last">
               <nav
                 aria-label="Sommaire de l'article"
-                className="lg:sticky lg:top-24 rounded-card border border-line-soft p-5"
+                className="rounded-2xl border border-border bg-paper p-5 lg:sticky lg:top-28"
               >
-                <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-chalk">
+                <h2 className="eyebrow">
                   Sommaire
                 </h2>
                 <ol className="mt-4 space-y-2.5">
@@ -138,7 +148,7 @@ export default async function ArticlePage({ params }: Props) {
                     <li key={t.id}>
                       <a
                         href={`#${t.id}`}
-                        className="text-sm text-fog transition hover:text-chalk"
+                        className="text-sm text-ink-soft transition hover:text-indigo-900"
                       >
                         {t.text}
                       </a>
@@ -151,16 +161,25 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </Section>
 
-      <div className="border-t border-line-soft bg-surface">
+      <div className="bg-cream-2">
         <Section>
-          <h2 className="font-display text-2xl">À lire ensuite</h2>
+          <h2 className="font-serif text-3xl">
+            À lire <em>ensuite</em>
+          </h2>
           <div className="mt-6 grid gap-5 md:grid-cols-3">
             {suggestions.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}/`} className="card p-5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-cyan">
-                  {p.category}
-                </span>
-                <h3 className="mt-2 font-display text-base font-bold">{p.title}</h3>
+              <Link key={p.slug} href={`/blog/${p.slug}/`} className="card overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={blogImage(p.slug)}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[3/2] w-full border-b border-border object-cover"
+                />
+                <div className="p-5">
+                  <span className="eyebrow">{p.category}</span>
+                  <h3 className="mt-2 font-serif text-lg leading-snug">{p.title}</h3>
+                </div>
               </Link>
             ))}
           </div>

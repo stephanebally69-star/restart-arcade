@@ -1,36 +1,120 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-ink: #07070d;
-  --color-surface: #0e0e18;
-  --color-surface-2: #16162a;
-  --color-line: #26263f;
-  --color-line-soft: #1c1c30;
-  --color-fog: #a5a3bd;
-  --color-chalk: #f3f1fb;
+/*
+ * Design tokens — palette « Cream & Indigo », reprise du layout Ma Belle Note.
+ *
+ * Fond papier crème, indigo profond comme ancre de confiance (boutons, titres,
+ * bandeaux sombres), ambre chaud comme unique accent (eyebrows, italiques,
+ * puces). Fraunces porte la voix éditoriale des titres et des prix, Inter le
+ * texte courant et l'interface.
+ *
+ * Signature des boutons : surface indigo-900, libellé amber-200 — l'inversion
+ * chaud-sur-froid qui donne son caractère « papier journal ».
+ */
 
-  --color-neon: #ff2e8b;
-  --color-neon-soft: #ff2e8b1f;
-  --color-cyan: #24e0d0;
-  --color-cyan-soft: #24e0d01f;
-  --color-amber: #ffc247;
+:root {
+  --indigo-900: #1e1b4b;
+  --indigo-800: #2a2566;
+  --indigo-700: #3b3490;
+  --indigo-500: #5b52c8;
+  --indigo-50: #eeecf8;
+  --amber-700: #9a6b1c;
+  --amber-600: #c08a2e;
+  --amber-500: #d69b36;
+  --amber-400: #e8b252;
+  --amber-200: #f6d896;
+  --amber-50: #fbf3dc;
+  --cream: #faf6ee;
+  --cream-2: #f4ecda;
+  --paper: #fffdf7;
+  --ink: #1a1530;
+  --ink-soft: #3a3556;
 
-  --font-display: var(--font-space), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --primary: var(--indigo-900);
+  --primary-foreground: var(--amber-200);
+  --muted: var(--cream-2);
+  --muted-foreground: #625e78;
+  --accent: var(--amber-500);
+  --border: rgba(30, 27, 75, 0.1);
+  --input: rgba(30, 27, 75, 0.18);
+  --ring: var(--indigo-500);
+  --radius: 0.875rem;
+}
 
-  --radius-card: 16px;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-indigo-50: var(--indigo-50);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-700: var(--indigo-700);
+  --color-indigo-800: var(--indigo-800);
+  --color-indigo-900: var(--indigo-900);
+  --color-amber-50: var(--amber-50);
+  --color-amber-200: var(--amber-200);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: var(--amber-600);
+  --color-amber-700: var(--amber-700);
+  --color-cream: var(--cream);
+  --color-cream-2: var(--cream-2);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  /* Alias des anciens jetons du thème sombre, pour que les pages secondaires
+     (blog, légal, cookies) basculent sur la nouvelle palette sans réécriture. */
+  --color-chalk: var(--indigo-900);
+  --color-fog: var(--muted-foreground);
+  --color-surface: var(--cream-2);
+  --color-surface-2: var(--paper);
+  --color-line: var(--input);
+  --color-line-soft: var(--border);
+  --color-neon: var(--indigo-900);
+  --color-neon-soft: var(--indigo-50);
+  --color-cyan: var(--amber-600);
+  --color-cyan-soft: var(--amber-50);
+
+  --radius-card: 1.25rem;
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 14px);
+
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
+    sans-serif;
+  --font-serif: var(--font-fraunces), 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+  --font-display: var(--font-fraunces), 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+
+  --shadow-paper-sm: 0 1px 2px rgba(30, 27, 75, 0.05), 0 2px 6px rgba(30, 27, 75, 0.04);
+  --shadow-paper-md: 0 8px 24px -8px rgba(30, 27, 75, 0.18), 0 2px 6px rgba(30, 27, 75, 0.06);
+  --shadow-paper-lg:
+    0 30px 60px -20px rgba(30, 27, 75, 0.28), 0 8px 20px -8px rgba(30, 27, 75, 0.12);
 }
 
 @layer base {
-  :root {
-    color-scheme: dark;
+  * {
+    border-color: var(--border);
   }
-
   html {
+    color-scheme: light;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
-
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -43,70 +127,205 @@
       transition-duration: 0.01ms !important;
     }
   }
-
   body {
-    background: var(--color-ink);
-    color: var(--color-chalk);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.55;
+    position: relative;
+    overflow-x: clip;
   }
-
+  /* « Grain de papier » : deux halos très doux, fixes derrière toute la page. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(232, 178, 82, 0.08), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(91, 82, 200, 0.06), transparent 45%);
+  }
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.022em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--indigo-900);
     text-wrap: balance;
   }
-
+  /* Italique dans un titre = serif ambre, le geste signature du gabarit. */
+  h1 em,
+  h2 em,
+  h3 em,
+  h4 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-600);
+  }
   p {
     text-wrap: pretty;
   }
-
   :focus-visible {
-    outline: 2px solid var(--color-cyan);
+    outline: 2px solid var(--ring);
     outline-offset: 3px;
     border-radius: 4px;
   }
-
   ::selection {
-    background: var(--color-neon);
-    color: #fff;
+    background: var(--amber-200);
+    color: var(--indigo-900);
   }
 }
 
 @layer components {
-  /* Halo néon diffus utilisé en fond de section. */
-  .glow-neon {
-    background: radial-gradient(60% 60% at 50% 0%, #ff2e8b26 0%, transparent 70%);
-  }
-  .glow-cyan {
-    background: radial-gradient(50% 50% at 80% 20%, #24e0d01f 0%, transparent 70%);
-  }
-
-  /* Grille type écran cathodique, très discrète. */
-  .grid-bg {
-    background-image:
-      linear-gradient(to right, #ffffff08 1px, transparent 1px),
-      linear-gradient(to bottom, #ffffff08 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  .eyebrow {
+    display: inline-block;
+    font-family: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber-600);
   }
 
   .card {
-    border: 1px solid var(--color-line-soft);
-    background: linear-gradient(180deg, #16162a 0%, #101020 100%);
+    border: 1px solid var(--border);
+    background: var(--paper);
     border-radius: var(--radius-card);
+    box-shadow: var(--shadow-paper-sm);
     transition:
       border-color 0.2s ease,
+      box-shadow 0.2s ease,
       transform 0.2s ease;
   }
-
   .card:hover {
-    border-color: var(--color-line);
+    border-color: color-mix(in srgb, var(--primary) 22%, transparent);
+    box-shadow: var(--shadow-paper-md);
     transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 10px;
+    background: var(--indigo-900);
+    padding-inline: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--amber-200);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 6px 14px -4px rgba(30, 27, 75, 0.4);
+    transition:
+      transform 0.15s ease,
+      background-color 0.15s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: var(--indigo-800);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--input);
+    background: transparent;
+    padding-inline: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: background-color 0.15s ease;
+  }
+  .btn-secondary:hover {
+    background: rgba(26, 21, 48, 0.04);
+  }
+
+  @media (min-width: 640px) {
+    .btn-primary,
+    .btn-secondary {
+      white-space: nowrap;
+    }
+  }
+  .btn-primary,
+  .btn-secondary {
+    text-align: center;
+  }
+
+  /* Image produit : visuels fournis sur fond blanc, posés sur une carte papier. */
+  .product-shot {
+    background: #fff;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-slow {
+  animation: float-y 6s ease-in-out infinite;
+}
+.animate-float-med {
+  animation: float-y 4.5s ease-in-out 0.8s infinite;
+}
+.animate-marquee-x {
+  animation: marquee-x 60s linear infinite;
+}
+.animate-marquee-x:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal:not([data-revealed]) {
+    opacity: 0;
+  }
+}
+.reveal[data-revealed] {
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-float-med,
+  .animate-marquee-x,
+  .reveal[data-revealed] {
+    animation: none;
   }
 }

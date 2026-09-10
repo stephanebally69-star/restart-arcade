@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { AnswerBox, Breadcrumbs, Eyebrow, Faq, Section, Stat } from '@/components/ui'
+import { AnswerBox, Breadcrumbs, Eyebrow, Faq, FinalCta, Section, Stat } from '@/components/ui'
+import { ambiance } from '@/data/images'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -47,37 +47,45 @@ const faq = [
 export default function QuiSommesNousPage() {
   return (
     <>
-      <div className="relative overflow-hidden border-b border-line-soft">
-        <div className="absolute inset-0 glow-cyan" aria-hidden="true" />
-        <Section className="relative">
-          <Breadcrumbs items={[{ href: '/qui-sommes-nous/', label: 'Qui sommes-nous' }]} />
-          <Eyebrow>Qui sommes-nous</Eyebrow>
-          <h1 className="max-w-3xl font-display text-4xl sm:text-5xl">
-            On ne vend pas des machines. On crée des endroits où les gens se croisent.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-fog">
-            RESTART conçoit, personnalise et installe des équipements de jeu et de détente pour les
-            entreprises, les bars, les commerces et les particuliers. Depuis notre atelier de
-            l&apos;est lyonnais, partout en France.
-          </p>
-          <div className="mt-12 grid max-w-3xl grid-cols-2 gap-8 sm:grid-cols-4">
-            <Stat value="7" label="familles d'équipements" />
-            <Stat value="12" label="modèles au catalogue" />
-            <Stat value="3 ans" label="de garantie maximum" />
-            <Stat value="48 h" label="pour un devis" />
+      <Section className="pt-10 md:pt-14">
+        <Breadcrumbs items={[{ href: '/qui-sommes-nous/', label: 'Qui sommes-nous' }]} />
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div>
+            <Eyebrow>Qui sommes-nous</Eyebrow>
+            <h1 className="text-balance font-serif text-4xl font-normal leading-[1.03] tracking-[-0.025em] sm:text-5xl md:text-6xl">
+              On ne vend pas des machines. <em>On crée des endroits où les gens se croisent.</em>
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg text-ink-soft">
+              RESTART conçoit, personnalise et installe des équipements de jeu et de détente pour
+              les entreprises, les bars, les commerces et les particuliers. Depuis notre atelier de
+              l&apos;est lyonnais, partout en France.
+            </p>
           </div>
-        </Section>
-      </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={ambiance.showroom}
+            alt="Le showroom RESTART : borne d'arcade, cible de fléchettes, baby-foot, fauteuil massant et cocon de repos"
+            fetchPriority="high"
+            className="aspect-[3/2] w-full rounded-3xl border border-border object-cover shadow-[var(--shadow-paper-lg)]"
+          />
+        </div>
+        <div className="mt-14 grid grid-cols-2 gap-8 rounded-3xl border border-border bg-paper p-8 sm:grid-cols-4">
+          <Stat value="7" label="familles d'équipements" />
+          <Stat value="12" label="modèles au catalogue" />
+          <Stat value="3 ans" label="de garantie maximum" />
+          <Stat value="48 h" label="pour un devis" />
+        </div>
+      </Section>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
           <div>
             <Eyebrow>Notre conviction</Eyebrow>
-            <h2 className="font-display text-3xl">
+            <h2 className="font-serif text-3xl">
               Un espace de pause vide reste vide. Un espace avec un jeu se remplit tout seul.
             </h2>
           </div>
-          <div className="space-y-5 text-fog">
+          <div className="space-y-5 text-ink-soft">
             <p>
               Les entreprises ont multiplié les chartes de qualité de vie au travail, les bars ont
               multiplié les écrans. Dans les deux cas, le problème est le même : rien ne donne
@@ -99,14 +107,14 @@ export default function QuiSommesNousPage() {
         <div className="mt-16 grid gap-6 sm:grid-cols-2">
           {values.map((v) => (
             <div key={v.title} className="card p-6">
-              <h3 className="font-display text-lg font-bold">{v.title}</h3>
-              <p className="mt-2.5 text-sm text-fog">{v.text}</p>
+              <h3 className="font-serif text-lg">{v.title}</h3>
+              <p className="mt-2.5 text-sm text-ink-soft">{v.text}</p>
             </div>
           ))}
         </div>
       </Section>
 
-      <div className="border-y border-line-soft bg-surface">
+      <div className="bg-paper">
         <Section>
           <div className="max-w-3xl">
             <AnswerBox>
@@ -124,21 +132,12 @@ export default function QuiSommesNousPage() {
         </Section>
       </div>
 
-      <Section className="text-center">
-        <h2 className="mx-auto max-w-2xl font-display text-3xl">
-          Venez essayer avant de choisir.
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-fog">
-          L&apos;atelier est ouvert sur rendez-vous. C&apos;est souvent la visite qui tranche entre
-          deux modèles.
-        </p>
-        <Link
-          href="/contact/"
-          className="mt-8 inline-block rounded-xl bg-neon px-6 py-3.5 font-semibold text-white transition hover:bg-neon/90"
-        >
-          Prendre rendez-vous
-        </Link>
-      </Section>
+      <FinalCta
+        title="Venez essayer "
+        em="avant de choisir."
+        subtitle="L'atelier est ouvert sur rendez-vous. C'est souvent la visite qui tranche entre deux modèles."
+        primary={{ href: '/contact/', label: 'Prendre rendez-vous' }}
+      />
     </>
   )
 }

@@ -22,7 +22,7 @@ export function AudienceSwitch() {
       <div
         role="tablist"
         aria-label="Choisir votre situation"
-        className="inline-flex flex-wrap gap-1 rounded-xl border border-line bg-surface-2 p-1"
+        className="inline-flex flex-wrap gap-1 rounded-full border border-border bg-paper p-1 shadow-[var(--shadow-paper-sm)]"
       >
         {audiences.map((a) => (
           <button
@@ -35,10 +35,10 @@ export function AudienceSwitch() {
               setActive(a.id)
               selectAudience(a.id, 'home_switcher')
             }}
-            className={`rounded-lg px-4 py-2.5 text-sm font-medium transition ${
+            className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
               active === a.id
-                ? 'bg-neon text-white shadow-[0_0_20px_#ff2e8b40]'
-                : 'text-fog hover:text-chalk'
+                ? 'bg-indigo-900 text-amber-200 shadow-[0_6px_14px_-4px_rgba(30,27,75,0.4)]'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {a.label}
@@ -53,7 +53,7 @@ export function AudienceSwitch() {
         aria-labelledby={`tab-${active}`}
         className="mt-8"
       >
-        <p className="max-w-2xl text-lg text-fog">{current.blurb}</p>
+        <p className="max-w-2xl text-lg text-ink-soft">{current.blurb}</p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {models.map((m) => (
@@ -63,7 +63,7 @@ export function AudienceSwitch() {
 
         <Link
           href="/produits/"
-          className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-cyan transition hover:gap-3"
+          className="btn-secondary mt-10 bg-paper"
         >
           Voir tout le catalogue
           <span aria-hidden="true">→</span>

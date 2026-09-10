@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { Breadcrumbs, Eyebrow, Section } from '@/components/ui'
+import { Breadcrumbs, FinalCta, Section, SectionTitle } from '@/components/ui'
+import { Reveal } from '@/components/Reveal'
+import { realisationPhotos } from '@/data/images'
 
 export const metadata: Metadata = {
   title: 'Nos réalisations : espaces de pause, bars et salons équipés',
@@ -10,9 +11,9 @@ export const metadata: Metadata = {
 }
 
 /**
- * Les visuels réels ne sont pas encore disponibles : les cartes présentent le
- * contexte et l'équipement installé, sans photo inventée. Elles se remplaceront
- * une par une dès que les photos de chantier seront fournies.
+ * Cas types : contexte et équipement installé. Les photos de la galerie
+ * sont celles publiées sur restart-arcade.fr ; elles ne sont volontairement
+ * pas rattachées aux cas, faute de correspondance confirmée.
  */
 const cases = [
   {
@@ -68,51 +69,67 @@ const cases = [
 export default function RealisationsPage() {
   return (
     <>
-      <Section className="pb-8">
+      <Section className="pb-12 pt-10 md:pt-14">
         <Breadcrumbs items={[{ href: '/realisations/', label: 'Réalisations' }]} />
-        <Eyebrow>Nos réalisations</Eyebrow>
-        <h1 className="max-w-3xl font-display text-4xl sm:text-5xl">
-          Des espaces qui existaient déjà, et qui servent enfin
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-fog">
-          Six exemples d&apos;installations, avec le contexte, l&apos;équipement retenu et ce que ça
-          a changé sur place.
-        </p>
+        <SectionTitle
+          as="h1"
+          eyebrow="Nos réalisations"
+          title="Des espaces qui existaient déjà, "
+          em="et qui servent enfin"
+          subtitle="Des installations en entreprise, en bar, en camping et chez des particuliers — photographiées sur place ou dans notre showroom avant livraison."
+        />
       </Section>
 
-      <Section className="pt-0">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {cases.map((c) => (
-            <article key={c.context} className="card flex flex-col p-6">
-              <span className="w-fit rounded-full bg-cyan-soft px-3 py-1 text-xs font-semibold text-cyan">
-                {c.audience}
-              </span>
-              <h2 className="mt-4 font-display text-lg font-bold">{c.context}</h2>
-              <p className="mt-1 text-sm text-fog">{c.city}</p>
-              <p className="mt-4 text-sm font-medium text-chalk">{c.setup}</p>
-              <p className="mt-3 flex-1 text-sm text-fog">{c.outcome}</p>
-            </article>
-          ))}
+      <section className="bg-cream-2">
+        <div className="mx-auto w-full max-w-6xl px-6 py-20">
+          <ul className="columns-2 gap-4 md:columns-3 lg:columns-4 [&>li]:mb-4">
+            {realisationPhotos.map((src, i) => (
+              <li key={src} className="break-inside-avoid">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`Installation RESTART chez un client — photo ${i + 1}`}
+                  loading="lazy"
+                  className="w-full rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-sm)] transition hover:shadow-[var(--shadow-paper-md)]"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
-      </Section>
+      </section>
 
-      <div className="border-t border-line-soft bg-surface">
-        <Section className="text-center">
-          <h2 className="mx-auto max-w-2xl font-display text-3xl">
-            Votre espace ressemble à l&apos;un de ceux-là ?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-fog">
-            Décrivez-le nous : nous vous dirons ce qui fonctionne dans ce contexte, et ce qui ne
-            fonctionne pas.
-          </p>
-          <Link
-            href="/contact/"
-            className="mt-8 inline-block rounded-xl bg-neon px-6 py-3.5 font-semibold text-white transition hover:bg-neon/90"
-          >
-            Demander un audit gratuit
-          </Link>
-        </Section>
-      </div>
+      <section className="bg-cream">
+        <div className="mx-auto w-full max-w-6xl px-6 py-24">
+          <SectionTitle
+            eyebrow="Cas types"
+            title="Six contextes, "
+            em="six réponses différentes"
+            subtitle="Le contexte, l'équipement retenu et ce que ça a changé sur place."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {cases.map((c, i) => (
+              <Reveal key={c.context} delayMs={(i % 3) * 80}>
+                <article className="flex h-full flex-col rounded-3xl border border-border bg-paper p-7">
+                  <span className="w-fit rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                    {c.audience}
+                  </span>
+                  <h2 className="mt-4 font-serif text-xl">{c.context}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{c.city}</p>
+                  <p className="mt-4 text-sm font-semibold text-indigo-900">{c.setup}</p>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{c.outcome}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <FinalCta
+        title="Votre espace ressemble "
+        em="à l'un de ceux-là ?"
+        subtitle="Décrivez-le nous : nous vous dirons ce qui fonctionne dans ce contexte, et ce qui ne fonctionne pas."
+        primary={{ href: '/contact/', label: 'Demander un audit gratuit' }}
+      />
     </>
   )
 }

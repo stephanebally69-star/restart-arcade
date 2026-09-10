@@ -29,13 +29,13 @@ const faq = [
 export default function ContactPage() {
   return (
     <>
-      <Section className="pb-8">
+      <Section className="pb-8 pt-10 md:pt-14">
         <Breadcrumbs items={[{ href: '/contact/', label: 'Contact' }]} />
         <Eyebrow>Parlons de votre projet</Eyebrow>
-        <h1 className="max-w-3xl font-display text-4xl sm:text-5xl">
+        <h1 className="max-w-3xl font-serif text-4xl sm:text-5xl">
           Un devis gratuit, sous 48 heures
         </h1>
-        <p className="mt-5 max-w-2xl text-lg text-fog">
+        <p className="mt-5 max-w-2xl text-lg text-ink-soft">
           Dites-nous où vous voulez installer et ce que vous imaginez. Même flou, même sans budget
           arrêté — c&apos;est justement le moment où on est le plus utile.
         </p>
@@ -44,24 +44,24 @@ export default function ContactPage() {
       <Section className="pt-0">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
           <div className="card p-6 sm:p-8">
-            <Suspense fallback={<p className="text-sm text-fog">Chargement du formulaire…</p>}>
+            <Suspense fallback={<p className="text-sm text-ink-soft">Chargement du formulaire…</p>}>
               <ContactFormWithPreset />
             </Suspense>
           </div>
 
           <aside className="space-y-8">
             <div className="card p-6">
-              <h2 className="font-display text-lg font-bold">Nous joindre directement</h2>
-              <address className="mt-4 space-y-3 text-sm not-italic text-fog">
+              <h2 className="font-serif text-lg">Nous joindre directement</h2>
+              <address className="mt-4 space-y-3 text-sm not-italic text-ink-soft">
                 <p>
-                  <a href={`tel:${site.phoneE164}`} className="text-chalk hover:text-cyan">
+                  <a href={`tel:${site.phoneE164}`} className="text-indigo-900 hover:text-amber-700">
                     {site.phone}
                   </a>
                   <br />
                   Du lundi au vendredi, 9 h – 18 h
                 </p>
                 <p>
-                  <a href={`mailto:${site.email}`} className="text-chalk hover:text-cyan">
+                  <a href={`mailto:${site.email}`} className="text-indigo-900 hover:text-amber-700">
                     {site.email}
                   </a>
                 </p>
@@ -70,7 +70,7 @@ export default function ContactPage() {
                     href={site.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-chalk hover:text-cyan"
+                    className="text-indigo-900 hover:text-amber-700"
                   >
                     WhatsApp
                   </a>
@@ -79,22 +79,22 @@ export default function ContactPage() {
             </div>
 
             <div className="card p-6">
-              <h2 className="font-display text-lg font-bold">Notre atelier</h2>
-              <address className="mt-4 text-sm not-italic text-fog">
+              <h2 className="font-serif text-lg">Notre atelier</h2>
+              <address className="mt-4 text-sm not-italic text-ink-soft">
                 {site.address.street}
                 <br />
                 {site.address.postalCode} {site.address.city}
                 <br />
                 {site.address.region}
               </address>
-              <p className="mt-4 text-sm text-fog">
+              <p className="mt-4 text-sm text-ink-soft">
                 Visite possible sur rendez-vous pour essayer les équipements avant de choisir.
               </p>
             </div>
 
             <div className="card p-6">
-              <h2 className="font-display text-lg font-bold">Ce qu&apos;on vous enverra</h2>
-              <ul className="mt-4 space-y-2.5 text-sm text-fog">
+              <h2 className="font-serif text-lg">Ce qu&apos;on vous enverra</h2>
+              <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
                 {[
                   'Une proposition chiffrée, options comprises',
                   'Un visuel de personnalisation si vous en voulez une',
@@ -102,7 +102,7 @@ export default function ContactPage() {
                   'Les deux formules : achat et location',
                 ].map((x) => (
                   <li key={x} className="flex gap-2.5">
-                    <span className="mt-0.5 shrink-0 text-cyan" aria-hidden="true">
+                    <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden="true">
                       ✦
                     </span>
                     {x}
@@ -114,7 +114,7 @@ export default function ContactPage() {
         </div>
       </Section>
 
-      <div className="border-t border-line-soft bg-surface">
+      <div className="border-t border-border bg-surface">
         <Section>
           <div className="max-w-3xl">
             <Faq items={faq} />

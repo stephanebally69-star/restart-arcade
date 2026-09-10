@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allModels, audiences, findModel, findUnivers, formatPrice } from '@/data/catalogue'
-import { AnswerBox, Breadcrumbs, Eyebrow, Faq, JsonLd, Section } from '@/components/ui'
+import { ArrowRight, Check, Phone } from 'lucide-react'
+import { AnswerBox, Breadcrumbs, Eyebrow, Faq, FinalCta, JsonLd, Section } from '@/components/ui'
+import { ProductGallery } from '@/components/ProductGallery'
+import { productImage, productImages } from '@/data/images'
 import { ViewItem } from '@/components/ViewItem'
 import { site } from '@/lib/site'
 
@@ -47,7 +50,7 @@ export default async function ModelePage({ params }: Props) {
         }}
       />
 
-      <Section className="pb-10">
+      <Section className="pt-10 md:pt-14">
         <Breadcrumbs
           items={[
             { href: '/produits/', label: 'Produits' },
@@ -56,107 +59,124 @@ export default async function ModelePage({ params }: Props) {
           ]}
         />
 
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="relative aspect-square overflow-hidden rounded-card border border-line-soft bg-linear-to-br from-surface-2 to-ink">
-            <div className="absolute inset-0 grid-bg opacity-60" aria-hidden="true" />
-            <div
-              className="absolute inset-0 grid place-items-center px-6 text-center font-display text-5xl font-bold text-line"
-              aria-hidden="true"
-            >
-              {m.sku}
-            </div>
-            {m.highlight && (
-              <span className="absolute left-4 top-4 rounded-full bg-neon px-3 py-1 text-xs font-semibold text-white">
-                {m.highlight}
-              </span>
-            )}
-          </div>
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <ProductGallery
+            images={productImages(m.slug)}
+            alt={`${m.name} — ${u.name} RESTART`}
+            badge={m.highlight}
+          />
 
           <div>
             <Eyebrow>{u.name}</Eyebrow>
-            <h1 className="font-display text-4xl sm:text-5xl">{m.name}</h1>
-            <p className="mt-4 text-lg text-fog">{m.headline}</p>
+            <h1 className="font-serif text-5xl font-normal leading-[1.02] tracking-[-0.025em] sm:text-6xl">
+              {m.name}
+            </h1>
+            <p className="mt-4 text-lg text-ink-soft">{m.headline}</p>
 
-            <p className="mt-8 font-display text-4xl font-bold text-cyan">
-              {m.price != null ? formatPrice(m.price) : 'Sur devis'}
-            </p>
-            {m.price != null && (
-              <p className="mt-1.5 text-sm text-fog">
-                TTC, livraison et installation comprises. Paiement en 2x, 3x ou 4x possible.
+            <div className="mt-8 rounded-2xl border border-border bg-paper p-6">
+              <p className="font-serif text-4xl text-indigo-900">
+                {m.price != null ? formatPrice(m.price) : 'Sur devis'}
               </p>
-            )}
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href={`/contact/?produit=${encodeURIComponent(m.sku)}`}
-                className="rounded-xl bg-neon px-6 py-3.5 text-center font-semibold text-white transition hover:bg-neon/90"
-              >
-                Commander ou demander un devis
-              </Link>
-              <a
-                href={`tel:${site.phoneE164}`}
-                className="rounded-xl border border-line px-6 py-3.5 text-center font-semibold transition hover:border-fog"
-              >
-                {site.phone}
-              </a>
+              {m.price != null && (
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  TTC, livraison et installation comprises. Paiement en 2x, 3x ou 4x possible.
+                </p>
+              )}
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href={`/contact/?produit=${encodeURIComponent(m.sku)}`}
+                  className="btn-primary"
+                >
+                  Commander ou demander un devis
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
+                <a href={`tel:${site.phoneE164}`} className="btn-secondary">
+                  <Phone className="size-4" aria-hidden="true" />
+                  {site.phone}
+                </a>
+              </div>
             </div>
 
-            <h2 className="mt-12 font-display text-lg font-bold">Caractéristiques</h2>
+            <h2 className="mt-10 font-serif text-2xl">Caractéristiques</h2>
             <ul className="mt-4 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
               {m.specs.map((s) => (
-                <li key={s} className="flex gap-2.5 text-sm text-fog">
-                  <span className="mt-0.5 shrink-0 text-cyan" aria-hidden="true">
-                    ✦
-                  </span>
+                <li key={s} className="flex gap-2.5 text-sm text-ink-soft">
+                  <Check className="mt-0.5 size-4 shrink-0 text-amber-600" aria-hidden="true" />
                   {s}
                 </li>
               ))}
             </ul>
 
-            <p className="mt-8 text-sm text-fog">
-              Pour qui&nbsp;:{' '}
-              {m.audiences.map((a) => audiences.find((x) => x.id === a)!.label).join(' · ')}
-            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">Pour qui :</span>
+              {m.audiences.map((a) => (
+                <span
+                  key={a}
+                  className="rounded-full border border-border bg-cream-2 px-3 py-1 text-xs font-medium text-ink-soft"
+                >
+                  {audiences.find((x) => x.id === a)!.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </Section>
 
-      <div className="border-y border-line-soft bg-surface">
-        <Section>
-          <div className="max-w-3xl">
-            <AnswerBox>
-              Le {m.name} de RESTART est proposé à{' '}
-              {m.price != null ? formatPrice(m.price) : 'un tarif sur devis'}. {m.headline}.
-              Caractéristiques principales : {m.specs.slice(0, 4).join(', ').toLowerCase()}. Livré
-              monté et installé partout en France depuis Villette-d&apos;Anthon (Isère).
-            </AnswerBox>
-          </div>
-          <div className="mt-14 max-w-3xl">
+      <section className="bg-paper">
+        <div className="mx-auto w-full max-w-4xl px-6 py-24 md:py-28">
+          <AnswerBox>
+            Le {m.name} de RESTART est proposé à{' '}
+            {m.price != null ? formatPrice(m.price) : 'un tarif sur devis'}. {m.headline}.
+            Caractéristiques principales : {m.specs.slice(0, 4).join(', ').toLowerCase()}. Livré
+            monté et installé partout en France depuis Villette-d&apos;Anthon (Isère).
+          </AnswerBox>
+          <div className="mt-16">
             <Faq items={u.faq} title="Questions fréquentes" />
           </div>
-        </Section>
-      </div>
+        </div>
+      </section>
 
       {siblings.length > 0 && (
-        <Section>
-          <h2 className="font-display text-2xl">Les autres modèles {u.name.toLowerCase()}</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {siblings.map((s) => (
-              <Link
-                key={s.sku}
-                href={`/produits/${s.universSlug}/${s.slug}/`}
-                className="card p-5"
-              >
-                <h3 className="font-display text-base font-bold">{s.name}</h3>
-                <p className="mt-2 text-sm text-fog">{s.headline}</p>
-                <p className="mt-4 font-display font-bold text-cyan">
-                  {s.price != null ? formatPrice(s.price) : 'Sur devis'}
-                </p>
-              </Link>
-            ))}
+        <section className="bg-cream-2">
+          <div className="mx-auto w-full max-w-6xl px-6 py-24">
+            <Eyebrow>Même univers</Eyebrow>
+            <h2 className="font-serif text-3xl md:text-4xl">
+              Les autres modèles <em>{u.name.toLowerCase()}</em>
+            </h2>
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {siblings.map((s) => (
+                <Link
+                  key={s.sku}
+                  href={`/produits/${s.universSlug}/${s.slug}/`}
+                  className="card group flex flex-col overflow-hidden"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={productImage(s.slug)}
+                    alt={s.name}
+                    loading="lazy"
+                    className="product-shot aspect-4/3 w-full border-b border-border object-contain p-3"
+                  />
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="font-serif text-lg text-indigo-900">{s.name}</h3>
+                    <p className="mt-1.5 flex-1 text-sm text-ink-soft">{s.headline}</p>
+                    <p className="mt-4 font-serif text-xl text-indigo-900">
+                      {s.price != null ? formatPrice(s.price) : 'Sur devis'}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </Section>
+        </section>
       )}
+
+      <FinalCta
+        title="Envie de le voir "
+        em="en vrai ?"
+        subtitle="L'atelier de Villette-d'Anthon est ouvert sur rendez-vous : c'est souvent l'essai qui tranche entre deux modèles."
+        primary={{ href: `/contact/?produit=${encodeURIComponent(m.sku)}`, label: 'Demander un devis' }}
+      />
 
       <JsonLd
         data={{
@@ -165,6 +185,7 @@ export default async function ModelePage({ params }: Props) {
           '@id': `${site.url}/produits/${m.universSlug}/${m.slug}/#product`,
           name: m.name,
           sku: m.sku,
+          image: productImages(m.slug).map((src) => `${site.url}${src}`),
           description: `${m.headline}. ${m.specs.join(', ')}.`,
           category: u.name,
           brand: { '@type': 'Brand', name: 'RESTART' },

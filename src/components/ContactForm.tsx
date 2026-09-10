@@ -74,8 +74,8 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
   }
 
   const field =
-    'w-full rounded-lg border border-line bg-surface-2 px-4 py-3 text-sm text-chalk placeholder:text-fog/60 focus:border-cyan'
-  const label = 'mb-1.5 block text-sm font-medium text-chalk'
+    'w-full rounded-lg border border-input bg-paper px-4 py-3 text-sm text-indigo-900 placeholder:text-muted-foreground/70 focus:border-cyan'
+  const label = 'mb-1.5 block text-sm font-medium text-indigo-900'
 
   return (
     <form onSubmit={submit} onInput={onFirstInput} className="space-y-6">
@@ -90,8 +90,8 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
               aria-pressed={profil === p.id}
               className={`rounded-lg border px-4 py-2.5 text-sm transition ${
                 profil === p.id
-                  ? 'border-neon bg-neon-soft text-chalk'
-                  : 'border-line text-fog hover:border-fog'
+                  ? 'border-indigo-900 bg-indigo-900 text-amber-200'
+                  : 'border-input text-ink-soft hover:border-fog'
               }`}
             >
               {p.label}
@@ -139,7 +139,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
 
         <div>
           <label className={label} htmlFor="nom">
-            Votre nom <span className="text-neon">*</span>
+            Votre nom <span className="text-amber-700">*</span>
           </label>
           <input id="nom" name="nom" required autoComplete="name" className={field} />
         </div>
@@ -153,7 +153,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
 
         <div>
           <label className={label} htmlFor="email">
-            E-mail <span className="text-neon">*</span>
+            E-mail <span className="text-amber-700">*</span>
           </label>
           <input
             id="email"
@@ -211,18 +211,18 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
           name="rgpd"
           type="checkbox"
           required
-          className="mt-1 size-4 accent-[#ff2e8b]"
+          className="mt-1 size-4 accent-[#1e1b4b]"
         />
-        <label htmlFor="rgpd" className="text-sm text-fog">
+        <label htmlFor="rgpd" className="text-sm text-ink-soft">
           J&apos;accepte que mes données soient utilisées pour être recontacté au sujet de ma
-          demande. <span className="text-neon">*</span>
+          demande. <span className="text-amber-700">*</span>
         </label>
       </div>
 
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="w-full rounded-xl bg-neon px-6 py-4 font-semibold text-white shadow-[0_0_28px_#ff2e8b40] transition hover:bg-neon/90 disabled:opacity-60 sm:w-auto"
+        className="w-full btn-primary"
       >
         {status === 'sending' ? 'Envoi…' : 'Envoyer ma demande'}
       </button>
@@ -231,14 +231,14 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
         <p role="status" className="rounded-lg border border-cyan/30 bg-cyan-soft p-4 text-sm">
           Votre messagerie s&apos;ouvre avec la demande pré-remplie. Si rien ne se passe, écrivez-nous
           directement à{' '}
-          <a href={`mailto:${site.email}`} className="text-cyan underline">
+          <a href={`mailto:${site.email}`} className="text-amber-700 underline">
             {site.email}
           </a>
           .
         </p>
       )}
 
-      <p className="text-xs text-fog">
+      <p className="text-xs text-ink-soft">
         Réponse sous 48 heures ouvrées. Vos données ne sont ni revendues ni utilisées à des fins
         publicitaires.
       </p>

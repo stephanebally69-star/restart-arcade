@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
@@ -8,8 +8,18 @@ import { ConsentBanner } from '@/components/ConsentBanner'
 import { JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-const space = Space_Grotesk({ subsets: ['latin'], variable: '--font-space', display: 'swap' })
+const fraunces = localFont({
+  src: '../fonts/fraunces-variable.woff2',
+  display: 'swap',
+  variable: '--font-fraunces',
+  weight: '100 900',
+})
+const inter = localFont({
+  src: '../fonts/inter-variable.woff2',
+  display: 'swap',
+  variable: '--font-inter',
+  weight: '100 900',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -33,8 +43,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport = {
-  themeColor: '#07070d',
-  colorScheme: 'dark',
+  themeColor: '#1e1b4b',
+  colorScheme: 'light',
 }
 
 /**
@@ -101,16 +111,20 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${space.variable}`}>
+    <html lang="fr" className={`${fraunces.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <JsonLd data={organizationSchema} />
       </head>
       <body>
         <Analytics />
-        <Header />
-        <main id="contenu">{children}</main>
-        <Footer />
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main id="contenu" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
         <ConsentBanner />
       </body>
     </html>
