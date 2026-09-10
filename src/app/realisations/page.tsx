@@ -133,7 +133,7 @@ export default function RealisationsPage() {
               title={c.context}
             >
               <p className="text-xs text-muted-foreground">{c.city}</p>
-              <p className="mt-3 font-medium text-indigo-900">{c.setup}</p>
+              <p className="mt-3 font-medium text-heading">{c.setup}</p>
               <p className="mt-2">{c.outcome}</p>
             </PaperCard>
           ))}

@@ -69,7 +69,7 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full px-3 pt-3 sm:px-6 sm:pt-4">
       <a
         href="#contenu"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-indigo-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-amber-200"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-amber-200"
       >
         Aller au contenu
       </a>
@@ -113,7 +113,7 @@ export function Header() {
                     <li key={u.slug}>
                       <Link
                         href={`/produits/${u.slug}/`}
-                        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-paper transition hover:border-indigo-900/25 hover:shadow-[var(--shadow-paper-md)]"
+                        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-paper transition hover:border-primary/25 hover:shadow-[var(--shadow-paper-md)]"
                       >
                         <span className="product-shot block aspect-[4/3] overflow-hidden">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -176,7 +176,7 @@ export function Header() {
           <Link
             href="/contact/"
             onClick={() => ctaClick('Demander un devis', 'header')}
-            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_14px_-4px_rgba(30,27,75,0.4)] transition hover:-translate-y-px hover:bg-indigo-800 sm:inline-flex"
+            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_14px_-4px_rgba(30,27,75,0.4)] transition hover:-translate-y-px hover:brightness-110 sm:inline-flex"
           >
             Devis gratuit
           </Link>

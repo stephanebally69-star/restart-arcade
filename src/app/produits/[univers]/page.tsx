@@ -185,7 +185,7 @@ export default async function UniversPage({ params }: Props) {
                       />
                     </span>
                     <span className="flex items-baseline justify-between gap-3">
-                      <span className="font-serif text-lg font-medium tracking-tight text-indigo-900">
+                      <span className="font-serif text-lg font-medium tracking-tight text-heading">
                         {m.name}
                       </span>
                       <span className="font-serif text-base text-amber-700">
@@ -306,7 +306,7 @@ export default async function UniversPage({ params }: Props) {
                     className="size-11 shrink-0 rounded-lg border border-border bg-white object-contain p-0.5 transition duration-500 group-hover:scale-110"
                   />
                   <span className="min-w-0 flex-1">
-                    <span className="block font-serif text-base font-medium leading-snug tracking-tight text-indigo-900">
+                    <span className="block font-serif text-base font-medium leading-snug tracking-tight text-heading">
                       {o.name}
                     </span>
                     <span className="mt-0.5 block truncate text-xs text-muted-foreground">

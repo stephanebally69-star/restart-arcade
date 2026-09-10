@@ -21,7 +21,7 @@ export default function NotFound() {
           <Link
             key={u.slug}
             href={`/produits/${u.slug}/`}
-            className="rounded-full border border-input px-4 py-2 text-sm text-ink-soft transition hover:border-cyan hover:text-indigo-900"
+            className="rounded-full border border-input px-4 py-2 text-sm text-ink-soft transition hover:border-cyan hover:text-heading"
           >
             {u.navLabel}
           </Link>

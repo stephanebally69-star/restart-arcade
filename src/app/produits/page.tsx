@@ -98,7 +98,7 @@ export default function ProduitsPage() {
                       className="h-full w-full object-cover"
                     />
                   </span>
-                  <span className="font-serif text-lg font-medium tracking-tight text-indigo-900">
+                  <span className="font-serif text-lg font-medium tracking-tight text-heading">
                     {u.name}
                   </span>
                   <span className="text-[13px] leading-snug text-foreground/65">{u.intro}</span>

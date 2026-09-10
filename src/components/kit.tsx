@@ -264,7 +264,7 @@ export function RowList({ items }: { items: RowItem[] }) {
               />
             )}
             <span className="min-w-0 flex-1">
-              <span className="block font-serif text-base font-medium leading-snug tracking-tight text-indigo-900">
+              <span className="block font-serif text-base font-medium leading-snug tracking-tight text-heading">
                 {it.title}
               </span>
               {it.summary && (

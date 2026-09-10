@@ -34,7 +34,7 @@ export function ProductGallery({
           className={`w-full object-contain p-6 ${bare ? 'aspect-[16/11]' : 'aspect-square'}`}
         />
         {badge && (
-          <span className="absolute left-4 top-4 rounded-full bg-indigo-900 px-3 py-1 text-xs font-semibold text-amber-200">
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-amber-200">
             {badge}
           </span>
         )}
@@ -53,7 +53,7 @@ export function ProductGallery({
                 aria-current={i === active}
                 className={`product-shot block w-full overflow-hidden rounded-xl border-2 transition ${
                   i === active
-                    ? 'border-indigo-900'
+                    ? 'border-primary'
                     : 'border-border opacity-75 hover:opacity-100'
                 }`}
               >

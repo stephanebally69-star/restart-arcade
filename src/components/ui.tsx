@@ -65,7 +65,7 @@ export function SectionTitle({
     <div className={center ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <Tag
-        className={`text-balance font-serif font-normal leading-[1.05] tracking-[-0.02em] text-indigo-900 ${
+        className={`text-balance font-serif font-normal leading-[1.05] tracking-[-0.02em] text-heading ${
           Tag === 'h1' ? 'text-4xl sm:text-5xl md:text-6xl' : 'text-3xl md:text-4xl lg:text-5xl'
         }`}
       >
@@ -197,7 +197,7 @@ export function AnswerBox({ children }: { children: ReactNode }) {
 export function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <p className="font-serif text-3xl font-normal tracking-[-0.03em] text-indigo-900 sm:text-4xl">
+      <p className="font-serif text-3xl font-normal tracking-[-0.03em] text-heading sm:text-4xl">
         {value}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">{label}</p>

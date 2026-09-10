@@ -33,7 +33,7 @@ const link = 'text-amber-200/70 transition hover:text-amber-200'
 /** Le « bandeau sombre » du gabarit : indigo-900, titres ambre, texte amber-200 atténué. */
 export function Footer() {
   return (
-    <footer className="border-t border-amber-400/10 bg-indigo-900 text-amber-200/70">
+    <footer className="border-t border-amber-400/10 bg-night text-amber-200/70">
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-14 md:grid-cols-[1.6fr_1.2fr_1fr_1.2fr] md:gap-12">
         <div className="space-y-4">
           <p className="font-serif text-2xl font-medium tracking-tight text-amber-200">RESTART</p>

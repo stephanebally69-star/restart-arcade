@@ -83,7 +83,7 @@ export default function QuiSommesNousPage() {
             ['48 h', 'pour un devis'],
           ].map(([v, l]) => (
             <div key={l} className="card-paper rounded-2xl p-6">
-              <p className="font-serif text-4xl font-medium tracking-tight text-indigo-900">{v}</p>
+              <p className="font-serif text-4xl font-medium tracking-tight text-heading">{v}</p>
               <p className="mt-1 text-sm text-muted-foreground">{l}</p>
             </div>
           ))}

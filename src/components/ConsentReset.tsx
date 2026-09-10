@@ -37,13 +37,13 @@ export function ConsentReset() {
 
   return (
     <div className="rounded-card border border-input bg-paper p-6 not-prose">
-      <p className="text-sm text-indigo-900">
+      <p className="text-sm text-heading">
         {state ? labels[state] : 'Vous n’avez pas encore fait de choix.'}
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           onClick={() => set(true)}
-          className="rounded-[10px] bg-indigo-900 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-indigo-800"
+          className="rounded-[10px] bg-primary px-4 py-2 text-sm font-semibold text-amber-200 transition hover:brightness-110"
         >
           Accepter la mesure d&apos;audience
         </button>

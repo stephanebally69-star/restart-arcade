@@ -136,7 +136,7 @@ export default async function ArticlePage({ params }: Props) {
               </p>
               <Link
                 href="/contact/"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-medium text-indigo-900 transition hover:bg-amber-50"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-medium text-heading transition hover:bg-amber-50"
               >
                 Demander un devis
               </Link>
@@ -155,7 +155,7 @@ export default async function ArticlePage({ params }: Props) {
                     <li key={t.id}>
                       <a
                         href={`#${t.id}`}
-                        className="text-sm text-ink-soft transition hover:text-indigo-900"
+                        className="text-sm text-ink-soft transition hover:text-heading"
                       >
                         {t.text}
                       </a>

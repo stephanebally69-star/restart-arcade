@@ -38,7 +38,7 @@ export default function BlogPage() {
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-accent">
                   À la une · {lead.category}
                 </span>
-                <span className="mt-2 block font-serif text-2xl font-medium leading-tight tracking-tight text-indigo-900 group-hover:underline">
+                <span className="mt-2 block font-serif text-2xl font-medium leading-tight tracking-tight text-heading group-hover:underline">
                   {lead.title}
                 </span>
                 <span className="mt-2 block text-sm text-muted-foreground">{lead.description}</span>

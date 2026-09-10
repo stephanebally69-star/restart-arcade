@@ -64,8 +64,8 @@ export function UniversShowcase({
           fetchPriority={active === 0 ? 'high' : undefined}
           className={`animate-showcase-in aspect-[16/10] w-full ${fit === 'cover' ? 'object-cover' : 'object-contain p-5'}`}
         />
-        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-border bg-white/95 px-3.5 py-1.5 text-xs shadow-[var(--shadow-paper-sm)] backdrop-blur">
-          <span className="font-semibold text-indigo-900">{current.label}</span>
+        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-night/85 px-3.5 py-1.5 text-xs shadow-[var(--shadow-paper-sm)] backdrop-blur">
+          <span className="font-semibold text-heading">{current.label}</span>
           {current.detail && <span className="font-serif text-amber-700">{current.detail}</span>}
         </span>
       </div>
@@ -80,7 +80,7 @@ export function UniversShowcase({
               aria-label={`Afficher ${it.label}`}
               aria-current={i === active}
               className={`relative shrink-0 overflow-hidden rounded-lg border-2 bg-white transition ${
-                i === active ? 'border-indigo-900' : 'border-transparent opacity-70 hover:opacity-100'
+                i === active ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -94,7 +94,7 @@ export function UniversShowcase({
                 <span
                   aria-hidden="true"
                   key={`bar-${active}`}
-                  className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-indigo-900"
+                  className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary"
                   style={{ animation: `showcase-progress ${STEP_MS}ms linear` }}
                 />
               )}

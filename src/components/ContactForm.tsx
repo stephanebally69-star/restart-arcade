@@ -74,8 +74,8 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
   }
 
   const field =
-    'w-full rounded-lg border border-input bg-paper px-4 py-3 text-sm text-indigo-900 placeholder:text-muted-foreground/70 focus:border-cyan'
-  const label = 'mb-1.5 block text-sm font-medium text-indigo-900'
+    'w-full rounded-lg border border-input bg-paper px-4 py-3 text-sm text-heading placeholder:text-muted-foreground/70 focus:border-cyan'
+  const label = 'mb-1.5 block text-sm font-medium text-heading'
 
   return (
     <form onSubmit={submit} onInput={onFirstInput} className="space-y-6">
@@ -90,7 +90,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
               aria-pressed={profil === p.id}
               className={`rounded-lg border px-4 py-2.5 text-sm transition ${
                 profil === p.id
-                  ? 'border-indigo-900 bg-indigo-900 text-amber-200'
+                  ? 'border-primary bg-primary text-amber-200'
                   : 'border-input text-ink-soft hover:border-fog'
               }`}
             >

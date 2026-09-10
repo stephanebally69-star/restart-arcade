@@ -25,7 +25,7 @@ export function ProductCard({ model, list }: { model: ListedModel; list: string 
             className="h-full w-full object-contain p-2 transition duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <span className="font-serif text-3xl text-indigo-900/20">{model.sku}</span>
+          <span className="font-serif text-3xl text-heading/20">{model.sku}</span>
         )}
         {model.highlight && (
           <span className="absolute left-2 top-2 rounded-md bg-primary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground">
@@ -34,7 +34,7 @@ export function ProductCard({ model, list }: { model: ListedModel; list: string 
         )}
       </div>
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-serif text-lg font-medium tracking-tight text-indigo-900">
+        <h3 className="font-serif text-lg font-medium tracking-tight text-heading">
           <Link
             href={`/produits/${model.universSlug}/${model.slug}/`}
             onClick={() =>
