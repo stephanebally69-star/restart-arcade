@@ -1,58 +1,68 @@
 @import 'tailwindcss';
+@import './themes.css';
 
 /*
- * Design tokens — palette « Cream & Indigo », reprise du layout Ma Belle Note.
- *
- * Fond papier crème, indigo profond comme ancre de confiance (boutons, titres,
- * bandeaux sombres), ambre chaud comme unique accent (eyebrows, italiques,
- * puces). Fraunces porte la voix éditoriale des titres et des prix, Inter le
- * texte courant et l'interface.
- *
- * Signature des boutons : surface indigo-900, libellé amber-200 — l'inversion
- * chaud-sur-froid qui donne son caractère « papier journal ».
+ * Système de thèmes. Chaque thème (src/app/themes.css, généré par
+ * scripts/gen_themes.py) ne définit que des primitives `--t-*` : couleurs,
+ * fond de page, polices. Tout le reste en découle ici. Les noms historiques
+ * (indigo, amber, cream, paper…) restent des alias pour que le layout n'ait
+ * jamais à connaître le thème actif.
  */
 
 :root {
-  /* Palette « salle d'arcade de nuit » : fond violet nuit, magenta néon pour
-     l'action, cyan (celui du logo RESTART) pour les accents, jaune pour les prix.
-     Les noms historiques (indigo, amber, cream…) sont conservés comme alias
-     pour que le layout n'ait pas à changer. */
-  --night: #07061a;
-  --magenta: #ff2e93;
-  --violet: #7b2cff;
-  --cyan: #22e3ff;
-  --yellow: #ffd23f;
+  --night: var(--t-footer);
+  --magenta: var(--t-primary);
+  --violet: var(--t-brand-to);
+  --cyan: var(--t-accent);
+  --yellow: var(--t-price);
 
-  --indigo-900: #2a1a6e;
-  --indigo-800: #3a2590;
-  --indigo-700: var(--violet);
-  --indigo-500: #9d7bff;
-  --indigo-50: #1d1845;
-  --amber-700: var(--yellow);
-  --amber-600: var(--cyan);
-  --amber-500: var(--cyan);
-  --amber-400: var(--cyan);
-  --amber-200: #fdf3ff;
-  --amber-50: #0f2436;
-  --cream: #0c0a22;
-  --cream-2: #120f2c;
-  --paper: #161334;
-  --ink: #efedff;
-  --ink-soft: #cdc9ea;
-  --heading: #ffffff;
+  --indigo-900: var(--t-brand-from);
+  --indigo-800: var(--t-brand-to);
+  --indigo-700: var(--t-brand-to);
+  --indigo-500: var(--t-accent);
+  --indigo-50: var(--t-surface-2);
+  --amber-700: var(--t-price);
+  --amber-600: var(--t-accent);
+  --amber-500: var(--t-accent);
+  --amber-400: var(--t-accent);
+  /* Texte clair posé sur les surfaces « marque » et le footer, sombres dans tous les thèmes. */
+  --amber-200: #fdf6ff;
+  --amber-50: color-mix(in srgb, var(--t-accent) 12%, var(--t-bg));
+  --cream: var(--t-bg);
+  --cream-2: var(--t-bg-2);
+  --paper: var(--t-surface);
+  --ink: var(--t-text);
+  --ink-soft: var(--t-text-soft);
+  --heading: var(--t-heading);
 
-  --background: var(--cream);
-  --foreground: var(--ink);
-  --card: var(--paper);
-  --primary: var(--magenta);
-  --primary-foreground: #ffffff;
-  --muted: #1c1940;
-  --muted-foreground: #a29ecb;
-  --accent: var(--cyan);
-  --border: rgba(255, 255, 255, 0.09);
-  --input: rgba(255, 255, 255, 0.18);
-  --ring: var(--cyan);
+  --background: var(--t-bg);
+  --foreground: var(--t-text);
+  --card: var(--t-surface);
+  --primary: var(--t-primary);
+  --primary-foreground: var(--t-primary-fg);
+  --muted: var(--t-surface-2);
+  --muted-foreground: var(--t-text-muted);
+  --accent: var(--t-accent);
+  --border: var(--t-border);
+  --input: var(--t-input);
+  --ring: var(--t-accent);
   --radius: 0.875rem;
+
+  --shadow-paper-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-paper-md:
+    0 10px 28px -10px rgba(0, 0, 0, 0.7),
+    0 0 0 1px color-mix(in srgb, var(--t-primary) 6%, transparent);
+  --shadow-paper-lg:
+    0 30px 60px -20px rgba(0, 0, 0, 0.8),
+    0 0 40px -10px color-mix(in srgb, var(--t-primary) 35%, transparent);
+}
+
+:root[data-scheme='light'] {
+  --shadow-paper-sm: 0 1px 2px rgba(20, 20, 40, 0.06), 0 2px 6px rgba(20, 20, 40, 0.05);
+  --shadow-paper-md: 0 8px 24px -8px rgba(20, 20, 40, 0.18), 0 2px 6px rgba(20, 20, 40, 0.06);
+  --shadow-paper-lg:
+    0 30px 60px -20px rgba(20, 20, 40, 0.28),
+    0 8px 20px -8px color-mix(in srgb, var(--t-primary) 25%, transparent);
 }
 
 @theme inline {
@@ -90,15 +100,14 @@
   --color-cyan-neon: var(--cyan);
   --color-yellow: var(--yellow);
 
-  /* Alias des anciens jetons du thème sombre, pour que les pages secondaires
-     (blog, légal, cookies) basculent sur la nouvelle palette sans réécriture. */
-  --color-chalk: var(--indigo-900);
+  /* Alias des anciens jetons, pour les pages secondaires (blog, légal, cookies). */
+  --color-chalk: var(--heading);
   --color-fog: var(--muted-foreground);
   --color-surface: var(--cream-2);
   --color-surface-2: var(--paper);
   --color-line: var(--input);
   --color-line-soft: var(--border);
-  --color-neon: var(--indigo-900);
+  --color-neon: var(--primary);
   --color-neon-soft: var(--indigo-50);
   --color-cyan: var(--amber-600);
   --color-cyan-soft: var(--amber-50);
@@ -110,16 +119,9 @@
   --radius-xl: calc(var(--radius) + 6px);
   --radius-2xl: calc(var(--radius) + 14px);
 
-  --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
-    sans-serif;
-  --font-serif: var(--font-fraunces), 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
-  --font-display: var(--font-fraunces), 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
-
-  --shadow-paper-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-paper-md: 0 10px 28px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 46, 147, 0.06);
-  --shadow-paper-lg:
-    0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(255, 46, 147, 0.35);
+  --font-sans: var(--t-font-body);
+  --font-serif: var(--t-font-head);
+  --font-display: var(--t-font-head);
 }
 
 @layer base {
@@ -130,6 +132,9 @@
     color-scheme: dark;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+  html[data-scheme='light'] {
+    color-scheme: light;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -146,30 +151,25 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
+    font-family: var(--t-font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.55;
     position: relative;
     overflow-x: clip;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease;
   }
-  /* « Grain de papier » : deux halos très doux, fixes derrière toute la page. */
+  /* Fond de page propre à chaque thème, fixe derrière tout le contenu. */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background-image:
-      radial-gradient(circle at 15% 0%, rgba(255, 46, 147, 0.14), transparent 40%),
-      radial-gradient(circle at 90% 85%, rgba(34, 227, 255, 0.10), transparent 45%),
-      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    background-size:
-      auto,
-      auto,
-      48px 48px,
-      48px 48px;
+    background-image: var(--t-page-bg);
+    background-size: var(--t-page-bg-size);
   }
   body > * {
     position: relative;
@@ -178,22 +178,28 @@
   h1,
   h2,
   h3,
+  h4,
+  .font-serif {
+    font-family: var(--t-font-head);
+    font-size-adjust: var(--t-head-adjust);
+    letter-spacing: var(--t-head-tracking);
+  }
+  h1,
+  h2,
+  h3,
   h4 {
-    font-family: var(--font-display);
     font-weight: 400;
-    letter-spacing: -0.02em;
     color: var(--heading);
     text-wrap: balance;
   }
-  /* Italique dans un titre = serif ambre, le geste signature du gabarit. */
   h1 em,
   h2 em,
   h3 em,
   h4 em {
     font-style: italic;
     font-weight: 400;
-    color: var(--cyan);
-    text-shadow: 0 0 18px rgba(34, 227, 255, 0.45);
+    color: var(--accent);
+    text-shadow: var(--t-em-glow);
   }
   p {
     text-wrap: pretty;
@@ -204,8 +210,8 @@
     border-radius: 4px;
   }
   ::selection {
-    background: var(--magenta);
-    color: #fff;
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
 }
 
@@ -258,7 +264,7 @@
     color: var(--primary-foreground);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      0 0 22px -4px rgba(255, 46, 147, 0.6);
+      0 0 22px -4px color-mix(in srgb, var(--primary) 60%, transparent);
     transition:
       transform 0.15s ease,
       background-color 0.15s ease;
@@ -283,7 +289,7 @@
     transition: background-color 0.15s ease;
   }
   .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--muted);
   }
 
   @media (min-width: 640px) {
@@ -368,14 +374,12 @@
  * « paper », survol qui estompe les voisines. Activée par `.surface-app`.
  * --------------------------------------------------------------------- */
 body:has(.surface-app) footer {
-  border-top-color: rgba(255, 46, 147, 0.25);
+  border-top-color: color-mix(in srgb, var(--primary) 25%, transparent);
 }
 body:has(.surface-app) header > div:first-of-type {
-  background-color: rgba(22, 19, 52, 0.85);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 18px 32px -18px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(255, 46, 147, 0.08);
+  background-color: color-mix(in srgb, var(--t-surface) 88%, transparent);
+  border-color: var(--border);
+  box-shadow: var(--shadow-paper-md);
 }
 
 .card-paper {
@@ -393,12 +397,12 @@ body:has(.surface-app) header > div:first-of-type {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background-image: linear-gradient(135deg, #c21a7a 0%, var(--violet) 100%);
+  background-image: linear-gradient(135deg, var(--t-brand-from) 0%, var(--t-brand-to) 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #fff;
   box-shadow:
     var(--shadow-paper-md),
-    0 0 40px -12px rgba(255, 46, 147, 0.6);
+    0 0 40px -12px color-mix(in srgb, var(--t-brand-from) 60%, transparent);
 }
 .bg-gradient-paper-brand {
   background-image:

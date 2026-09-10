@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
 import './globals.css'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
@@ -8,18 +7,19 @@ import { ConsentBanner } from '@/components/ConsentBanner'
 import { JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
-const fraunces = localFont({
-  src: '../fonts/fraunces-variable.woff2',
-  display: 'swap',
-  variable: '--font-fraunces',
-  weight: '100 900',
-})
-const inter = localFont({
-  src: '../fonts/inter-variable.woff2',
-  display: 'swap',
-  variable: '--font-inter',
-  weight: '100 900',
-})
+import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { fontVariables } from '@/lib/fonts'
+import { DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
+
+/**
+ * Applique le thème mémorisé avant le premier rendu, pour éviter un flash du
+ * thème par défaut. Les valeurs viennent de nos données, jamais d'une saisie.
+ */
+const themeBootScript = `(function(){try{var q=new URLSearchParams(location.search).get('theme');var t=q||localStorage.getItem(${JSON.stringify(
+  THEME_STORAGE_KEY,
+)});var m=${JSON.stringify(
+  Object.fromEntries(themes.map((t) => [t.id, t.scheme])),
+)};if(t&&m[t]){var d=document.documentElement;d.dataset.theme=t;d.dataset.scheme=m[t];if(q)localStorage.setItem(${JSON.stringify(THEME_STORAGE_KEY)},t);}}catch(e){}})();`
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -111,8 +111,15 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${fraunces.variable} ${inter.variable}`}>
+    <html
+      lang="fr"
+      className={fontVariables}
+      data-theme={DEFAULT_THEME}
+      data-scheme={themes.find((t) => t.id === DEFAULT_THEME)!.scheme}
+      suppressHydrationWarning
+    >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <JsonLd data={organizationSchema} />
       </head>
@@ -126,6 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </div>
         <ConsentBanner />
+        <ThemeSwitcher />
       </body>
     </html>
   )

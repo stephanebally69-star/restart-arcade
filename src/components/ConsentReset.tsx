@@ -43,7 +43,7 @@ export function ConsentReset() {
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           onClick={() => set(true)}
-          className="rounded-[10px] bg-primary px-4 py-2 text-sm font-semibold text-amber-200 transition hover:brightness-110"
+          className="rounded-[10px] bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
         >
           Accepter la mesure d&apos;audience
         </button>

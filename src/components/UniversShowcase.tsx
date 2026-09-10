@@ -64,7 +64,7 @@ export function UniversShowcase({
           fetchPriority={active === 0 ? 'high' : undefined}
           className={`animate-showcase-in aspect-[16/10] w-full ${fit === 'cover' ? 'object-cover' : 'object-contain p-5'}`}
         />
-        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-night/85 px-3.5 py-1.5 text-xs shadow-[var(--shadow-paper-sm)] backdrop-blur">
+        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/90 px-3.5 py-1.5 text-xs shadow-[var(--shadow-paper-sm)] backdrop-blur">
           <span className="font-semibold text-heading">{current.label}</span>
           {current.detail && <span className="font-serif text-amber-700">{current.detail}</span>}
         </span>

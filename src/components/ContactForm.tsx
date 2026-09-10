@@ -90,7 +90,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
               aria-pressed={profil === p.id}
               className={`rounded-lg border px-4 py-2.5 text-sm transition ${
                 profil === p.id
-                  ? 'border-primary bg-primary text-amber-200'
+                  ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-input text-ink-soft hover:border-fog'
               }`}
             >
