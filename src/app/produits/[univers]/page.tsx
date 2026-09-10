@@ -1,12 +1,23 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { allModels, audiences, findUnivers, univers } from '@/data/catalogue'
-import { ProductCard } from '@/components/ProductCard'
-import { ArrowRight, Check, Phone } from 'lucide-react'
-import { AnswerBox, Breadcrumbs, Eyebrow, Faq, FinalCta, JsonLd, Section } from '@/components/ui'
-import { universGallery, universImage } from '@/data/images'
+import {
+  ArrowRight,
+  BookOpen,
+  Briefcase,
+  Check,
+  ChevronRight,
+  Home,
+  type LucideIcon,
+  Phone,
+  Store,
+} from 'lucide-react'
+import { allModels, audiences, findUnivers, formatPrice, univers, type Audience } from '@/data/catalogue'
+import { blogPosts, readingTime } from '@/data/blog'
+import { productImage, universGallery, universImage } from '@/data/images'
 import { Reveal } from '@/components/Reveal'
+import { UniversShowcase, type ShowcaseItem } from '@/components/UniversShowcase'
+import { Faq, JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ univers: string }> }
@@ -27,170 +38,370 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+/*
+ * Gabarit repris de la page « Réponses automatiques » de Ma Belle Note
+ * (variante surface « app » du layout Solutions) : H1 pleine largeur, visuel
+ * animé à gauche et encadré « En bref » indigo à droite, cartes paper qui
+ * s'estompent au survol, bandeau CTA, liste des autres univers, articles,
+ * carte CTA finale.
+ */
+
+const SECTION_HEADING =
+  'mx-auto max-w-3xl text-balance text-center font-serif text-3xl font-medium tracking-tight md:text-4xl'
+
+const VISUAL_CARD_CLASS =
+  'relative isolate flex flex-col gap-3 overflow-hidden rounded-2xl border border-primary/16 bg-gradient-to-br from-primary/8 via-card to-card px-5 pb-6 pt-5 shadow-[var(--shadow-paper-md)]'
+
+const AUDIENCE_ICONS: Record<Audience, LucideIcon> = {
+  entreprise: Briefcase,
+  'bar-commerce': Store,
+  particulier: Home,
+}
+
+/** Mots-clés qui rattachent un article de blog à un univers. */
+const ARTICLE_KEYWORDS: Record<string, RegExp> = {
+  'borne-arcade': /arcade/i,
+  flechettes: /fl[ée]chette/i,
+  'baby-foot': /baby-?foot/i,
+  'fauteuil-massant': /massa|d[ée]tente|bien-[êe]tre/i,
+  billard: /billard/i,
+  'flipper-numerique': /flipper/i,
+  'cocon-de-repos': /cocon|repos|sieste|r[ée]cup[ée]ration/i,
+}
+
+function articlesFor(slug: string) {
+  const re = ARTICLE_KEYWORDS[slug]
+  const text = (p: (typeof blogPosts)[number]) =>
+    [p.title, p.description, ...p.blocks.map((b) => ('text' in b ? b.text : b.items.join(' ')))].join(
+      ' ',
+    )
+  const matches = re ? blogPosts.filter((p) => re.test(text(p))) : []
+  return (matches.length ? matches : blogPosts).slice(0, 4)
+}
+
 export default async function UniversPage({ params }: Props) {
   const { univers: slug } = await params
   const u = findUnivers(slug)
   if (!u) notFound()
 
   const models = allModels.filter((m) => m.universSlug === u.slug)
-  const others = univers.filter((x) => x.slug !== u.slug).slice(0, 3)
+  const related = univers.filter((x) => x.slug !== u.slug)
+  const articles = articlesFor(u.slug)
+
+  const showcase: ShowcaseItem[] = models.length
+    ? models.map((m) => ({
+        image: productImage(m.slug)!,
+        label: m.name,
+        detail: m.price != null ? formatPrice(m.price) : 'Sur devis',
+      }))
+    : universGallery(u.slug).map((image, i) => ({ image, label: `${u.name} · visuel ${i + 1}` }))
 
   return (
-    <>
-      <Section className="pt-10 md:pt-14">
-        <Breadcrumbs
-          items={[
-            { href: '/produits/', label: 'Produits' },
-            { href: `/produits/${u.slug}/`, label: u.name },
-          ]}
-        />
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-          <div>
-            <Eyebrow>{u.navLabel}</Eyebrow>
-            <h1 className="text-balance font-serif text-4xl font-normal leading-[1.03] tracking-[-0.025em] sm:text-5xl md:text-6xl">
-              {u.h1}
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg text-ink-soft">{u.intro}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/contact/" className="btn-primary">
-                Demander un devis
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-              <a href={`tel:${site.phoneE164}`} className="btn-secondary">
+    <div className="surface-app">
+      {/* --- Hero ------------------------------------------------------- */}
+      <section className="relative mx-auto w-full max-w-6xl px-6 pb-8 pt-10 md:pb-10 md:pt-14">
+        <nav
+          aria-label="Fil d'Ariane"
+          className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
+        >
+          <Link href="/produits/" className="hover:text-foreground">
+            Produits
+          </Link>
+          <ChevronRight className="size-3.5" strokeWidth={2} aria-hidden="true" />
+          <span className="text-accent">{u.name}</span>
+        </nav>
+
+        <h1 className="mb-10 font-serif text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl lg:text-[clamp(2.25rem,4vw,3rem)]">
+          {u.h1}
+        </h1>
+
+        <div className="grid items-start gap-10 lg:grid-cols-[65fr_35fr] lg:gap-16">
+          <div className="flex flex-col items-start gap-6 lg:order-2">
+            <aside
+              aria-label="En bref"
+              className="card-brand w-full rounded-2xl px-6 py-6 text-sm leading-relaxed md:text-[15px]"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-10 -top-16 -z-10 size-40 rounded-full bg-accent/40 blur-3xl"
+              />
+              <span className="mb-3 inline-flex items-center rounded-md bg-white/12 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-200">
+                En bref
+              </span>
+              <p>{u.answer}</p>
+            </aside>
+            <div className="mt-2 flex w-full flex-wrap items-center gap-3">
+              <span className="relative inline-flex flex-1 overflow-hidden rounded-lg shadow-sm">
+                <Link
+                  href="/contact/"
+                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:brightness-110"
+                >
+                  Demander un devis
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
+                <span
+                  aria-hidden="true"
+                  className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+                />
+              </span>
+              <a
+                href={`tel:${site.phoneE164}`}
+                className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border bg-card px-4 text-sm font-medium transition hover:bg-muted"
+              >
                 <Phone className="size-4" aria-hidden="true" />
-                {site.phone}
+                Appeler
               </a>
             </div>
           </div>
-          <div className="relative">
-            <div
-              aria-hidden="true"
-              className="absolute -inset-6 rounded-[2.5rem] bg-[radial-gradient(circle_at_30%_20%,rgba(232,178,82,0.2),transparent_60%),radial-gradient(circle_at_80%_90%,rgba(91,82,200,0.16),transparent_60%)]"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={universImage(u.slug)}
-              alt={u.h1}
-              fetchPriority="high"
-              className="product-shot relative aspect-4/3 w-full rounded-3xl border border-border object-contain p-4 shadow-[var(--shadow-paper-lg)]"
-            />
+
+          <div className="relative lg:order-1">
+            <UniversShowcase items={showcase} url={`restart-arcade.fr/produits/${u.slug}`} />
           </div>
         </div>
-        <div className="mt-14 max-w-3xl">
-          <AnswerBox>{u.answer}</AnswerBox>
-        </div>
-      </Section>
+      </section>
 
-      {models.length > 0 ? (
-        <section className="bg-cream-2">
-          <div className="mx-auto w-full max-w-6xl px-6 py-24">
-            <Eyebrow>La gamme</Eyebrow>
-            <h2 className="font-serif text-3xl md:text-4xl">
-              {models.length} modèle{models.length > 1 ? 's' : ''}{' '}
-              <em>disponible{models.length > 1 ? 's' : ''}</em>
-            </h2>
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {models.map((m) => (
-                <ProductCard key={m.sku} model={m} list={`univers_${u.slug}`} />
+      {/* --- La gamme (cartes visuelles) ------------------------------- */}
+      <section id="gamme" className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 py-10 md:py-14">
+        <h2 className={SECTION_HEADING}>
+          {models.length
+            ? `${models.length} modèle${models.length > 1 ? 's' : ''}, livré${models.length > 1 ? 's' : ''} monté${models.length > 1 ? 's' : ''} et installé${models.length > 1 ? 's' : ''}`
+            : 'Configuré sur mesure, chiffré sous 48 heures'}
+        </h2>
+        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {models.length
+            ? models.map((m, index) => (
+                <Reveal key={m.sku} delayMs={(index % 3) * 120} className="h-full">
+                  <Link
+                    href={`/produits/${u.slug}/${m.slug}/`}
+                    className={`${VISUAL_CARD_CLASS} h-full transition duration-300 hover:-translate-y-0.5`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -right-12 -top-14 -z-10 size-40 rounded-full bg-accent/16 blur-3xl"
+                    />
+                    <span className="mb-3 flex h-44 items-center justify-center overflow-hidden rounded-xl bg-white">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={productImage(m.slug)}
+                        alt={m.name}
+                        loading="lazy"
+                        className="h-full w-full object-contain p-2"
+                      />
+                    </span>
+                    <span className="flex items-baseline justify-between gap-3">
+                      <span className="font-serif text-lg font-medium tracking-tight text-indigo-900">
+                        {m.name}
+                      </span>
+                      <span className="font-serif text-base text-amber-700">
+                        {m.price != null ? formatPrice(m.price) : 'Sur devis'}
+                      </span>
+                    </span>
+                    <span className="text-[13px] leading-snug text-foreground/65">{m.headline}</span>
+                  </Link>
+                </Reveal>
+              ))
+            : universGallery(u.slug).map((src, index) => (
+                <Reveal key={src} delayMs={(index % 3) * 120} className={VISUAL_CARD_CLASS}>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-12 -top-14 -z-10 size-40 rounded-full bg-accent/16 blur-3xl"
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt={`${u.name} RESTART — visuel ${index + 1}`}
+                    loading="lazy"
+                    className="h-56 w-full rounded-xl bg-white object-contain p-2"
+                  />
+                </Reveal>
               ))}
-            </div>
+        </div>
+      </section>
+
+      {/* --- Selon votre situation ------------------------------------- */}
+      <section className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
+        <h2 className={SECTION_HEADING}>Ce que ça change, selon votre situation</h2>
+        <div className="cards-dim mt-12 grid gap-5 lg:grid-cols-3">
+          {audiences.map((a, index) => {
+            const Icon = AUDIENCE_ICONS[a.id]
+            return (
+              <Reveal
+                key={a.id}
+                delayMs={index * 120}
+                className="card-paper flex cursor-default flex-col gap-3 rounded-2xl p-6 transition duration-300 hover:-translate-y-0.5"
+              >
+                <div id={a.id} className="flex items-center gap-3">
+                  <Icon className="size-6 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
+                  <h3 className="font-serif text-lg font-medium tracking-tight">
+                    {a.label}
+                    <span className="ml-2 font-sans text-xs font-normal text-muted-foreground">
+                      {a.short}
+                    </span>
+                  </h3>
+                </div>
+                <ul className="space-y-2">
+                  {u.benefits[a.id].map((b) => (
+                    <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-foreground/70">
+                      <Check
+                        className="mt-1 size-3.5 shrink-0 text-accent"
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                      />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* --- Bandeau CTA ------------------------------------------------ */}
+      <div className="mt-6 border-y border-border bg-primary/4">
+        <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between md:py-12">
+          <div>
+            <h2 className="font-serif text-2xl font-medium tracking-tight md:text-3xl">
+              Livré monté, installé, prêt à jouer
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Devis gratuit sous 48 h. Achat ou location, partout en France.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <Link
+              href="/contact/"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition hover:brightness-110"
+            >
+              Demander un devis
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/realisations/"
+              className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-card px-5 text-sm font-medium transition hover:bg-muted"
+            >
+              Nos réalisations
+            </Link>
           </div>
         </section>
-      ) : (
-        universGallery(u.slug).length > 1 && (
-          <section className="bg-cream-2">
-            <div className="mx-auto w-full max-w-6xl px-6 py-24">
-              <Eyebrow>En images</Eyebrow>
-              <h2 className="font-serif text-3xl md:text-4xl">
-                Configuré <em>sur mesure</em>
-              </h2>
-              <p className="mt-4 max-w-2xl text-ink-soft">
-                Dimensions, finitions, habillage : chaque projet est chiffré au cas par cas, devis
-                sous 48 heures.
-              </p>
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {universGallery(u.slug).map((src, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
+      </div>
+
+      {/* --- FAQ -------------------------------------------------------- */}
+      <section className="mx-auto w-full max-w-3xl px-6 py-14 md:py-20">
+        <Faq items={u.faq} title={`Questions fréquentes — ${u.name.toLowerCase()}`} />
+      </section>
+
+      {/* --- Autres univers --------------------------------------------- */}
+      <div className="border-y border-border bg-primary/4">
+        <section className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
+          <h2 className={SECTION_HEADING}>Nos autres univers</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base text-muted-foreground">
+            Tous personnalisables, tous livrés montés — et combinables dans un même espace.
+          </p>
+          <ul className="rows-dim mt-10 grid gap-x-10 border-t border-border sm:grid-cols-2">
+            {related.map((o) => (
+              <li key={o.slug} className="border-b border-border">
+                <Link href={`/produits/${o.slug}/`} className="group flex items-center gap-4 py-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    key={src}
-                    src={src}
-                    alt={`${u.name} RESTART — visuel ${i + 1}`}
+                    src={universImage(o.slug)}
+                    alt=""
                     loading="lazy"
-                    className="product-shot aspect-4/3 w-full rounded-2xl border border-border object-contain p-3 shadow-[var(--shadow-paper-sm)]"
+                    className="size-11 shrink-0 rounded-lg border border-border bg-white object-contain p-0.5 transition duration-500 group-hover:scale-110"
                   />
-                ))}
-              </div>
-            </div>
-          </section>
-        )
-      )}
-
-      {/* Les trois audiences cohabitent sur la même URL : c'est ce qui remplace
-          les anciennes pages /xxx-particulier/ et /xxx-bars-commerces/. */}
-      <section className="bg-cream">
-        <div className="mx-auto w-full max-w-6xl px-6 py-24">
-          <Eyebrow>Selon votre situation</Eyebrow>
-          <h2 className="max-w-2xl font-serif text-3xl md:text-4xl">
-            Ce que {u.name.toLowerCase()} <em>change concrètement</em>
-          </h2>
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {audiences.map((a, i) => (
-              <Reveal key={a.id} delayMs={i * 80}>
-                <div id={a.id} className="h-full rounded-3xl border border-border bg-paper p-7">
-                  <p className="eyebrow">{a.short}</p>
-                  <h3 className="mt-1.5 font-serif text-2xl">{a.label}</h3>
-                  <ul className="mt-5 space-y-3">
-                    {u.benefits[a.id].map((b) => (
-                      <li key={b} className="flex gap-2.5 text-sm text-ink-soft">
-                        <Check className="mt-0.5 size-4 shrink-0 text-amber-600" aria-hidden="true" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-paper">
-        <div className="mx-auto w-full max-w-4xl px-6 py-24">
-          <Faq items={u.faq} title={`Questions fréquentes — ${u.name.toLowerCase()}`} />
-        </div>
-      </section>
-
-      <section className="bg-cream-2">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <Eyebrow>À voir aussi</Eyebrow>
-          <div className="mt-2 grid gap-5 sm:grid-cols-3">
-            {others.map((o) => (
-              <Link key={o.slug} href={`/produits/${o.slug}/`} className="card group flex items-center gap-4 p-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={universImage(o.slug)}
-                  alt=""
-                  loading="lazy"
-                  className="product-shot size-20 shrink-0 rounded-xl border border-border object-contain p-1"
-                />
-                <span>
-                  <span className="block font-serif text-lg text-indigo-900">{o.name}</span>
-                  <span className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground">
-                    {o.intro.split('.')[0]}.
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-serif text-base font-medium leading-snug tracking-tight text-indigo-900">
+                      {o.name}
+                    </span>
+                    <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                      {o.models.length > 0
+                        ? `${o.models.length} modèle${o.models.length > 1 ? 's' : ''} · ${o.intro.split('.')[0]}`
+                        : `Sur devis · ${o.intro.split('.')[0]}`}
+                    </span>
                   </span>
-                </span>
-              </Link>
+                  <ChevronRight
+                    className="size-4 shrink-0 text-accent transition-transform group-hover:translate-x-0.5"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </Link>
+              </li>
             ))}
+          </ul>
+        </section>
+      </div>
+
+      {/* --- Pour aller plus loin --------------------------------------- */}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-14 pt-8 md:pb-20 md:pt-16">
+        <h2 className={SECTION_HEADING}>Pour aller plus loin</h2>
+        <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base text-muted-foreground">
+          Nos guides sur le sujet, à lire avant de vous lancer.
+        </p>
+        <ul className="mt-10 divide-y divide-border border-t border-border">
+          {articles.map((p) => (
+            <li key={p.slug}>
+              <Link
+                href={`/blog/${p.slug}/`}
+                className="group -mx-3 flex items-center gap-4 rounded-lg px-3 py-4 transition hover:bg-muted"
+              >
+                <BookOpen className="size-4 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
+                <span className="min-w-0 flex-1 font-medium leading-snug">{p.title}</span>
+                <span className="hidden shrink-0 text-xs text-muted-foreground sm:block">
+                  {readingTime(p.words)} min de lecture
+                </span>
+                <ChevronRight
+                  className="size-4 shrink-0 text-accent transition-transform group-hover:translate-x-0.5"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* --- Carte CTA finale (variante « paper ») ---------------------- */}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16 md:pb-24">
+        <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-3xl border border-primary/16 px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
+          <h2 className="mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-[1.1] tracking-tight md:text-5xl">
+            Un projet {u.name.toLowerCase()} ? Parlons-en.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
+            Décrivez votre espace : nous revenons vers vous sous 48 heures avec une proposition
+            chiffrée, en achat comme en location.
+          </p>
+          <div className="mt-9 flex justify-center">
+            <span className="relative inline-flex overflow-hidden rounded-lg shadow-[var(--shadow-paper-md)]">
+              <Link
+                href="/contact/"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-7 text-base font-medium text-primary-foreground transition hover:brightness-110"
+              >
+                Demander un devis gratuit
+                <ArrowRight
+                  className="size-4 transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
+              </Link>
+              <span
+                aria-hidden="true"
+                className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+              />
+            </span>
           </div>
         </div>
       </section>
 
-      <FinalCta
-        title="Un projet "
-        em={`${u.name.toLowerCase()} ?`}
-        subtitle="Décrivez-nous votre espace : nous revenons vers vous sous 48 heures avec une proposition chiffrée, en achat comme en location."
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site.url}/` },
+            { '@type': 'ListItem', position: 2, name: 'Produits', item: `${site.url}/produits/` },
+            { '@type': 'ListItem', position: 3, name: u.name, item: `${site.url}/produits/${u.slug}/` },
+          ],
+        }}
       />
-
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -202,6 +413,6 @@ export default async function UniversPage({ params }: Props) {
           isPartOf: { '@id': `${site.url}/#website` },
         }}
       />
-    </>
+    </div>
   )
 }
