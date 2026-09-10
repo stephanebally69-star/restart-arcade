@@ -9,8 +9,8 @@ const STEP_MS = 3600
 
 /**
  * Vitrine de hero : le produit mis en scène sur fond blanc éclairé, avec un
- * liseré et un halo à la couleur du thème, un compteur façon borne d'arcade,
- * des flèches et des vignettes. Défilement automatique, suspendu au survol et
+ * liseré et un halo à la couleur du thème, un compteur façon borne d'arcade
+ * et des flèches. Défilement automatique, suspendu au survol et
  * désactivé si l'utilisateur réduit les animations.
  */
 export function UniversShowcase({
@@ -100,30 +100,6 @@ export function UniversShowcase({
           )}
         </div>
 
-        {n > 1 && (
-          <div className="flex gap-2 overflow-x-auto border-t border-border bg-muted/60 p-3">
-            {items.map((it, i) => (
-              <button
-                key={it.image}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-label={`Afficher ${it.label}`}
-                aria-current={i === active}
-                className={`shrink-0 overflow-hidden rounded-lg border-2 bg-white transition ${
-                  i === active ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
-                }`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={it.image}
-                  alt=""
-                  loading="lazy"
-                  className={`size-14 ${fit === 'cover' ? 'object-cover' : 'object-contain p-1'}`}
-                />
-              </button>
-            ))}
-          </div>
-        )}
       </div>
       <style>{`@keyframes showcase-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}`}</style>
     </div>
