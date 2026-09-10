@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { blogPosts, readingTime } from '@/data/blog'
 import { blogImage } from '@/data/images'
 import { FinalCta, JsonLd } from '@/components/ui'
-import { Block, Frame, PageHero, SectionHeading } from '@/components/kit'
+import { Block, Frame, PageHero, SectionHeading, BriefPoints } from '@/components/kit'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -47,11 +47,14 @@ export default function BlogPage() {
           </Frame>
         }
         brief={
-          <p>
-            {blogPosts.length} articles sur le bien-être au travail, l&apos;animation des bars et
-            restaurants, et l&apos;expérience client dans les lieux qui reçoivent du public. Un
-            nouvel article chaque mois.
-          </p>
+          <BriefPoints
+            items={[
+              `${blogPosts.length} articles, un nouveau chaque mois`,
+              'Bien-être au travail et cohésion d’équipe',
+              'Animation des bars, restaurants et clubs',
+              'Hôtellerie, campings et expérience client',
+            ]}
+          />
         }
         primary={{ href: `/blog/${lead.slug}/`, label: "Lire l'article à la une" }}
         secondary={{ href: '/contact/', label: 'Un projet ?' }}

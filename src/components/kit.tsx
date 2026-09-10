@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { ArrowRight, BookOpen, ChevronRight, Phone } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, ChevronRight, Phone } from 'lucide-react'
 import { readingTime, type BlogPost } from '@/data/blog'
 import { site } from '@/lib/site'
 import { Reveal } from '@/components/Reveal'
@@ -90,7 +90,7 @@ export function Frame({ children, className = '' }: { children: ReactNode; class
   )
 }
 
-/** Encadré « En bref » indigo (card-brand). */
+/** Encadré de synthèse (card-brand), sans étiquette : liste à puces cochées. */
 export function BriefCard({ label = 'En bref', children }: { label?: string; children: ReactNode }) {
   return (
     <aside
@@ -98,11 +98,22 @@ export function BriefCard({ label = 'En bref', children }: { label?: string; chi
       className="card-brand w-full rounded-2xl px-6 py-6 text-sm leading-relaxed md:text-[15px]"
     >
       <Glow className="-right-10 -top-16 size-40 bg-accent/40" />
-      <span className="mb-3 inline-flex items-center rounded-md bg-white/12 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-200">
-        {label}
-      </span>
       <div className="[&_a]:underline [&_a]:underline-offset-2">{children}</div>
     </aside>
+  )
+}
+
+/** Puces cochées de l'encadré de synthèse (système tldrPoints de Ma Belle Note). */
+export function BriefPoints({ items }: { items: ReactNode[] }) {
+  return (
+    <ul className="flex flex-col gap-3">
+      {items.map((item, i) => (
+        <li key={i} className="flex items-start gap-3">
+          <Check className="mt-0.5 size-4 shrink-0 md:mt-1" strokeWidth={2.5} aria-hidden="true" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
   )
 }
 

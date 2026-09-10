@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Check } from 'lucide-react'
 import { Faq, FinalCta } from '@/components/ui'
-import { Block, CtaBand, Frame, PageHero, PaperCard, SectionHeading } from '@/components/kit'
+import { Block, CtaBand, Frame, PageHero, PaperCard, SectionHeading, BriefPoints } from '@/components/kit'
 import { ambiance } from '@/data/images'
 import { site } from '@/lib/site'
 
@@ -64,12 +64,14 @@ export default function QuiSommesNousPage() {
           </Frame>
         }
         brief={
-          <p>
-            RESTART est une entreprise française spécialisée dans l&apos;aménagement
-            d&apos;espaces de convivialité, basée {site.address.street}, {site.address.postalCode}{' '}
-            {site.address.city}, dans l&apos;est lyonnais. Elle vend et loue des équipements de jeu
-            et de détente personnalisés, livrés montés et installés partout en France.
-          </p>
+          <BriefPoints
+            items={[
+              "Spécialiste français de l'aménagement d'espaces de convivialité",
+              `Atelier et showroom à ${site.address.city} (${site.address.postalCode}), près de Lyon`,
+              'Vente et location, personnalisation à votre image',
+              'Livraison et installation partout en France, garantie jusqu’à 3 ans',
+            ]}
+          />
         }
         primary={{ href: '/contact/', label: 'Prendre rendez-vous' }}
       />

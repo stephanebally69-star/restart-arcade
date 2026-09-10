@@ -15,6 +15,7 @@ import {
   RowList,
   SectionHeading,
   VISUAL_CARD_CLASS,
+  BriefPoints,
 } from '@/components/kit'
 import { Faq, FinalCta } from '@/components/ui'
 import { blogPosts } from '@/data/blog'
@@ -124,12 +125,14 @@ export default function Home() {
         title="Le jeu qui fait revenir les gens dans vos espaces."
         visual={<UniversShowcase items={showcase} />}
         brief={
-          <p>
-            RESTART vend et loue des bornes d&apos;arcade, fléchettes électroniques, baby-foot,
-            billards et flippers numériques, personnalisés à votre image, livrés montés et installés
-            partout en France depuis Villette-d&apos;Anthon, près de Lyon. De 899 € à 2 638,80 €,
-            devis sous 48 heures.
-          </p>
+          <BriefPoints
+            items={[
+              "Bornes d'arcade, fléchettes, baby-foot, billards et flippers, en vente ou en location",
+              'Personnalisés à votre image : covering, couleurs, logo',
+              'Livrés montés et installés partout en France',
+              'De 899 € à 2 638,80 €, devis gratuit sous 48 heures',
+            ]}
+          />
         }
         primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
         secondary={{ href: '/produits/', label: 'Le catalogue' }}

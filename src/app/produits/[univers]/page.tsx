@@ -88,6 +88,19 @@ export default async function UniversPage({ params }: Props) {
   const related = univers.filter((x) => x.slug !== u.slug)
   const articles = articlesFor(u.slug)
 
+  // Puces courtes de l'encadré : gamme et prix, un avantage par cible, livraison.
+  const priced = models.filter((m) => m.price != null).map((m) => m.price!)
+  const briefPoints = [
+    models.length === 0
+      ? 'Sur devis, à l’achat comme en location'
+      : priced.length > 1
+        ? `${models.length} modèles, de ${formatPrice(Math.min(...priced))} à ${formatPrice(Math.max(...priced))}`
+        : `${models.length} modèle à ${formatPrice(priced[0])}`,
+    u.benefits.entreprise[0],
+    u.benefits['bar-commerce'][0],
+    'Livré monté et installé partout en France',
+  ]
+
   const showcase: ShowcaseItem[] = models.length
     ? models.map((m) => ({
         image: productImage(m.slug)!,
@@ -121,10 +134,18 @@ export default async function UniversPage({ params }: Props) {
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-10 -top-16 -z-10 size-40 rounded-full bg-accent/40 blur-3xl"
               />
-              <span className="mb-3 inline-flex items-center rounded-md bg-white/12 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-200">
-                En bref
-              </span>
-              <p>{u.answer}</p>
+              <ul className="flex flex-col gap-3">
+                {briefPoints.map((point, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <Check
+                      className="mt-0.5 size-4 shrink-0 md:mt-1"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
             </aside>
             <div className="mt-2 flex w-full flex-wrap items-center gap-3">
               <span className="relative inline-flex flex-1 overflow-hidden rounded-lg shadow-sm">

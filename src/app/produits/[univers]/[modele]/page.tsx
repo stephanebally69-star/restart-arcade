@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { allModels, audiences, findModel, findUnivers, formatPrice } from '@/data/catalogue'
 import { Check } from 'lucide-react'
 import { Faq, FinalCta, JsonLd } from '@/components/ui'
-import { Block, CtaBand, Frame, PageHero, RowList, SectionHeading } from '@/components/kit'
+import { Block, CtaBand, Frame, PageHero, RowList, SectionHeading, BriefPoints } from '@/components/kit'
 import { ProductGallery } from '@/components/ProductGallery'
 import { productImage, productImages } from '@/data/images'
 import { ViewItem } from '@/components/ViewItem'
@@ -83,11 +83,14 @@ export default async function ModelePage({ params }: Props) {
             <p className="mt-1 text-xs text-amber-200/80">
               Livraison et installation comprises · paiement en 2x, 3x ou 4x
             </p>
-            <p className="mt-4">
-              Le {m.name} de RESTART : {m.headline.toLowerCase()}. Caractéristiques principales :{' '}
-              {m.specs.slice(0, 4).join(', ').toLowerCase()}. Livré monté et installé partout en
-              France depuis Villette-d&apos;Anthon (Isère).
-            </p>
+            <div className="mt-5">
+              <BriefPoints
+                items={[
+                  ...m.specs.slice(0, 3),
+                  'Livré monté et installé partout en France',
+                ]}
+              />
+            </div>
           </>
         }
         primary={{

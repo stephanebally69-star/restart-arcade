@@ -5,7 +5,7 @@ import { blogPosts, findPost, readingTime } from '@/data/blog'
 import { blogImage } from '@/data/images'
 import { Check } from 'lucide-react'
 import { FinalCta, JsonLd, Section } from '@/components/ui'
-import { ArticleRows, Block, Frame, PageHero, SectionHeading } from '@/components/kit'
+import { ArticleRows, Block, Frame, PageHero, SectionHeading, BriefPoints } from '@/components/kit'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -69,19 +69,23 @@ export default async function ArticlePage({ params }: Props) {
         }
         briefLabel={post.category}
         brief={
-          <>
-            <p>{post.description}</p>
-            <p className="mt-4 text-xs text-amber-200/80">
-              <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString('fr-FR', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })}
-              </time>{' '}
-              · {readingTime(post.words)} min de lecture
-            </p>
-          </>
+          <BriefPoints
+            items={[
+              post.description,
+              `Thème : ${post.category}`,
+              <>
+                Publié le{' '}
+                <time dateTime={post.date}>
+                  {new Date(post.date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </time>
+                , {readingTime(post.words)} min de lecture
+              </>,
+            ]}
+          />
         }
         primary={{ href: '/contact/', label: 'Un projet ? Demander un devis' }}
         secondary={null}

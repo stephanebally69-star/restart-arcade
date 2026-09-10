@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { FinalCta } from '@/components/ui'
-import { Block, CtaBand, PageHero, PaperCard, SectionHeading } from '@/components/kit'
+import { Block, CtaBand, PageHero, PaperCard, SectionHeading, BriefPoints } from '@/components/kit'
 import { UniversShowcase } from '@/components/UniversShowcase'
 import { realisationPhotos } from '@/data/images'
 
@@ -83,11 +83,14 @@ export default function RealisationsPage() {
           />
         }
         brief={
-          <p>
-            Bornes d&apos;arcade personnalisées, baby-foot d&apos;extérieur, fléchettes, billards et
-            coins détente installés en entreprise, en bar, en camping et chez des particuliers,
-            photographiés sur place ou dans notre showroom avant livraison.
-          </p>
+          <BriefPoints
+            items={[
+              `${realisationPhotos.length} installations photographiées sur place ou au showroom`,
+              'Entreprises, bars, campings, gîtes et particuliers',
+              "Bornes d'arcade personnalisées, baby-foot d'extérieur, fléchettes et billards",
+              'Audit de votre espace gratuit et sans engagement',
+            ]}
+          />
         }
         primary={{ href: '/contact/', label: 'Demander un audit gratuit' }}
       />

@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import { ContactFormWithPreset } from '@/components/ContactFormWithPreset'
 import { Check } from 'lucide-react'
 import { Faq, JsonLd } from '@/components/ui'
-import { Frame, PageHero } from '@/components/kit'
+import { Frame, PageHero, BriefPoints } from '@/components/kit'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -49,22 +49,22 @@ export default function ContactPage() {
         }
         briefLabel="Nous joindre"
         brief={
-          <address className="space-y-3 not-italic">
-            <p>
-              <a href={`tel:${site.phoneE164}`} className="font-serif text-2xl !no-underline">
-                {site.phone}
-              </a>
-              <br />
-              <span className="text-amber-200/80">Du lundi au vendredi, 9 h – 18 h</span>
-            </p>
-            <p>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-            </p>
-            <p>
-              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
-            </p>
+          <address className="not-italic">
+            <BriefPoints
+              items={[
+                <>
+                  <a href={`tel:${site.phoneE164}`}>{site.phone}</a>, du lundi au vendredi de 9 h à
+                  18 h
+                </>,
+                <a key="mail" href={`mailto:${site.email}`}>
+                  {site.email}
+                </a>,
+                <a key="wa" href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+                  WhatsApp
+                </a>,
+                'Réponse sous 48 heures ouvrées',
+              ]}
+            />
           </address>
         }
         primary={null}

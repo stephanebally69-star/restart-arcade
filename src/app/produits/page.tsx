@@ -12,6 +12,7 @@ import {
   RowList,
   SectionHeading,
   VISUAL_CARD_CLASS,
+  BriefPoints,
 } from '@/components/kit'
 import { FinalCta, JsonLd } from '@/components/ui'
 import { universImage } from '@/data/images'
@@ -38,12 +39,14 @@ export default function ProduitsPage() {
         title="Tout ce qu'on peut installer chez vous"
         visual={<UniversShowcase items={showcase} />}
         brief={
-          <p>
-            Le catalogue RESTART compte 12 modèles au prix affiché : 5 bornes d&apos;arcade (899 € à
-            2 478 €), 2 cibles de fléchettes électroniques (1 790 € et 2 638,80 €), 4 baby-foot
-            (1 249 € à 2 199 €) et 1 fauteuil massant (1 558,80 €). Billards, flippers numériques et
-            cocons de repos sont proposés sur devis, à l&apos;achat comme en location.
-          </p>
+          <BriefPoints
+            items={[
+              "5 bornes d'arcade, de 899 € à 2 478 €",
+              '2 cibles de fléchettes électroniques, 1 790 € et 2 638,80 €',
+              '4 baby-foot, de 1 249 € à 2 199 €, et 1 fauteuil massant',
+              'Billards, flippers et cocons de repos sur devis, en achat ou en location',
+            ]}
+          />
         }
       />
 
