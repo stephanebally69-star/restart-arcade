@@ -122,7 +122,7 @@ export default function RealisationsPage() {
           title="Six contextes, six réponses différentes"
           subtitle="Le contexte, l'équipement retenu et ce que ça a changé sur place."
         />
-        <div className="cards-dim mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {cases.map((c, i) => (
             <PaperCard
               key={c.context}

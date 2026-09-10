@@ -184,7 +184,7 @@ export default async function UniversPage({ params }: Props) {
             ? `${models.length} modèle${models.length > 1 ? 's' : ''}, livré${models.length > 1 ? 's' : ''} monté${models.length > 1 ? 's' : ''} et installé${models.length > 1 ? 's' : ''}`
             : 'Configuré sur mesure, chiffré sous 48 heures'}
         </h2>
-        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {models.length
             ? models.map((m, index) => (
                 <Reveal key={m.sku} delayMs={(index % 3) * 120} className="h-full">
@@ -238,7 +238,7 @@ export default async function UniversPage({ params }: Props) {
       {/* --- Selon votre situation ------------------------------------- */}
       <section className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
         <h2 className={SECTION_HEADING}>Ce que ça change, selon votre situation</h2>
-        <div className="cards-dim mt-12 grid gap-5 lg:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {audiences.map((a, index) => {
             const Icon = AUDIENCE_ICONS[a.id]
             return (

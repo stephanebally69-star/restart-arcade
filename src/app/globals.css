@@ -471,3 +471,27 @@ body:has(.surface-app) header > div:first-of-type {
     animation: none;
   }
 }
+
+/* Grille de cartes centrée : chaque carte garde la largeur d'une colonne et
+   une rangée incomplète se centre au lieu de rester collée à gauche.
+   Nombre de colonnes en grand écran réglable avec --cols (4 par défaut). */
+.center-grid {
+  --gap: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+.center-grid > * {
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .center-grid > * {
+    width: calc((100% - var(--gap)) / 2);
+  }
+}
+@media (min-width: 1024px) {
+  .center-grid > * {
+    width: calc((100% - (var(--cols, 4) - 1) * var(--gap)) / var(--cols, 4));
+  }
+}

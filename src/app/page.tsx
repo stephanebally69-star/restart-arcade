@@ -141,7 +141,7 @@ export default function Home() {
       {/* --- Ce que RESTART fait pour vous ----------------------------- */}
       <Block>
         <SectionHeading title="Ce que RESTART fait à votre place" />
-        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {valueProps.map(({ icon: Icon, title, text }, i) => (
             <PaperCard
               key={title}
@@ -176,7 +176,7 @@ export default function Home() {
           title="Sept familles d'équipements"
           subtitle="Du baby-foot d'extérieur au cocon de repos, tout est personnalisable et livré monté."
         />
-        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="cards-dim mt-12 center-grid [--cols:4]">
           {univers.map((u, i) => (
             <Reveal key={u.slug} delayMs={(i % 4) * 100} className="h-full">
               <Link
@@ -213,7 +213,7 @@ export default function Home() {
           title="De l'idée à la première partie, en quatre étapes"
           subtitle="Nous ne vendons pas un carton à monter : nous regardons votre espace, dessinons l'équipement avec vous et l'installons."
         />
-        <ol className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-12 center-grid [--cols:4]">
           {steps.map((s, index) => (
             <li key={s.n} className="card relative flex flex-col gap-3 p-6">
               <span className="font-serif text-5xl font-medium leading-none text-accent/60">

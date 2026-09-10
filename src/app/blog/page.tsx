@@ -62,7 +62,7 @@ export default function BlogPage() {
 
       <Block>
         <SectionHeading title="Tous les articles" />
-        <div className="cards-dim mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {rest.map((p) => (
             <Link key={p.slug} href={`/blog/${p.slug}/`} className="card flex flex-col overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}

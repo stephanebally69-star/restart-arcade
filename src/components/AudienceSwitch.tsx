@@ -55,7 +55,7 @@ export function AudienceSwitch() {
       >
         <p className="mx-auto text-center text-lg text-ink-soft lg:whitespace-nowrap">{current.blurb}</p>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 center-grid [--cols:4]">
           {models.map((m) => (
             <ProductCard key={m.sku} model={m} list={`home_${active}`} />
           ))}

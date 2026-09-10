@@ -65,7 +65,7 @@ export default function ProduitsPage() {
                 </>
               }
             />
-            <div className="cards-dim mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="cards-dim mt-10 center-grid [--cols:4]">
               {allModels
                 .filter((m) => m.universSlug === u.slug)
                 .map((m) => (
@@ -82,7 +82,7 @@ export default function ProduitsPage() {
           title="Disponibles sur devis"
           subtitle="Dimensions de la pièce, monnayeur, habillage : ces équipements sont chiffrés sur mesure, devis sous 48 heures."
         />
-        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-3">
+        <div className="cards-dim mt-12 center-grid [--cols:3]">
           {univers
             .filter((u) => u.quoteOnly)
             .map((u, i) => (
