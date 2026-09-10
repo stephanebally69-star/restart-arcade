@@ -22,7 +22,7 @@ export function AudienceSwitch() {
       <div
         role="tablist"
         aria-label="Choisir votre situation"
-        className="inline-flex flex-wrap gap-1 rounded-full border border-border bg-paper p-1 shadow-[var(--shadow-paper-sm)]"
+        className="mx-auto flex w-fit flex-wrap justify-center gap-1 rounded-full border border-border bg-paper p-1 shadow-[var(--shadow-paper-sm)]"
       >
         {audiences.map((a) => (
           <button
@@ -53,7 +53,7 @@ export function AudienceSwitch() {
         aria-labelledby={`tab-${active}`}
         className="mt-8"
       >
-        <p className="max-w-2xl text-lg text-ink-soft">{current.blurb}</p>
+        <p className="mx-auto text-center text-lg text-ink-soft lg:whitespace-nowrap">{current.blurb}</p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {models.map((m) => (
@@ -63,7 +63,7 @@ export function AudienceSwitch() {
 
         <Link
           href="/produits/"
-          className="btn-secondary mt-10 bg-paper"
+          className="btn-secondary mx-auto mt-10 flex w-fit bg-paper"
         >
           Voir tout le catalogue
           <span aria-hidden="true">→</span>

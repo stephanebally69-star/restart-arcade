@@ -18,7 +18,7 @@ import {
 } from '@/components/kit'
 import { Faq, FinalCta } from '@/components/ui'
 import { blogPosts } from '@/data/blog'
-import { ambiance, productImage, realisationPhotos, universImage } from '@/data/images'
+import { ambiance, productImage, universImage } from '@/data/images'
 
 export const metadata: Metadata = {
   title: "Bornes d'arcade, fléchettes et baby-foot personnalisés — vente et location",
@@ -112,7 +112,6 @@ const valueProps = [
 ]
 
 export default function Home() {
-  const strip = realisationPhotos.slice(0, 14)
   const showcase = allModels.map((m) => ({
     image: productImage(m.slug)!,
     label: m.name,
@@ -135,25 +134,6 @@ export default function Home() {
         primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
         secondary={{ href: '/produits/', label: 'Le catalogue' }}
       />
-
-      {/* --- Bandeau de photos clients ---------------------------------- */}
-      <section aria-label="Installations réalisées" className="overflow-hidden py-8">
-        <p className="mb-5 text-center text-xs uppercase tracking-wider text-muted-foreground">
-          Déjà installé chez des entreprises, bars, campings et particuliers
-        </p>
-        <div className="flex w-max animate-marquee-x gap-4">
-          {[...strip, ...strip].map((src, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={i}
-              src={src}
-              alt=""
-              loading="lazy"
-              className="size-36 shrink-0 rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-sm)] md:size-44"
-            />
-          ))}
-        </div>
-      </section>
 
       {/* --- Ce que RESTART fait pour vous ----------------------------- */}
       <Block>
