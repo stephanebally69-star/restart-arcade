@@ -17,7 +17,7 @@ export type ThemeMeta = {
 
 export type FontMeta = { id: string; label: string; stack: string; adjust: string; tracking: string }
 
-export const DEFAULT_THEME = 'borne'
+export const DEFAULT_THEME = 'papier'
 export const THEME_STORAGE_KEY = 'restart-theme'
 export const CUSTOM_STORAGE_KEY = 'restart-theme-custom'
 

@@ -1,30 +1,30 @@
 /* Généré par scripts/gen_themes.py : ne pas éditer à la main. */
 
 :root {
-  --t-bg: #0b0d17;
-  --t-bg-2: #10131f;
-  --t-surface: #151a2a;
-  --t-surface-2: #1c2236;
-  --t-text: #e8ebf5;
-  --t-text-soft: #c3c8da;
-  --t-text-muted: #8e95ad;
-  --t-heading: #ffffff;
-  --t-primary: #ff2e93;
-  --t-primary-fg: #ffffff;
-  --t-accent: #22e3ff;
-  --t-price: #ffd23f;
-  --t-brand-from: #d61f7c;
-  --t-brand-to: #5b2bd6;
-  --t-footer: #06070d;
-  --t-border: rgba(255,255,255,0.08);
-  --t-input: rgba(255,255,255,0.16);
-  --t-page-bg: radial-gradient(1100px 520px at 50% -8%, rgba(255,46,147,0.16), transparent 65%), radial-gradient(900px 500px at 100% 100%, rgba(34,227,255,0.07), transparent 60%);
+  --t-bg: #faf6ee;
+  --t-bg-2: #f4ecda;
+  --t-surface: #fffdf7;
+  --t-surface-2: #f4ecda;
+  --t-text: #1a1530;
+  --t-text-soft: #3a3556;
+  --t-text-muted: #625e78;
+  --t-heading: #1e1b4b;
+  --t-primary: #1e1b4b;
+  --t-primary-fg: #f6d896;
+  --t-accent: #b0791f;
+  --t-price: #9a6b1c;
+  --t-brand-from: #1e1b4b;
+  --t-brand-to: #3b3490;
+  --t-footer: #1e1b4b;
+  --t-border: rgba(30,27,75,0.1);
+  --t-input: rgba(30,27,75,0.18);
+  --t-page-bg: radial-gradient(circle at 20% 10%, rgba(232,178,82,0.10), transparent 40%), radial-gradient(circle at 90% 80%, rgba(91,82,200,0.07), transparent 45%);
   --t-page-bg-size: auto;
-  --t-font-head: var(--ff-space), ui-sans-serif, system-ui, sans-serif;
+  --t-font-head: var(--ff-fraunces), Georgia, serif;
   --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-head-adjust: none;
   --t-head-tracking: -0.02em;
-  --t-em-glow: 0 0 18px rgba(34,227,255,0.4);
+  --t-em-glow: none;
 }
 
 :root[data-theme="borne"] {

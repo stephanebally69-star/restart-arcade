@@ -6,8 +6,8 @@ import localFont from 'next/font/local'
 import { Audiowide, Baloo_2, Bebas_Neue, Bungee, Chakra_Petch, DM_Sans, Exo_2, Fredoka, IBM_Plex_Mono, Kanit, Luckiest_Guy, Orbitron, Outfit, Pixelify_Sans, Press_Start_2P, Rajdhani, Righteous, Russo_One, Share_Tech_Mono, Silkscreen, Space_Grotesk, Space_Mono, VT323 } from 'next/font/google'
 
 const f_inter = localFont({ src: '../fonts/inter-variable.woff2', variable: '--ff-inter', display: 'swap', weight: '100 900' })
-const f_fraunces = localFont({ src: '../fonts/fraunces-variable.woff2', variable: '--ff-fraunces', display: 'swap', weight: '100 900', preload: false })
-const f_space = Space_Grotesk({ subsets: ['latin'], variable: '--ff-space', display: 'swap' })
+const f_fraunces = localFont({ src: '../fonts/fraunces-variable.woff2', variable: '--ff-fraunces', display: 'swap', weight: '100 900' })
+const f_space = Space_Grotesk({ subsets: ['latin'], variable: '--ff-space', display: 'swap', preload: false })
 const f_outfit = Outfit({ subsets: ['latin'], variable: '--ff-outfit', display: 'swap', preload: false })
 const f_dmsans = DM_Sans({ subsets: ['latin'], variable: '--ff-dmsans', display: 'swap', preload: false })
 const f_exo2 = Exo_2({ subsets: ['latin'], variable: '--ff-exo2', display: 'swap', preload: false })

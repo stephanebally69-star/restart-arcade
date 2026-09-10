@@ -42,7 +42,7 @@ FONTS = {
     'sharetech': ('Share Tech Mono', 'Share_Tech_Mono', "weight: '400'", 'ui-monospace, monospace', 'none', '0'),
     'plexmono': ('IBM Plex Mono', 'IBM_Plex_Mono', "weight: ['400', '500', '600']", 'ui-monospace, monospace', 'none', '0'),
 }
-PRELOADED = {'inter', 'space'}  # polices du thème par défaut
+PRELOADED = {'inter', 'fraunces'}  # polices du thème par défaut (Papier)
 
 
 def stack(fid):
@@ -274,7 +274,7 @@ THEMES = [
          head='fraunces', body='inter', glow='none'),
 ]
 
-DEFAULT = 'borne'
+DEFAULT = 'papier'
 
 
 def block(t):

@@ -12,17 +12,20 @@ import { fontVariables } from '@/lib/fonts'
 import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
 
 /**
- * Applique le thème mémorisé avant le premier rendu, pour éviter un flash du
- * thème par défaut. Les valeurs viennent de nos données, jamais d'une saisie.
+ * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
+ * un flash. Le choix vit en sessionStorage : chaque nouvelle visite repart sur le
+ * thème par défaut (Papier). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
  */
 const themeBootScript = `(function(){try{
 var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};
 var m=${JSON.stringify(Object.fromEntries(themes.map((t) => [t.id, t.scheme])))};
 var q=new URLSearchParams(location.search).get('theme');
-if(q&&m[q]){localStorage.setItem(K,q);localStorage.removeItem(C);}
-var t=localStorage.getItem(K);
+localStorage.removeItem(K);localStorage.removeItem(C);
+var S=sessionStorage;
+if(q&&m[q]){S.setItem(K,q);S.removeItem(C);}
+var t=S.getItem(K);
 if(t&&m[t]){d.dataset.theme=t;d.dataset.scheme=m[t];}
-var c=localStorage.getItem(C);
+var c=S.getItem(C);
 if(c){c=JSON.parse(c);for(var k in c.vars)d.style.setProperty(k,c.vars[k]);d.dataset.scheme=c.scheme;d.dataset.custom='true';}
 }catch(e){}})();`
 

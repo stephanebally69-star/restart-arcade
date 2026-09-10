@@ -22,7 +22,7 @@ function applyPreset(t: ThemeMeta) {
   root.dataset.theme = t.id
   root.dataset.scheme = t.scheme
   try {
-    localStorage.setItem(THEME_STORAGE_KEY, t.id)
+    sessionStorage.setItem(THEME_STORAGE_KEY, t.id)
   } catch {
     // Stockage indisponible : le thème s'applique quand même pour la visite.
   }
@@ -33,7 +33,7 @@ const fontStack = (id: string) => fonts.find((f) => f.id === id)?.stack
 /**
  * Sélecteur de thème flottant : un onglet sur le bord droit ouvre un panneau
  * avec 24 ambiances prêtes et un éditeur (couleurs, polices). Tout est
- * mémorisé dans le navigateur et réappliqué avant l'affichage.
+ * conservé pendant la visite (sessionStorage) : une nouvelle visite repart sur Papier.
  */
 export function ThemeSwitcher() {
   const [open, setOpen] = useState(false)

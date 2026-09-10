@@ -125,7 +125,7 @@ export function applyCustom(stored: StoredCustom) {
   root.dataset.scheme = stored.scheme
   root.dataset.custom = 'true'
   try {
-    localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(stored))
+    sessionStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(stored))
   } catch {}
 }
 
@@ -134,13 +134,13 @@ export function clearCustom() {
   for (const k of VAR_NAMES) root.style.removeProperty(k)
   delete root.dataset.custom
   try {
-    localStorage.removeItem(CUSTOM_STORAGE_KEY)
+    sessionStorage.removeItem(CUSTOM_STORAGE_KEY)
   } catch {}
 }
 
 export function readCustom(): StoredCustom | null {
   try {
-    const raw = localStorage.getItem(CUSTOM_STORAGE_KEY)
+    const raw = sessionStorage.getItem(CUSTOM_STORAGE_KEY)
     return raw ? (JSON.parse(raw) as StoredCustom) : null
   } catch {
     return null
