@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { ContactFormWithPreset } from '@/components/ContactFormWithPreset'
-import { Breadcrumbs, Eyebrow, Faq, JsonLd, Section } from '@/components/ui'
+import { Check } from 'lucide-react'
+import { Faq, JsonLd } from '@/components/ui'
+import { Frame, PageHero } from '@/components/kit'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -29,72 +31,62 @@ const faq = [
 export default function ContactPage() {
   return (
     <>
-      <Section className="pb-8 pt-10 md:pt-14">
-        <Breadcrumbs items={[{ href: '/contact/', label: 'Contact' }]} />
-        <Eyebrow>Parlons de votre projet</Eyebrow>
-        <h1 className="max-w-3xl font-serif text-4xl sm:text-5xl">
-          Un devis gratuit, sous 48 heures
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-ink-soft">
-          Dites-nous où vous voulez installer et ce que vous imaginez. Même flou, même sans budget
-          arrêté — c&apos;est justement le moment où on est le plus utile.
-        </p>
-      </Section>
-
-      <Section className="pt-0">
-        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
-          <div className="card p-6 sm:p-8">
-            <Suspense fallback={<p className="text-sm text-ink-soft">Chargement du formulaire…</p>}>
-              <ContactFormWithPreset />
-            </Suspense>
-          </div>
-
-          <aside className="space-y-8">
-            <div className="card p-6">
-              <h2 className="font-serif text-lg">Nous joindre directement</h2>
-              <address className="mt-4 space-y-3 text-sm not-italic text-ink-soft">
-                <p>
-                  <a href={`tel:${site.phoneE164}`} className="text-indigo-900 hover:text-amber-700">
-                    {site.phone}
-                  </a>
-                  <br />
-                  Du lundi au vendredi, 9 h – 18 h
-                </p>
-                <p>
-                  <a href={`mailto:${site.email}`} className="text-indigo-900 hover:text-amber-700">
-                    {site.email}
-                  </a>
-                </p>
-                <p>
-                  <a
-                    href={site.whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-900 hover:text-amber-700"
-                  >
-                    WhatsApp
-                  </a>
-                </p>
-              </address>
+      <PageHero
+        crumbs={[{ href: '/contact/', label: 'Contact' }]}
+        title="Un devis gratuit, sous 48 heures"
+        visual={
+          <Frame url="restart-arcade.fr/contact">
+            <div className="p-6 sm:p-8">
+              <p className="mb-6 text-sm text-muted-foreground">
+                Dites-nous où vous voulez installer et ce que vous imaginez. Même flou, même sans
+                budget arrêté — c&apos;est justement le moment où on est le plus utile.
+              </p>
+              <Suspense fallback={<p className="text-sm text-muted-foreground">Chargement du formulaire…</p>}>
+                <ContactFormWithPreset />
+              </Suspense>
             </div>
-
-            <div className="card p-6">
-              <h2 className="font-serif text-lg">Notre atelier</h2>
-              <address className="mt-4 text-sm not-italic text-ink-soft">
+          </Frame>
+        }
+        briefLabel="Nous joindre"
+        brief={
+          <address className="space-y-3 not-italic">
+            <p>
+              <a href={`tel:${site.phoneE164}`} className="font-serif text-2xl !no-underline">
+                {site.phone}
+              </a>
+              <br />
+              <span className="text-amber-200/80">Du lundi au vendredi, 9 h – 18 h</span>
+            </p>
+            <p>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+            <p>
+              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+            </p>
+          </address>
+        }
+        primary={null}
+        secondary={null}
+        aside={
+          <div className="flex w-full flex-col gap-5">
+            <div className="card-paper rounded-2xl p-6">
+              <h2 className="font-serif text-lg font-medium tracking-tight">Notre atelier</h2>
+              <address className="mt-3 text-sm not-italic text-foreground/70">
                 {site.address.street}
                 <br />
                 {site.address.postalCode} {site.address.city}
                 <br />
                 {site.address.region}
               </address>
-              <p className="mt-4 text-sm text-ink-soft">
-                Visite possible sur rendez-vous pour essayer les équipements avant de choisir.
+              <p className="mt-3 text-sm text-foreground/70">
+                Visite sur rendez-vous pour essayer les équipements avant de choisir.
               </p>
             </div>
-
-            <div className="card p-6">
-              <h2 className="font-serif text-lg">Ce qu&apos;on vous enverra</h2>
-              <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
+            <div className="card-paper rounded-2xl p-6">
+              <h2 className="font-serif text-lg font-medium tracking-tight">Ce qu&apos;on vous enverra</h2>
+              <ul className="mt-3 space-y-2 text-sm text-foreground/70">
                 {[
                   'Une proposition chiffrée, options comprises',
                   'Un visuel de personnalisation si vous en voulez une',
@@ -102,25 +94,19 @@ export default function ContactPage() {
                   'Les deux formules : achat et location',
                 ].map((x) => (
                   <li key={x} className="flex gap-2.5">
-                    <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden="true">
-                      ✦
-                    </span>
+                    <Check className="mt-0.5 size-4 shrink-0 text-accent" strokeWidth={2.5} aria-hidden="true" />
                     {x}
                   </li>
                 ))}
               </ul>
             </div>
-          </aside>
-        </div>
-      </Section>
-
-      <div className="border-t border-border bg-surface">
-        <Section>
-          <div className="max-w-3xl">
-            <Faq items={faq} />
           </div>
-        </Section>
-      </div>
+        }
+      />
+
+      <section className="mx-auto w-full max-w-3xl px-6 py-10 md:py-14">
+        <Faq items={faq} />
+      </section>
 
       <JsonLd
         data={{

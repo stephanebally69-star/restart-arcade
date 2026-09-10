@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { blogPosts, readingTime } from '@/data/blog'
 import { blogImage } from '@/data/images'
-import { Breadcrumbs, Eyebrow, JsonLd, Section } from '@/components/ui'
+import { FinalCta, JsonLd } from '@/components/ui'
+import { Block, Frame, PageHero, SectionHeading } from '@/components/kit'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -20,65 +21,77 @@ export default function BlogPage() {
 
   return (
     <>
-      <Section className="pb-12 pt-10 md:pt-14">
-        <Breadcrumbs items={[{ href: '/blog/', label: 'Blog' }]} />
-        <Eyebrow>Le blog</Eyebrow>
-        <h1 className="max-w-3xl font-serif text-4xl font-normal leading-[1.03] sm:text-5xl md:text-6xl">
-          Ce qu&apos;on apprend <em>en aménageant des espaces</em>
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-ink-soft">
-          {blogPosts.length} articles sur le bien-être au travail, l&apos;animation des bars et
-          restaurants, et l&apos;expérience client dans les lieux qui reçoivent du public.
-        </p>
-      </Section>
+      <PageHero
+        crumbs={[{ href: '/blog/', label: 'Blog' }]}
+        title="Ce qu'on apprend en aménageant des espaces"
+        visual={
+          <Frame url={`restart-arcade.fr/blog/${lead.slug}`}>
+            <Link href={`/blog/${lead.slug}/`} className="group block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={blogImage(lead.slug)}
+                alt=""
+                fetchPriority="high"
+                className="aspect-[16/8] w-full object-cover"
+              />
+              <span className="block p-6">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+                  À la une · {lead.category}
+                </span>
+                <span className="mt-2 block font-serif text-2xl font-medium leading-tight tracking-tight text-indigo-900 group-hover:underline">
+                  {lead.title}
+                </span>
+                <span className="mt-2 block text-sm text-muted-foreground">{lead.description}</span>
+              </span>
+            </Link>
+          </Frame>
+        }
+        brief={
+          <p>
+            {blogPosts.length} articles sur le bien-être au travail, l&apos;animation des bars et
+            restaurants, et l&apos;expérience client dans les lieux qui reçoivent du public. Un
+            nouvel article chaque mois.
+          </p>
+        }
+        primary={{ href: `/blog/${lead.slug}/`, label: "Lire l'article à la une" }}
+        secondary={{ href: '/contact/', label: 'Un projet ?' }}
+      />
 
-      <section className="bg-cream-2">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <Link
-            href={`/blog/${lead.slug}/`}
-            className="card group grid overflow-hidden lg:grid-cols-[1.2fr_1fr]"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={blogImage(lead.slug)}
-              alt=""
-              className="aspect-[3/2] size-full object-cover lg:aspect-auto"
-            />
-            <div className="flex flex-col justify-center p-7 sm:p-10">
-              <span className="eyebrow">{lead.category}</span>
-              <h2 className="mt-3 font-serif text-3xl leading-tight">{lead.title}</h2>
-              <p className="mt-3 text-ink-soft">{lead.description}</p>
-              <p className="mt-6 text-sm text-muted-foreground">
-                <time dateTime={lead.date}>{fmt(lead.date)}</time> · {readingTime(lead.words)} min de
-                lecture
-              </p>
-              <span className="mt-4 font-semibold text-amber-700">Lire l&apos;article →</span>
-            </div>
-          </Link>
-
-          <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {rest.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}/`} className="card flex flex-col overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={blogImage(p.slug)}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-[3/2] w-full border-b border-border object-cover"
-                />
-                <div className="flex flex-1 flex-col p-6">
-                  <span className="eyebrow">{p.category}</span>
-                  <h2 className="mt-2 font-serif text-xl leading-snug">{p.title}</h2>
-                  <p className="mt-2 flex-1 text-sm text-ink-soft">{p.description}</p>
-                  <p className="mt-5 text-xs text-muted-foreground">
-                    <time dateTime={p.date}>{fmt(p.date)}</time> · {readingTime(p.words)} min
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
+      <Block>
+        <SectionHeading title="Tous les articles" />
+        <div className="cards-dim mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {rest.map((p) => (
+            <Link key={p.slug} href={`/blog/${p.slug}/`} className="card flex flex-col overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={blogImage(p.slug)}
+                alt=""
+                loading="lazy"
+                className="aspect-[3/2] w-full border-b border-border object-cover"
+              />
+              <div className="flex flex-1 flex-col p-5">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+                  {p.category}
+                </span>
+                <h2 className="mt-2 font-serif text-lg font-medium leading-snug tracking-tight">
+                  {p.title}
+                </h2>
+                <p className="mt-2 flex-1 text-[13px] leading-snug text-foreground/65">
+                  {p.description}
+                </p>
+                <p className="mt-4 text-xs text-muted-foreground">
+                  <time dateTime={p.date}>{fmt(p.date)}</time> · {readingTime(p.words)} min
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
-      </section>
+      </Block>
+
+      <FinalCta
+        title="Un projet d'aménagement en tête ?"
+        subtitle="Devis gratuit sous 48 heures, sans engagement, y compris si votre idée est encore floue."
+      />
 
       <JsonLd
         data={{

@@ -1,40 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
 import { formatPrice, type ListedModel } from '@/data/catalogue'
 import { productImage } from '@/data/images'
 import { selectItem } from '@/lib/analytics'
 
+/** Carte visuelle du gabarit Solutions : halo doré, visuel sur fond blanc, titre + prix. */
 export function ProductCard({ model, list }: { model: ListedModel; list: string }) {
   const image = productImage(model.slug)
 
   return (
-    <article className="card group relative flex flex-col overflow-hidden">
-      <div className="product-shot relative aspect-4/3 overflow-hidden border-b border-border">
+    <article className="group relative isolate flex flex-col gap-3 overflow-hidden rounded-2xl border border-primary/16 bg-gradient-to-br from-primary/8 via-card to-card px-5 pb-6 pt-5 shadow-[var(--shadow-paper-md)] transition duration-300 hover:-translate-y-0.5">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-12 -top-14 -z-10 size-40 rounded-full bg-accent/16 blur-3xl"
+      />
+      <div className="relative mb-2 flex h-44 items-center justify-center overflow-hidden rounded-xl bg-white">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
             alt={`${model.name} — ${model.universName}`}
             loading="lazy"
-            className="size-full object-contain p-3 transition duration-500 group-hover:scale-[1.04]"
+            className="h-full w-full object-contain p-2 transition duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <div className="grid size-full place-items-center font-serif text-4xl text-indigo-900/20">
-            {model.sku}
-          </div>
+          <span className="font-serif text-3xl text-indigo-900/20">{model.sku}</span>
         )}
         {model.highlight && (
-          <span className="absolute left-3 top-3 rounded-full bg-indigo-900 px-2.5 py-1 text-[11px] font-semibold text-amber-200">
+          <span className="absolute left-2 top-2 rounded-md bg-primary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground">
             {model.highlight}
           </span>
         )}
       </div>
-
-      <div className="flex flex-1 flex-col p-5">
-        <p className="eyebrow">{model.universName}</p>
-        <h3 className="mt-1.5 font-serif text-xl font-medium tracking-[-0.015em] text-indigo-900">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="font-serif text-lg font-medium tracking-tight text-indigo-900">
           <Link
             href={`/produits/${model.universSlug}/${model.slug}/`}
             onClick={() =>
@@ -50,19 +50,11 @@ export function ProductCard({ model, list }: { model: ListedModel; list: string 
             {model.name}
           </Link>
         </h3>
-        <p className="mt-1.5 flex-1 text-sm text-ink-soft">{model.headline}</p>
-        <div className="mt-5 flex items-center justify-between">
-          <p className="font-serif text-2xl text-indigo-900">
-            {model.price != null ? formatPrice(model.price) : 'Sur devis'}
-          </p>
-          <span
-            aria-hidden="true"
-            className="inline-flex size-9 items-center justify-center rounded-full border border-border text-indigo-900 transition group-hover:border-indigo-900 group-hover:bg-indigo-900 group-hover:text-amber-200"
-          >
-            <ArrowUpRight className="size-4" />
-          </span>
-        </div>
+        <p className="shrink-0 font-serif text-base text-amber-700">
+          {model.price != null ? formatPrice(model.price) : 'Sur devis'}
+        </p>
       </div>
+      <p className="text-[13px] leading-snug text-foreground/65">{model.headline}</p>
     </article>
   )
 }

@@ -7,10 +7,13 @@ export function ProductGallery({
   images,
   alt,
   badge,
+  bare = false,
 }: {
   images: string[]
   alt: string
   badge?: string
+  /** Sans bordure ni ombre, pour être posé dans un cadre (Frame). */
+  bare?: boolean
 }) {
   const [active, setActive] = useState(0)
 
@@ -18,13 +21,17 @@ export function ProductGallery({
 
   return (
     <div>
-      <div className="product-shot relative overflow-hidden rounded-3xl border border-border shadow-[var(--shadow-paper-md)]">
+      <div
+        className={`product-shot relative overflow-hidden ${
+          bare ? '' : 'rounded-3xl border border-border shadow-[var(--shadow-paper-md)]'
+        }`}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={images[active]}
           alt={alt}
           fetchPriority="high"
-          className="aspect-square w-full object-contain p-6"
+          className={`w-full object-contain p-6 ${bare ? 'aspect-[16/11]' : 'aspect-square'}`}
         />
         {badge && (
           <span className="absolute left-4 top-4 rounded-full bg-indigo-900 px-3 py-1 text-xs font-semibold text-amber-200">
@@ -33,7 +40,10 @@ export function ProductGallery({
         )}
       </div>
       {images.length > 1 && (
-        <ul className="mt-3 grid grid-cols-5 gap-2.5" aria-label="Autres visuels">
+        <ul
+          className={`grid grid-cols-5 gap-2.5 sm:grid-cols-7 ${bare ? 'border-t border-border bg-muted/60 p-3' : 'mt-3'}`}
+          aria-label="Autres visuels"
+        >
           {images.map((src, i) => (
             <li key={src}>
               <button

@@ -118,7 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Analytics />
-        <div className="flex min-h-screen flex-col">
+        <div className="surface-app flex min-h-screen flex-col">
           <Header />
           <main id="contenu" className="flex-1">
             {children}

@@ -3,7 +3,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { blogPosts, findPost, readingTime } from '@/data/blog'
 import { blogImage } from '@/data/images'
-import { Breadcrumbs, Eyebrow, JsonLd, Section } from '@/components/ui'
+import { Check } from 'lucide-react'
+import { FinalCta, JsonLd, Section } from '@/components/ui'
+import { ArticleRows, Block, Frame, PageHero, SectionHeading } from '@/components/kit'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -48,36 +50,45 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <>
-      <Section className="pb-6 pt-10 md:pt-14">
-        <Breadcrumbs
-          items={[
-            { href: '/blog/', label: 'Blog' },
-            { href: `/blog/${post.slug}/`, label: post.title },
-          ]}
-        />
-        <Eyebrow>{post.category}</Eyebrow>
-        <h1 className="max-w-4xl font-serif text-4xl font-normal leading-[1.05] sm:text-5xl">{post.title}</h1>
-        <p className="mt-5 text-sm text-ink-soft">
-          <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString('fr-FR', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </time>{' '}
-          · {readingTime(post.words)} min de lecture
-        </p>
-        <p className="mt-6 max-w-3xl text-lg text-ink-soft">{post.description}</p>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={blogImage(post.slug)}
-          alt=""
-          fetchPriority="high"
-          className="mt-10 aspect-[2/1] w-full rounded-3xl border border-border object-cover shadow-[var(--shadow-paper-md)]"
-        />
-      </Section>
+      <PageHero
+        crumbs={[
+          { href: '/blog/', label: 'Blog' },
+          { href: `/blog/${post.slug}/`, label: post.title },
+        ]}
+        title={post.title}
+        visual={
+          <Frame url={`restart-arcade.fr/blog/${post.slug}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={blogImage(post.slug)}
+              alt=""
+              fetchPriority="high"
+              className="aspect-[16/9] w-full object-cover"
+            />
+          </Frame>
+        }
+        briefLabel={post.category}
+        brief={
+          <>
+            <p>{post.description}</p>
+            <p className="mt-4 text-xs text-amber-200/80">
+              <time dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </time>{' '}
+              · {readingTime(post.words)} min de lecture
+            </p>
+          </>
+        }
+        primary={{ href: '/contact/', label: 'Un projet ? Demander un devis' }}
+        secondary={null}
+      />
 
-      <Section className="pt-4">
+
+      <Section className="pt-6 md:pt-10">
         <div className="grid gap-12 lg:grid-cols-[1fr_16rem]">
           <article className="max-w-3xl">
             {post.blocks.map((b, i) => {
@@ -86,7 +97,7 @@ export default async function ArticlePage({ params }: Props) {
                   <h2
                     key={i}
                     id={slugify(b.text)}
-                    className="mt-12 scroll-mt-24 font-serif text-2xl first:mt-0 sm:text-3xl"
+                    className="mt-12 scroll-mt-28 font-serif text-2xl font-medium tracking-tight first:mt-0 sm:text-3xl"
                   >
                     {b.text}
                   </h2>
@@ -102,9 +113,7 @@ export default async function ArticlePage({ params }: Props) {
                   <ul key={i} className="mt-5 space-y-2.5">
                     {b.items.map((it) => (
                       <li key={it} className="flex gap-3 text-ink-soft">
-                        <span className="mt-0.5 shrink-0 text-amber-700" aria-hidden="true">
-                          ✦
-                        </span>
+                        <Check className="mt-1 size-4 shrink-0 text-accent" strokeWidth={2.5} aria-hidden="true" />
                         <span>{it}</span>
                       </li>
                     ))}
@@ -117,17 +126,17 @@ export default async function ArticlePage({ params }: Props) {
               )
             })}
 
-            <div className="mt-14 rounded-3xl bg-indigo-900 p-7 sm:p-9">
-              <h2 className="font-serif text-2xl text-paper">
-                Un projet d&apos;aménagement <em className="text-amber-400">en tête ?</em>
+            <div className="card-brand mt-14 rounded-2xl p-7 sm:p-9">
+              <h2 className="font-serif text-2xl font-medium text-white">
+                Un projet d&apos;aménagement en tête ?
               </h2>
-              <p className="mt-2 text-sm text-amber-50/70">
+              <p className="mt-2 text-sm text-amber-200/80">
                 Devis gratuit sous 48 heures, sans engagement, y compris si votre idée est encore
                 floue.
               </p>
               <Link
                 href="/contact/"
-                className="mt-6 inline-flex h-12 items-center justify-center rounded-[10px] bg-amber-400 px-6 text-sm font-semibold text-indigo-900 transition hover:bg-amber-200"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-medium text-indigo-900 transition hover:bg-amber-50"
               >
                 Demander un devis
               </Link>
@@ -138,11 +147,9 @@ export default async function ArticlePage({ params }: Props) {
             <aside className="order-first lg:order-last">
               <nav
                 aria-label="Sommaire de l'article"
-                className="rounded-2xl border border-border bg-paper p-5 lg:sticky lg:top-28"
+                className="card-paper rounded-2xl p-5 lg:sticky lg:top-28"
               >
-                <h2 className="eyebrow">
-                  Sommaire
-                </h2>
+                <h2 className="font-serif text-base font-medium tracking-tight">Sommaire</h2>
                 <ol className="mt-4 space-y-2.5">
                   {toc.map((t) => (
                     <li key={t.id}>
@@ -161,30 +168,15 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </Section>
 
-      <div className="bg-cream-2">
-        <Section>
-          <h2 className="font-serif text-3xl">
-            À lire <em>ensuite</em>
-          </h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-3">
-            {suggestions.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}/`} className="card overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={blogImage(p.slug)}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-[3/2] w-full border-b border-border object-cover"
-                />
-                <div className="p-5">
-                  <span className="eyebrow">{p.category}</span>
-                  <h3 className="mt-2 font-serif text-lg leading-snug">{p.title}</h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </Section>
-      </div>
+      <Block band>
+        <SectionHeading title="À lire ensuite" subtitle="D'autres guides sur le même sujet." />
+        <ArticleRows posts={suggestions} />
+      </Block>
+
+      <FinalCta
+        title="Un projet d'aménagement en tête ?"
+        subtitle="Devis gratuit sous 48 heures, sans engagement, y compris si votre idée est encore floue."
+      />
 
       <JsonLd
         data={{

@@ -17,7 +17,7 @@ import { blogPosts, readingTime } from '@/data/blog'
 import { productImage, universGallery, universImage } from '@/data/images'
 import { Reveal } from '@/components/Reveal'
 import { UniversShowcase, type ShowcaseItem } from '@/components/UniversShowcase'
-import { Faq, JsonLd } from '@/components/ui'
+import { Breadcrumbs, Faq, JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ univers: string }> }
@@ -100,16 +100,12 @@ export default async function UniversPage({ params }: Props) {
     <div className="surface-app">
       {/* --- Hero ------------------------------------------------------- */}
       <section className="relative mx-auto w-full max-w-6xl px-6 pb-8 pt-10 md:pb-10 md:pt-14">
-        <nav
-          aria-label="Fil d'Ariane"
-          className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
-        >
-          <Link href="/produits/" className="hover:text-foreground">
-            Produits
-          </Link>
-          <ChevronRight className="size-3.5" strokeWidth={2} aria-hidden="true" />
-          <span className="text-accent">{u.name}</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { href: '/produits/', label: 'Produits' },
+            { href: `/produits/${u.slug}/`, label: u.name },
+          ]}
+        />
 
         <h1 className="mb-10 font-serif text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl lg:text-[clamp(2.25rem,4vw,3rem)]">
           {u.h1}
@@ -391,17 +387,6 @@ export default async function UniversPage({ params }: Props) {
         </div>
       </section>
 
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site.url}/` },
-            { '@type': 'ListItem', position: 2, name: 'Produits', item: `${site.url}/produits/` },
-            { '@type': 'ListItem', position: 3, name: u.name, item: `${site.url}/produits/${u.slug}/` },
-          ],
-        }}
-      />
       <JsonLd
         data={{
           '@context': 'https://schema.org',

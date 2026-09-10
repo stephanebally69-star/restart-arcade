@@ -12,7 +12,15 @@ const STEP_MS = 3600
  * Solutions de Ma Belle Note) qui fait défiler les modèles de la gamme.
  * Défilement suspendu au survol et désactivé si l'utilisateur réduit les animations.
  */
-export function UniversShowcase({ items, url }: { items: ShowcaseItem[]; url: string }) {
+export function UniversShowcase({
+  items,
+  url,
+  fit = 'contain',
+}: {
+  items: ShowcaseItem[]
+  url: string
+  fit?: 'contain' | 'cover'
+}) {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 
@@ -54,7 +62,7 @@ export function UniversShowcase({ items, url }: { items: ShowcaseItem[]; url: st
           src={current.image}
           alt={current.label}
           fetchPriority={active === 0 ? 'high' : undefined}
-          className="animate-showcase-in aspect-[16/10] w-full object-contain p-5"
+          className={`animate-showcase-in aspect-[16/10] w-full ${fit === 'cover' ? 'object-cover' : 'object-contain p-5'}`}
         />
         <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-border bg-white/95 px-3.5 py-1.5 text-xs shadow-[var(--shadow-paper-sm)] backdrop-blur">
           <span className="font-semibold text-indigo-900">{current.label}</span>
@@ -76,7 +84,12 @@ export function UniversShowcase({ items, url }: { items: ShowcaseItem[]; url: st
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={it.image} alt="" loading="lazy" className="size-14 object-contain p-1" />
+              <img
+                src={it.image}
+                alt=""
+                loading="lazy"
+                className={`size-14 ${fit === 'cover' ? 'object-cover' : 'object-contain p-1'}`}
+              />
               {i === active && !paused && (
                 <span
                   aria-hidden="true"

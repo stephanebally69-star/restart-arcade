@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import { AnswerBox, Breadcrumbs, Eyebrow, Faq, FinalCta, Section, Stat } from '@/components/ui'
+import { Check } from 'lucide-react'
+import { Faq, FinalCta } from '@/components/ui'
+import { Block, CtaBand, Frame, PageHero, PaperCard, SectionHeading } from '@/components/kit'
 import { ambiance } from '@/data/images'
 import { site } from '@/lib/site'
 
@@ -47,45 +49,53 @@ const faq = [
 export default function QuiSommesNousPage() {
   return (
     <>
-      <Section className="pt-10 md:pt-14">
-        <Breadcrumbs items={[{ href: '/qui-sommes-nous/', label: 'Qui sommes-nous' }]} />
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div>
-            <Eyebrow>Qui sommes-nous</Eyebrow>
-            <h1 className="text-balance font-serif text-4xl font-normal leading-[1.03] tracking-[-0.025em] sm:text-5xl md:text-6xl">
-              On ne vend pas des machines. <em>On crée des endroits où les gens se croisent.</em>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-ink-soft">
-              RESTART conçoit, personnalise et installe des équipements de jeu et de détente pour
-              les entreprises, les bars, les commerces et les particuliers. Depuis notre atelier de
-              l&apos;est lyonnais, partout en France.
-            </p>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={ambiance.showroom}
-            alt="Le showroom RESTART : borne d'arcade, cible de fléchettes, baby-foot, fauteuil massant et cocon de repos"
-            fetchPriority="high"
-            className="aspect-[3/2] w-full rounded-3xl border border-border object-cover shadow-[var(--shadow-paper-lg)]"
-          />
-        </div>
-        <div className="mt-14 grid grid-cols-2 gap-8 rounded-3xl border border-border bg-paper p-8 sm:grid-cols-4">
-          <Stat value="7" label="familles d'équipements" />
-          <Stat value="12" label="modèles au catalogue" />
-          <Stat value="3 ans" label="de garantie maximum" />
-          <Stat value="48 h" label="pour un devis" />
-        </div>
-      </Section>
+      <PageHero
+        crumbs={[{ href: '/qui-sommes-nous/', label: 'Qui sommes-nous' }]}
+        title="On ne vend pas des machines. On crée des endroits où les gens se croisent."
+        visual={
+          <Frame url="restart-arcade.fr/showroom">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ambiance.showroom}
+              alt="Le showroom RESTART : borne d'arcade, cible de fléchettes, baby-foot, fauteuil massant et cocon de repos"
+              fetchPriority="high"
+              className="aspect-[16/10] w-full object-cover"
+            />
+          </Frame>
+        }
+        brief={
+          <p>
+            RESTART est une entreprise française spécialisée dans l&apos;aménagement
+            d&apos;espaces de convivialité, basée {site.address.street}, {site.address.postalCode}{' '}
+            {site.address.city}, dans l&apos;est lyonnais. Elle vend et loue des équipements de jeu
+            et de détente personnalisés, livrés montés et installés partout en France.
+          </p>
+        }
+        primary={{ href: '/contact/', label: 'Prendre rendez-vous' }}
+      />
 
-      <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
-          <div>
-            <Eyebrow>Notre conviction</Eyebrow>
-            <h2 className="font-serif text-3xl">
-              Un espace de pause vide reste vide. Un espace avec un jeu se remplit tout seul.
-            </h2>
-          </div>
-          <div className="space-y-5 text-ink-soft">
+      <Block>
+        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+          {[
+            ['7', "familles d'équipements"],
+            ['12', 'modèles au catalogue'],
+            ['3 ans', 'de garantie maximum'],
+            ['48 h', 'pour un devis'],
+          ].map(([v, l]) => (
+            <div key={l} className="card-paper rounded-2xl p-6">
+              <p className="font-serif text-4xl font-medium tracking-tight text-indigo-900">{v}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{l}</p>
+            </div>
+          ))}
+        </div>
+      </Block>
+
+      <Block>
+        <div className="grid items-start gap-10 lg:grid-cols-[35fr_65fr] lg:gap-16">
+          <h2 className="text-balance font-serif text-3xl font-medium tracking-tight md:text-4xl">
+            Un espace de pause vide reste vide. Un espace avec un jeu se remplit tout seul.
+          </h2>
+          <div className="space-y-5 text-foreground/75">
             <p>
               Les entreprises ont multiplié les chartes de qualité de vie au travail, les bars ont
               multiplié les écrans. Dans les deux cas, le problème est le même : rien ne donne
@@ -103,40 +113,37 @@ export default function QuiSommesNousPage() {
             </p>
           </div>
         </div>
+      </Block>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2">
-          {values.map((v) => (
-            <div key={v.title} className="card p-6">
-              <h3 className="font-serif text-lg">{v.title}</h3>
-              <p className="mt-2.5 text-sm text-ink-soft">{v.text}</p>
-            </div>
+      <Block>
+        <SectionHeading title="Notre façon de travailler" />
+        <div className="cards-dim mt-12 grid gap-5 sm:grid-cols-2">
+          {values.map((v, i) => (
+            <PaperCard
+              key={v.title}
+              delayMs={(i % 2) * 120}
+              icon={<Check className="size-5 shrink-0 text-accent" strokeWidth={2.5} aria-hidden="true" />}
+              title={v.title}
+            >
+              {v.text}
+            </PaperCard>
           ))}
         </div>
-      </Section>
+      </Block>
 
-      <div className="bg-paper">
-        <Section>
-          <div className="max-w-3xl">
-            <AnswerBox>
-              RESTART est une entreprise française spécialisée dans l&apos;aménagement
-              d&apos;espaces de convivialité, basée {site.address.street},{' '}
-              {site.address.postalCode} {site.address.city}, dans l&apos;est lyonnais. Elle vend et
-              loue des bornes d&apos;arcade, fléchettes électroniques, baby-foot, billards, flippers
-              numériques, fauteuils massants et cocons de repos, personnalisés à l&apos;image du
-              client, livrés montés et installés partout en France.
-            </AnswerBox>
-          </div>
-          <div className="mt-14 max-w-3xl">
-            <Faq items={faq} />
-          </div>
-        </Section>
-      </div>
-
-      <FinalCta
-        title="Venez essayer "
-        em="avant de choisir."
+      <CtaBand
+        title="Venez essayer avant de choisir"
         subtitle="L'atelier est ouvert sur rendez-vous. C'est souvent la visite qui tranche entre deux modèles."
         primary={{ href: '/contact/', label: 'Prendre rendez-vous' }}
+      />
+
+      <section className="mx-auto w-full max-w-3xl px-6 py-10 md:py-14">
+        <Faq items={faq} />
+      </section>
+
+      <FinalCta
+        title="Un projet d'aménagement ? Parlons-en."
+        subtitle="Décrivez-nous votre espace : nous revenons vers vous sous 48 heures avec une proposition chiffrée."
       />
     </>
   )

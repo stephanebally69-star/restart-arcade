@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { ChevronRight, Sparkles } from 'lucide-react'
+import { ArrowRight, ChevronRight, Sparkles } from 'lucide-react'
 import { site } from '@/lib/site'
 
 /** Injecte un bloc JSON-LD. Le contenu vient toujours de nos données, jamais d'une saisie. */
@@ -83,20 +83,20 @@ export function SectionTitle({
 export function Breadcrumbs({ items }: { items: { href: string; label: string }[] }) {
   return (
     <>
-      <nav aria-label="Fil d'Ariane" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+      <nav aria-label="Fil d'Ariane" className="mb-6">
+        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <li>
-            <Link href="/" className="transition hover:text-foreground">
+            <Link href="/" className="hover:text-foreground">
               Accueil
             </Link>
           </li>
           {items.map((it, i) => (
-            <li key={it.href} className="flex items-center gap-1.5">
-              <ChevronRight className="size-3 opacity-60" aria-hidden="true" />
+            <li key={it.href} className="flex min-w-0 items-center gap-1.5">
+              <ChevronRight className="size-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
               {i === items.length - 1 ? (
-                <span className="text-foreground">{it.label}</span>
+                <span className="truncate text-accent">{it.label}</span>
               ) : (
-                <Link href={it.href} className="transition hover:text-foreground">
+                <Link href={it.href} className="hover:text-foreground">
                   {it.label}
                 </Link>
               )}
@@ -127,18 +127,15 @@ export function Breadcrumbs({ items }: { items: { href: string; label: string }[
 export function Faq({
   items,
   title = 'Questions fréquentes',
-  eyebrow = 'FAQ',
 }: {
   items: { q: string; a: string }[]
   title?: string
-  eyebrow?: string
 }) {
   if (!items.length) return null
   return (
     <>
       <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <h2 className="text-balance font-serif text-3xl font-normal leading-[1.05] md:text-4xl">
+        <h2 className="mx-auto max-w-3xl text-balance text-center font-serif text-3xl font-medium tracking-tight md:text-4xl">
           {title}
         </h2>
         <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
@@ -208,7 +205,7 @@ export function Stat({ value, label }: { value: string; label: string }) {
   )
 }
 
-/** Bandeau d'appel final sombre, commun à toutes les pages. */
+/** Carte CTA finale, variante « paper » du gabarit Solutions. */
 export function FinalCta({
   title,
   em,
@@ -221,35 +218,37 @@ export function FinalCta({
   primary?: { href: string; label: string }
 }) {
   return (
-    <section className="relative overflow-hidden bg-indigo-900 text-amber-200">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 120%, rgba(232,178,82,0.28), transparent 55%), radial-gradient(ellipse at 20% 0%, rgba(91,82,200,0.30), transparent 55%)',
-        }}
-      />
-      <div className="relative mx-auto w-full max-w-4xl px-6 py-24 text-center md:py-28">
-        <h2 className="text-balance font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-paper sm:text-5xl">
+    <section className="mx-auto w-full max-w-6xl px-6 pb-16 pt-6 md:pb-24">
+      <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-3xl border border-primary/16 px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
+        <h2 className="mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-[1.1] tracking-tight md:text-5xl">
           {title}
-          {em && <em className="text-amber-400">{em}</em>}
+          {em}
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-pretty text-base text-amber-50/70 md:text-lg">
+        <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
           {subtitle}
         </p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href={primary.href}
-            className="inline-flex h-12 items-center justify-center rounded-[10px] bg-amber-400 px-6 text-sm font-semibold text-indigo-900 transition hover:-translate-y-px hover:bg-amber-200"
-          >
-            {primary.label}
-          </Link>
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <span className="relative inline-flex overflow-hidden rounded-lg shadow-[var(--shadow-paper-md)]">
+            <Link
+              href={primary.href}
+              className="group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-7 text-base font-medium text-primary-foreground transition hover:brightness-110"
+            >
+              {primary.label}
+              <ArrowRight
+                className="size-4 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </Link>
+            <span
+              aria-hidden="true"
+              className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+            />
+          </span>
           <a
             href={`tel:${site.phoneE164}`}
-            className="inline-flex h-12 items-center justify-center rounded-[10px] border border-amber-200/25 px-6 text-sm font-semibold text-amber-200 transition hover:bg-amber-200/[0.06]"
+            className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-card px-6 text-base font-medium transition hover:bg-muted"
           >
-            Appeler le {site.phone}
+            {site.phone}
           </a>
         </div>
       </div>

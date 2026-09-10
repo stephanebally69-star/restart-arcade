@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { Breadcrumbs, FinalCta, Section, SectionTitle } from '@/components/ui'
-import { Reveal } from '@/components/Reveal'
+import { FinalCta } from '@/components/ui'
+import { Block, CtaBand, PageHero, PaperCard, SectionHeading } from '@/components/kit'
+import { UniversShowcase } from '@/components/UniversShowcase'
 import { realisationPhotos } from '@/data/images'
 
 export const metadata: Metadata = {
@@ -69,64 +70,78 @@ const cases = [
 export default function RealisationsPage() {
   return (
     <>
-      <Section className="pb-12 pt-10 md:pt-14">
-        <Breadcrumbs items={[{ href: '/realisations/', label: 'Réalisations' }]} />
-        <SectionTitle
-          as="h1"
-          eyebrow="Nos réalisations"
-          title="Des espaces qui existaient déjà, "
-          em="et qui servent enfin"
-          subtitle="Des installations en entreprise, en bar, en camping et chez des particuliers — photographiées sur place ou dans notre showroom avant livraison."
-        />
-      </Section>
-
-      <section className="bg-cream-2">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <ul className="columns-2 gap-4 md:columns-3 lg:columns-4 [&>li]:mb-4">
-            {realisationPhotos.map((src, i) => (
-              <li key={src} className="break-inside-avoid">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={`Installation RESTART chez un client — photo ${i + 1}`}
-                  loading="lazy"
-                  className="w-full rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-sm)] transition hover:shadow-[var(--shadow-paper-md)]"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="bg-cream">
-        <div className="mx-auto w-full max-w-6xl px-6 py-24">
-          <SectionTitle
-            eyebrow="Cas types"
-            title="Six contextes, "
-            em="six réponses différentes"
-            subtitle="Le contexte, l'équipement retenu et ce que ça a changé sur place."
+      <PageHero
+        crumbs={[{ href: '/realisations/', label: 'Réalisations' }]}
+        title="Des espaces qui existaient déjà, et qui servent enfin"
+        visual={
+          <UniversShowcase
+            fit="cover"
+            url="restart-arcade.fr/realisations"
+            items={realisationPhotos.slice(0, 10).map((image, i) => ({
+              image,
+              label: `Installation client ${i + 1}`,
+            }))}
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {cases.map((c, i) => (
-              <Reveal key={c.context} delayMs={(i % 3) * 80}>
-                <article className="flex h-full flex-col rounded-3xl border border-border bg-paper p-7">
-                  <span className="w-fit rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
-                    {c.audience}
-                  </span>
-                  <h2 className="mt-4 font-serif text-xl">{c.context}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">{c.city}</p>
-                  <p className="mt-4 text-sm font-semibold text-indigo-900">{c.setup}</p>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{c.outcome}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+        }
+        brief={
+          <p>
+            Bornes d&apos;arcade personnalisées, baby-foot d&apos;extérieur, fléchettes, billards et
+            coins détente installés en entreprise, en bar, en camping et chez des particuliers —
+            photographiés sur place ou dans notre showroom avant livraison.
+          </p>
+        }
+        primary={{ href: '/contact/', label: 'Demander un audit gratuit' }}
+      />
+
+      <Block>
+        <SectionHeading
+          title="En images"
+          subtitle={`${realisationPhotos.length} installations, du bureau au club-house.`}
+        />
+        <ul className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4 [&>li]:mb-4">
+          {realisationPhotos.map((src, i) => (
+            <li key={src} className="break-inside-avoid">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={src}
+                alt={`Installation RESTART chez un client — photo ${i + 1}`}
+                loading="lazy"
+                className="w-full rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-sm)] transition hover:shadow-[var(--shadow-paper-md)]"
+              />
+            </li>
+          ))}
+        </ul>
+      </Block>
+
+      <CtaBand />
+
+      <Block>
+        <SectionHeading
+          title="Six contextes, six réponses différentes"
+          subtitle="Le contexte, l'équipement retenu et ce que ça a changé sur place."
+        />
+        <div className="cards-dim mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {cases.map((c, i) => (
+            <PaperCard
+              key={c.context}
+              delayMs={(i % 3) * 120}
+              icon={
+                <span className="rounded-md bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent">
+                  {c.audience}
+                </span>
+              }
+              title={c.context}
+            >
+              <p className="text-xs text-muted-foreground">{c.city}</p>
+              <p className="mt-3 font-medium text-indigo-900">{c.setup}</p>
+              <p className="mt-2">{c.outcome}</p>
+            </PaperCard>
+          ))}
         </div>
-      </section>
+      </Block>
 
       <FinalCta
-        title="Votre espace ressemble "
-        em="à l'un de ceux-là ?"
+        title="Votre espace ressemble à l'un de ceux-là ?"
         subtitle="Décrivez-le nous : nous vous dirons ce qui fonctionne dans ce contexte, et ce qui ne fonctionne pas."
         primary={{ href: '/contact/', label: 'Demander un audit gratuit' }}
       />
