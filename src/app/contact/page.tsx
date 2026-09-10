@@ -35,11 +35,11 @@ export default function ContactPage() {
         crumbs={[{ href: '/contact/', label: 'Contact' }]}
         title="Un devis gratuit, sous 48 heures"
         visual={
-          <Frame url="restart-arcade.fr/contact">
+          <Frame>
             <div className="p-6 sm:p-8">
               <p className="mb-6 text-sm text-muted-foreground">
                 Dites-nous où vous voulez installer et ce que vous imaginez. Même flou, même sans
-                budget arrêté — c&apos;est justement le moment où on est le plus utile.
+                budget arrêté : c&apos;est justement le moment où on est le plus utile.
               </p>
               <Suspense fallback={<p className="text-sm text-muted-foreground">Chargement du formulaire…</p>}>
                 <ContactFormWithPreset />

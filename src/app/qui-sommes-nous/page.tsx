@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const values = [
   {
     title: 'On regarde avant de vendre',
-    text: "Un équipement mal placé ne sert à personne. Nous commençons toujours par l'espace, les flux de passage et l'usage réel — pas par le catalogue.",
+    text: "Un équipement mal placé ne sert à personne. Nous commençons toujours par l'espace, les flux de passage et l'usage réel, pas par le catalogue.",
   },
   {
     title: 'Personnalisé veut dire personnalisé',
@@ -53,7 +53,7 @@ export default function QuiSommesNousPage() {
         crumbs={[{ href: '/qui-sommes-nous/', label: 'Qui sommes-nous' }]}
         title="On ne vend pas des machines. On crée des endroits où les gens se croisent."
         visual={
-          <Frame url="restart-arcade.fr/showroom">
+          <Frame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ambiance.showroom}

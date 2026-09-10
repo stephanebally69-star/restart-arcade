@@ -20,7 +20,7 @@ export function ProductCard({ model, list }: { model: ListedModel; list: string 
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
-            alt={`${model.name} — ${model.universName}`}
+            alt={`${model.name}, ${model.universName}`}
             loading="lazy"
             className="h-full w-full object-contain p-2 transition duration-500 group-hover:scale-[1.04]"
           />

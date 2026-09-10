@@ -8,7 +8,7 @@ export const dynamic = 'force-static'
 /**
  * Sitemap généré depuis les données du site : impossible d'oublier une page
  * ou d'y laisser une URL supprimée. Les pages légales et le panier n'y figurent
- * pas — c'était l'un des signaux contradictoires relevés sur l'ancien site.
+ * pas, c'était l'un des signaux contradictoires relevés sur l'ancien site.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const url = (p: string) => `${site.url}${p}`

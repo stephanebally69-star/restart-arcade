@@ -36,7 +36,7 @@ export default function ProduitsPage() {
       <PageHero
         crumbs={[{ href: '/produits/', label: 'Produits' }]}
         title="Tout ce qu'on peut installer chez vous"
-        visual={<UniversShowcase items={showcase} url="restart-arcade.fr/produits" />}
+        visual={<UniversShowcase items={showcase} />}
         brief={
           <p>
             Le catalogue RESTART compte 12 modèles au prix affiché : 5 bornes d&apos;arcade (899 € à

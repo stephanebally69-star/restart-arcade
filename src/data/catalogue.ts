@@ -98,7 +98,7 @@ export const univers: Univers[] = [
       },
       {
         q: 'La borne est-elle livrée montée ?',
-        a: "Oui. Les bornes sont livrées assemblées et testées, avec installation sur place. Il suffit de les brancher sur une prise standard — la R-EVOLUTION consomme 60 watts.",
+        a: "Oui. Les bornes sont livrées assemblées et testées, avec installation sur place. Il suffit de les brancher sur une prise standard : la R-EVOLUTION consomme 60 watts.",
       },
       {
         q: "Peut-on louer une borne au lieu de l'acheter ?",
@@ -136,7 +136,7 @@ export const univers: Univers[] = [
         audiences: ['particulier'],
         specs: [
           '1 000 jeux',
-          '61 × 124 × 58 cm — 50 kg',
+          '61 × 124 × 58 cm, 50 kg',
           'Norme CE',
           'Borne noire uniquement',
           'Son mono',
@@ -310,7 +310,7 @@ export const univers: Univers[] = [
     benefits: {
       entreprise: [
         "Le classique qui fonctionne sans mode d'emploi : tout le monde sait jouer",
-        'Une partie dure 5 minutes — le format d\'une vraie pause',
+        'Une partie dure 5 minutes, le format d\'une vraie pause',
         'Modèle 6 joueurs pour faire jouer une équipe entière ensemble',
         'Version extérieure pour les terrasses et espaces de pause en plein air',
       ],
@@ -354,7 +354,7 @@ export const univers: Univers[] = [
         headline: "L'essentiel, bien fait, au meilleur prix",
         audiences: ['particulier'],
         specs: [
-          '150 × 105 × 95 cm — 72 kg',
+          '150 × 105 × 95 cm, 72 kg',
           '6 couleurs au choix',
           'Tapis Gerflex linoléum',
           'Caisse panneau mélaminé',
@@ -373,7 +373,7 @@ export const univers: Univers[] = [
         headline: "Il reste dehors toute l'année, sans housse",
         audiences: ['particulier', 'bar-commerce', 'entreprise'],
         specs: [
-          '156 × 100 × 95 cm — 78,5 kg',
+          '156 × 100 × 95 cm, 78,5 kg',
           'Tapis linoléum hydrofuge anti-moisissures',
           'Caisse polyéthylène haute densité',
           'Garantie 3 ans',
@@ -392,7 +392,7 @@ export const univers: Univers[] = [
         headline: 'Hêtre massif et joueurs aluminium peints à la main',
         audiences: ['particulier', 'entreprise'],
         specs: [
-          '154 × 98 × 90 cm — 75 kg',
+          '154 × 98 × 90 cm, 75 kg',
           '8 couleurs au choix',
           'Tapis à angles relevés',
           'Caisse hêtre massif',
@@ -407,12 +407,12 @@ export const univers: Univers[] = [
       {
         sku: 'BF 4 SAISONS 6 JOUEURS',
         slug: 'bf-4-saisons-6-joueurs',
-        name: 'BF 4 SAISONS — 6 joueurs',
+        name: 'BF 4 SAISONS 6 joueurs',
         price: 2199,
         headline: 'Le format XXL : six joueurs autour de la table',
         audiences: ['entreprise', 'bar-commerce'],
         specs: [
-          '223 × 107 × 93 cm — 107 kg',
+          '223 × 107 × 93 cm, 107 kg',
           'Tapis linoléum hydrofuge anti-moisissures',
           'Caisse polyéthylène haute densité',
           'Garantie 3 ans',
@@ -463,7 +463,7 @@ export const univers: Univers[] = [
       },
       {
         q: "Qu'est-ce que le mode zéro gravité ?",
-        a: "Le fauteuil bascule dans une position où les jambes remontent au-dessus du niveau du cœur. Le poids du corps se répartit uniformément et la pression sur la colonne vertébrale est fortement réduite — c'est la position la plus efficace pour un massage du dos.",
+        a: "Le fauteuil bascule dans une position où les jambes remontent au-dessus du niveau du cœur. Le poids du corps se répartit uniformément et la pression sur la colonne vertébrale est fortement réduite : c'est la position la plus efficace pour un massage du dos.",
       },
       {
         q: 'Quelle place prévoir pour un fauteuil massant ?',
@@ -479,7 +479,7 @@ export const univers: Univers[] = [
         headline: 'Zéro gravité, 7 zones, chauffage lombaire',
         audiences: ['particulier', 'entreprise', 'bar-commerce'],
         specs: [
-          '144 × 119 × 73 cm — 84 kg',
+          '144 × 119 × 73 cm, 84 kg',
           'Simili noir',
           'Dossier mousse polyuréthane',
           '7 zones de massage',
@@ -616,7 +616,7 @@ export const univers: Univers[] = [
         'Entretien simple entre deux utilisations',
       ],
       particulier: [
-        'Conçu pour un usage professionnel — nous consulter pour un projet à domicile',
+        'Conçu pour un usage professionnel, nous consulter pour un projet à domicile',
         'Ergonomie pensée pour une position de repos courte',
         'Isolation du bruit et de la lumière ambiante',
         "Installation et conseil d'implantation inclus",

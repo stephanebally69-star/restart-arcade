@@ -55,7 +55,7 @@ const cases = [
     city: 'Grenoble (38)',
     setup: 'Cocon de repos + M-SERENITY',
     outcome:
-      "Un coin récupération isolé du bruit, utilisé surtout entre 13 h et 14 h — le creux de l'après-déjeuner.",
+      "Un coin récupération isolé du bruit, utilisé surtout entre 13 h et 14 h, le creux de l'après-déjeuner.",
   },
   {
     context: 'Club-house sportif',
@@ -76,7 +76,6 @@ export default function RealisationsPage() {
         visual={
           <UniversShowcase
             fit="cover"
-            url="restart-arcade.fr/realisations"
             items={realisationPhotos.slice(0, 10).map((image, i) => ({
               image,
               label: `Installation client ${i + 1}`,
@@ -86,7 +85,7 @@ export default function RealisationsPage() {
         brief={
           <p>
             Bornes d&apos;arcade personnalisées, baby-foot d&apos;extérieur, fléchettes, billards et
-            coins détente installés en entreprise, en bar, en camping et chez des particuliers —
+            coins détente installés en entreprise, en bar, en camping et chez des particuliers,
             photographiés sur place ou dans notre showroom avant livraison.
           </p>
         }
@@ -104,7 +103,7 @@ export default function RealisationsPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={src}
-                alt={`Installation RESTART chez un client — photo ${i + 1}`}
+                alt={`Installation RESTART chez un client, photo ${i + 1}`}
                 loading="lazy"
                 className="w-full rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-sm)] transition hover:shadow-[var(--shadow-paper-md)]"
               />

@@ -103,10 +103,9 @@ partout, y compris dans le balisage structuré.
 
 ## Points à trancher avant mise en production
 
-1. **Mentions légales incomplètes** — l'ancien site ne publiait aucune information sur la société
-   RESTART (raison sociale, SIRET, forme juridique) : seules celles de l'agence éditrice y
-   figuraient. C'est un manquement à l'article 6-III de la LCEN. Les emplacements sont préparés et
-   signalés dans [`src/app/mentions-legales/page.tsx`](src/app/mentions-legales/page.tsx).
+1. **Mentions légales** — l'ancien site ne publiait que les informations de l'agence éditrice.
+   La refonte affiche celles de l'exploitant (MG2T SAS, 941 508 442 RCS Vienne), reprises des CGV
+   du 1er août 2026 et centralisées dans `site.company` ([`src/lib/site.ts`](src/lib/site.ts)).
 2. **CGV à faire valider** par un conseil juridique avant publication.
 3. **Incohérence de contact** — la page Contact de l'ancien site affiche `contact@restart-arcade.fr`,
    les mentions légales `contact@restart.fr`. La refonte retient la première ; à confirmer.

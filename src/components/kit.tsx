@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { ArrowRight, BookOpen, ChevronRight, Lock, Phone } from 'lucide-react'
+import { ArrowRight, BookOpen, ChevronRight, Phone } from 'lucide-react'
 import { readingTime, type BlogPost } from '@/data/blog'
 import { site } from '@/lib/site'
 import { Reveal } from '@/components/Reveal'
@@ -75,35 +75,17 @@ export function GhostButton({ href, children }: { href: string; children: ReactN
   )
 }
 
-/** Cadre navigateur (BrowserFrame) autour d'un contenu. */
-export function Frame({
-  url,
-  children,
-  className = '',
-}: {
-  url: string
-  children: ReactNode
-  className?: string
-}) {
+/** Vitrine : carte du visuel principal, liseré et halo à la couleur du thème. */
+export function Frame({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={`flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-paper-md)] ${className}`}
-    >
-      <div className="flex items-center gap-2 border-b border-border bg-muted px-3 py-2">
-        <span className="flex shrink-0 gap-1" aria-hidden="true">
-          <span className="size-2.5 rounded-full bg-[#b3261e]/70" />
-          <span className="size-2.5 rounded-full bg-amber-500/70" />
-          <span className="size-2.5 rounded-full bg-[#2f7d4f]/70" />
-        </span>
-        <span className="flex min-w-0 flex-1 justify-center">
-          <span className="flex min-w-0 items-center gap-1 rounded-md border border-border bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
-            <Lock className="size-3 shrink-0" aria-hidden="true" />
-            <span className="truncate">{url}</span>
-          </span>
-        </span>
-        <span className="w-[42px] shrink-0" aria-hidden="true" />
+    <div className={`relative ${className}`}>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_30%_20%,color-mix(in_srgb,var(--primary)_30%,transparent),transparent_70%),radial-gradient(60%_60%_at_80%_90%,color-mix(in_srgb,var(--accent)_20%,transparent),transparent_70%)] blur-2xl"
+      />
+      <div className="min-w-0 overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-[var(--shadow-paper-lg)]">
+        {children}
       </div>
-      <div className="min-w-0 flex-1 bg-background">{children}</div>
     </div>
   )
 }

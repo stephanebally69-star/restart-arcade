@@ -151,7 +151,7 @@ export default async function UniversPage({ params }: Props) {
           </div>
 
           <div className="relative lg:order-1">
-            <UniversShowcase items={showcase} url={`restart-arcade.fr/produits/${u.slug}`} />
+            <UniversShowcase items={showcase} />
           </div>
         </div>
       </section>
@@ -205,7 +205,7 @@ export default async function UniversPage({ params }: Props) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={src}
-                    alt={`${u.name} RESTART — visuel ${index + 1}`}
+                    alt={`${u.name} RESTART, visuel ${index + 1}`}
                     loading="lazy"
                     className="h-56 w-full rounded-xl bg-white object-contain p-2"
                   />
@@ -284,7 +284,7 @@ export default async function UniversPage({ params }: Props) {
 
       {/* --- FAQ -------------------------------------------------------- */}
       <section className="mx-auto w-full max-w-3xl px-6 py-14 md:py-20">
-        <Faq items={u.faq} title={`Questions fréquentes — ${u.name.toLowerCase()}`} />
+        <Faq items={u.faq} title={`Questions fréquentes : ${u.name.toLowerCase()}`} />
       </section>
 
       {/* --- Autres univers --------------------------------------------- */}
@@ -292,7 +292,7 @@ export default async function UniversPage({ params }: Props) {
         <section className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
           <h2 className={SECTION_HEADING}>Nos autres univers</h2>
           <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base text-muted-foreground">
-            Tous personnalisables, tous livrés montés — et combinables dans un même espace.
+            Tous personnalisables, tous livrés montés, et combinables dans un même espace.
           </p>
           <ul className="rows-dim mt-10 grid gap-x-10 border-t border-border sm:grid-cols-2">
             {related.map((o) => (

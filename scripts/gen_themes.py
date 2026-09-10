@@ -299,7 +299,7 @@ for t in THEMES:
     assert t['head'] in FONTS and t['body'] in FONTS, t['id']
 
 # themes.css
-css = ['/* Généré par scripts/gen_themes.py — ne pas éditer à la main. */', '']
+css = ['/* Généré par scripts/gen_themes.py : ne pas éditer à la main. */', '']
 css.append(f':root {{\n{block(next(t for t in THEMES if t["id"] == DEFAULT))}\n}}\n')
 for t in THEMES:
     css.append(f':root[data-theme="{t["id"]}"] {{\n{block(t)}\n}}\n')
@@ -311,7 +311,7 @@ meta = [dict(id=t['id'], name=t['name'], desc=t['desc'], scheme=t['scheme'],
              accent=t['accent'], price=t['price'], headingIsPrimary=t['heading'] == t['primary'])
         for t in THEMES]
 fonts_meta = [dict(id=k, label=v[0], stack=stack(k), adjust=v[4], tracking=v[5]) for k, v in FONTS.items()]
-ts = f'''// Généré par scripts/gen_themes.py — ne pas éditer à la main.
+ts = f'''// Généré par scripts/gen_themes.py : ne pas éditer à la main.
 // Les valeurs de chaque thème vivent dans src/app/themes.css.
 
 export type ThemeMeta = {{
@@ -342,7 +342,7 @@ open(os.path.join(ROOT, 'lib', 'themes.ts'), 'w', encoding='utf-8').write(ts)
 
 # fonts.ts
 imports = sorted({v[1] for v in FONTS.values() if not v[1].startswith('local:')})
-lines = ["// Généré par scripts/gen_themes.py — ne pas éditer à la main.",
+lines = ["// Généré par scripts/gen_themes.py : ne pas éditer à la main.",
          "// Chaque police expose une variable --ff-<id>. Le navigateur ne télécharge",
          "// un fichier que si un élément l'utilise : seules les polices du thème actif",
          "// sont chargées. Seules celles du thème par défaut sont préchargées.",

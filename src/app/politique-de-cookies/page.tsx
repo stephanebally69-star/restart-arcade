@@ -37,10 +37,10 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <strong>_ga</strong> — distingue les visiteurs. Durée : 13 mois.
+          <strong>_ga</strong> : distingue les visiteurs. Durée : 13 mois.
         </li>
         <li>
-          <strong>_ga_*</strong> — maintient l&apos;état de la session. Durée : 13 mois.
+          <strong>_ga_*</strong> : maintient l&apos;état de la session. Durée : 13 mois.
         </li>
       </ul>
 

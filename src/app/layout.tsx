@@ -29,7 +29,7 @@ if(c){c=JSON.parse(c);for(var k in c.vars)d.style.setProperty(k,c.vars[k]);d.dat
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "RESTART — Bornes d'arcade, fléchettes et baby-foot personnalisés",
+    default: "RESTART : bornes d'arcade, fléchettes et baby-foot personnalisés",
     template: '%s | RESTART',
   },
   description: site.description,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     locale: site.locale,
     siteName: site.name,
     url: site.url,
-    title: "RESTART — Bornes d'arcade, fléchettes et baby-foot personnalisés",
+    title: "RESTART : bornes d'arcade, fléchettes et baby-foot personnalisés",
     description: site.description,
   },
   twitter: { card: 'summary_large_image' },

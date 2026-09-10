@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const m = findModel(univers, modele)
   if (!m) return {}
   const price = m.price != null ? formatPrice(m.price) : 'sur devis'
-  const title = `${m.name} — ${m.headline}`
+  const title = `${m.name} : ${m.headline}`
   const description = `${m.name} : ${m.headline.toLowerCase()}. ${m.specs.slice(0, 3).join(', ')}. ${price}, livré monté et installé partout en France.`
   return {
     title,
@@ -65,10 +65,10 @@ export default async function ModelePage({ params }: Props) {
           </>
         }
         visual={
-          <Frame url={`restart-arcade.fr/produits/${u.slug}/${m.slug}`}>
+          <Frame>
             <ProductGallery
               images={productImages(m.slug)}
-              alt={`${m.name} — ${u.name} RESTART`}
+              alt={`${m.name}, ${u.name} RESTART`}
               badge={m.highlight}
               bare
             />

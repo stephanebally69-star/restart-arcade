@@ -26,6 +26,17 @@ export const site = {
     linkedin: 'https://www.linkedin.com/company/restart-arcade',
   },
   ga4Id: process.env.NEXT_PUBLIC_GA4_ID ?? '',
+  // Identité juridique de l'exploitant, reprise des CGV RESTART en vigueur au 1er août 2026.
+  company: {
+    name: 'MG2T',
+    form: 'Société par actions simplifiée (SAS)',
+    capital: '10 000 €',
+    siren: '941 508 442',
+    rcs: '941 508 442 RCS Vienne',
+    vat: 'FR89941508442',
+    representative: 'M. Guillaume Blacha',
+    representativeRole: 'Président',
+  },
 } as const
 
 export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''

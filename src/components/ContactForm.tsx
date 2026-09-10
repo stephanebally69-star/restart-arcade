@@ -32,7 +32,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
   }, [presetProduct])
 
   // `form_start` : mesure combien de visiteurs commencent le formulaire mais
-  // ne l'envoient pas — l'écart le plus utile pour diagnostiquer un blocage.
+  // ne l'envoient pas, l'écart le plus utile pour diagnostiquer un blocage.
   const onFirstInput = () => {
     if (started) return
     setStarted(true)
@@ -50,10 +50,10 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
       `Personnalisation : ${fd.get('perso') || 'non précisé'}`,
       '',
       `Nom : ${fd.get('nom')}`,
-      `Structure : ${fd.get('structure') || '—'}`,
-      `Ville : ${fd.get('ville') || '—'}`,
+      `Structure : ${fd.get('structure') || 'non précisé'}`,
+      `Ville : ${fd.get('ville') || 'non précisé'}`,
       `E-mail : ${fd.get('email')}`,
-      `Téléphone : ${fd.get('telephone') || '—'}`,
+      `Téléphone : ${fd.get('telephone') || 'non précisé'}`,
       '',
       'Projet :',
       String(fd.get('message') || ''),
@@ -67,7 +67,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
     })
 
     window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      `Demande de devis — ${fd.get('produit') || 'projet'}`,
+      `Demande de devis : ${fd.get('produit') || 'projet'}`,
     )}&body=${encodeURIComponent(lines)}`
 
     setStatus('sent')
@@ -115,7 +115,7 @@ export function ContactForm({ presetProduct }: { presetProduct?: string }) {
             <option value="">Je ne sais pas encore</option>
             {univers.map((u) => (
               <optgroup key={u.slug} label={u.name}>
-                <option value={u.name}>{u.name} — en général</option>
+                <option value={u.name}>{u.name} (en général)</option>
                 {u.models.map((m) => (
                   <option key={m.sku} value={m.sku}>
                     {m.name}

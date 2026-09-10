@@ -25,7 +25,7 @@ export default function BlogPage() {
         crumbs={[{ href: '/blog/', label: 'Blog' }]}
         title="Ce qu'on apprend en aménageant des espaces"
         visual={
-          <Frame url={`restart-arcade.fr/blog/${lead.slug}`}>
+          <Frame>
             <Link href={`/blog/${lead.slug}/`} className="group block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

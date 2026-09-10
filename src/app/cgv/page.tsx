@@ -55,7 +55,7 @@ export default function Page() {
       <h2>5. Livraison et installation</h2>
       <p>
         Les équipements sont livrés assemblés et testés, puis mis en service sur place. Les délais
-        indiqués sont donnés à titre indicatif et courent à compter de la validation de la commande —
+        indiqués sont donnés à titre indicatif et courent à compter de la validation de la commande :
         et, pour un équipement personnalisé, de la validation du visuel. Un retard de livraison ne
         peut donner lieu ni à annulation ni à indemnité, sauf faute caractérisée de RESTART.
       </p>

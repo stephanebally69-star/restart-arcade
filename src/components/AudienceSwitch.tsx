@@ -8,7 +8,7 @@ import { selectAudience } from '@/lib/analytics'
 
 /**
  * Le sélecteur d'audience remplace les trois sites parallèles de l'ancienne version.
- * Le contenu se réorganise sur place — une seule URL, donc toute l'autorité SEO
+ * Le contenu se réorganise sur place, une seule URL, donc toute l'autorité SEO
  * reste concentrée, et le visiteur n'a jamais à choisir un « espace » avant d'avoir
  * vu le moindre produit.
  */

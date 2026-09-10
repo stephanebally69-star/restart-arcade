@@ -78,7 +78,7 @@ export function Header() {
         ref={rootRef}
         className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 rounded-full border border-border/60 bg-background/90 pl-4 pr-2 shadow-[0_10px_30px_-14px_rgba(30,27,75,0.18)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/75 md:gap-8 md:pl-6 md:pr-3"
       >
-        <Link href="/" className="flex shrink-0 items-center" aria-label="RESTART — accueil">
+        <Link href="/" className="flex shrink-0 items-center" aria-label="RESTART, retour à l'accueil">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={logo} alt="RESTART" width={1350} height={498} className="h-8 w-auto md:h-10" />
         </Link>

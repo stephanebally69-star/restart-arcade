@@ -5,7 +5,7 @@ import { site } from '@/lib/site'
 export const dynamic = 'force-static'
 
 /**
- * llms.txt — résumé factuel du site destiné aux moteurs de réponse
+ * llms.txt, résumé factuel du site destiné aux moteurs de réponse
  * (ChatGPT, Perplexity, Claude, AI Overviews).
  *
  * Généré depuis les mêmes données que les pages : les prix cités ici ne peuvent
@@ -16,7 +16,7 @@ export function GET() {
   const lignesProduits = allModels
     .map(
       (m) =>
-        `- ${m.name} (${m.sku}) — ${m.price != null ? formatPrice(m.price) : 'sur devis'} — ${m.headline}. ${site.url}/produits/${m.universSlug}/${m.slug}/`,
+        `- ${m.name} (${m.sku}) : ${m.price != null ? formatPrice(m.price) : 'sur devis'}. ${m.headline}. ${site.url}/produits/${m.universSlug}/${m.slug}/`,
     )
     .join('\n')
 
@@ -26,12 +26,12 @@ export function GET() {
 
   const lignesArticles = blogPosts
     .slice(0, 8)
-    .map((p) => `- [${p.title}](${site.url}/blog/${p.slug}/) — ${p.description}`)
+    .map((p) => `- [${p.title}](${site.url}/blog/${p.slug}/) : ${p.description}`)
     .join('\n')
 
   const body = `# RESTART
 
-> ${site.tagline}. Vente et location d'équipements de jeu et de détente — bornes d'arcade, fléchettes électroniques, baby-foot, billards, flippers numériques, fauteuils massants et cocons de repos — personnalisés, livrés montés et installés partout en France.
+> ${site.tagline}. Vente et location d'équipements de jeu et de détente : bornes d'arcade, fléchettes électroniques, baby-foot, billards, flippers numériques, fauteuils massants et cocons de repos, personnalisés, livrés montés et installés partout en France.
 
 ## Identité
 

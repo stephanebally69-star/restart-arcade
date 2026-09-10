@@ -1,4 +1,4 @@
-// Généré par scripts/gen_themes.py — ne pas éditer à la main.
+// Généré par scripts/gen_themes.py : ne pas éditer à la main.
 // Chaque police expose une variable --ff-<id>. Le navigateur ne télécharge
 // un fichier que si un élément l'utilise : seules les polices du thème actif
 // sont chargées. Seules celles du thème par défaut sont préchargées.

@@ -1,4 +1,4 @@
-// Généré par scripts/gen_themes.py — ne pas éditer à la main.
+// Généré par scripts/gen_themes.py : ne pas éditer à la main.
 // Les valeurs de chaque thème vivent dans src/app/themes.css.
 
 export type ThemeMeta = {

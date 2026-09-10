@@ -57,7 +57,7 @@ export default async function ArticlePage({ params }: Props) {
         ]}
         title={post.title}
         visual={
-          <Frame url={`restart-arcade.fr/blog/${post.slug}`}>
+          <Frame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={blogImage(post.slug)}

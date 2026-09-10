@@ -21,7 +21,7 @@ import { blogPosts } from '@/data/blog'
 import { ambiance, productImage, universImage } from '@/data/images'
 
 export const metadata: Metadata = {
-  title: "Bornes d'arcade, fléchettes et baby-foot personnalisés — vente et location",
+  title: "Bornes d'arcade, fléchettes et baby-foot personnalisés, en vente et en location",
   description:
     "RESTART équipe entreprises, bars et particuliers en bornes d'arcade, fléchettes électroniques, baby-foot, billards et flippers numériques. Personnalisation à votre image, livraison et installation partout en France.",
   alternates: { canonical: '/' },
@@ -37,7 +37,7 @@ const steps = [
   {
     n: 'ii.',
     title: 'On dessine votre équipement',
-    text: 'Choix du modèle, du covering, des couleurs et des options. Vous validez un visuel avant toute fabrication — rien ne part en production sans votre accord.',
+    text: 'Choix du modèle, du covering, des couleurs et des options. Vous validez un visuel avant toute fabrication : rien ne part en production sans votre accord.',
     time: 'VISUEL À VALIDER',
   },
   {
@@ -57,7 +57,7 @@ const steps = [
 const homeFaq = [
   {
     q: 'RESTART vend ou loue ses équipements ?',
-    a: "Les deux. La vente concerne surtout les particuliers et les entreprises qui préfèrent investir. La location, réservée aux professionnels, inclut la livraison, l'installation et la maintenance, sans immobiliser de trésorerie — c'est la formule la plus fréquente en bar et en commerce.",
+    a: "Les deux. La vente concerne surtout les particuliers et les entreprises qui préfèrent investir. La location, réservée aux professionnels, inclut la livraison, l'installation et la maintenance, sans immobiliser de trésorerie. C'est la formule la plus fréquente en bar et en commerce.",
   },
   {
     q: 'Où RESTART livre-t-il ?',
@@ -122,11 +122,11 @@ export default function Home() {
     <>
       <PageHero
         title="Le jeu qui fait revenir les gens dans vos espaces."
-        visual={<UniversShowcase items={showcase} url="restart-arcade.fr" />}
+        visual={<UniversShowcase items={showcase} />}
         brief={
           <p>
             RESTART vend et loue des bornes d&apos;arcade, fléchettes électroniques, baby-foot,
-            billards et flippers numériques — personnalisés à votre image, livrés montés et installés
+            billards et flippers numériques, personnalisés à votre image, livrés montés et installés
             partout en France depuis Villette-d&apos;Anthon, près de Lyon. De 899 € à 2 638,80 €,
             devis sous 48 heures.
           </p>

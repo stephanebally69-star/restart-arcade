@@ -55,7 +55,7 @@ export default function Page() {
 
       <h2>Formulaire type de rétractation</h2>
       <blockquote className="rounded-card border border-line bg-surface-2 p-5 text-sm">
-        <p>À l&apos;attention de RESTART, {site.address.street}, {site.address.postalCode} {site.address.city} — {site.email}</p>
+        <p>À l&apos;attention de RESTART, {site.address.street}, {site.address.postalCode} {site.address.city}, {site.email}</p>
         <p className="mt-3">
           Je vous notifie par la présente ma rétractation du contrat portant sur la vente du bien
           ci-dessous :

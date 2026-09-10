@@ -26,12 +26,12 @@ export default function Page() {
       <h2>2. Données collectées et finalités</h2>
       <ul>
         <li>
-          <strong>Formulaire de devis</strong> — nom, e-mail, téléphone, entreprise, ville, produit
+          <strong>Formulaire de devis</strong> : nom, e-mail, téléphone, entreprise, ville, produit
           souhaité et description du projet. Finalité : répondre à votre demande et établir un devis.
           Base légale : mesures précontractuelles prises à votre demande.
         </li>
         <li>
-          <strong>Mesure d&apos;audience</strong> — pages consultées, source de visite, type
+          <strong>Mesure d&apos;audience</strong> : pages consultées, source de visite, type
           d&apos;appareil, interactions avec le catalogue et le formulaire. Finalité : comprendre
           quelles pages sont utiles et améliorer le site. Base légale : votre consentement, recueilli
           via le bandeau cookies.
