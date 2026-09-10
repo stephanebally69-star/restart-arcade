@@ -9,17 +9,22 @@ import { site } from '@/lib/site'
 
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { fontVariables } from '@/lib/fonts'
-import { DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
+import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
 
 /**
  * Applique le thème mémorisé avant le premier rendu, pour éviter un flash du
  * thème par défaut. Les valeurs viennent de nos données, jamais d'une saisie.
  */
-const themeBootScript = `(function(){try{var q=new URLSearchParams(location.search).get('theme');var t=q||localStorage.getItem(${JSON.stringify(
-  THEME_STORAGE_KEY,
-)});var m=${JSON.stringify(
-  Object.fromEntries(themes.map((t) => [t.id, t.scheme])),
-)};if(t&&m[t]){var d=document.documentElement;d.dataset.theme=t;d.dataset.scheme=m[t];if(q)localStorage.setItem(${JSON.stringify(THEME_STORAGE_KEY)},t);}}catch(e){}})();`
+const themeBootScript = `(function(){try{
+var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};
+var m=${JSON.stringify(Object.fromEntries(themes.map((t) => [t.id, t.scheme])))};
+var q=new URLSearchParams(location.search).get('theme');
+if(q&&m[q]){localStorage.setItem(K,q);localStorage.removeItem(C);}
+var t=localStorage.getItem(K);
+if(t&&m[t]){d.dataset.theme=t;d.dataset.scheme=m[t];}
+var c=localStorage.getItem(C);
+if(c){c=JSON.parse(c);for(var k in c.vars)d.style.setProperty(k,c.vars[k]);d.dataset.scheme=c.scheme;d.dataset.custom='true';}
+}catch(e){}})();`
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
