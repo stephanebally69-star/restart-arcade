@@ -482,33 +482,34 @@
   color: var(--muted-foreground);
 }
 
-/* --- Scène « heure dorée » (GoldenStage) ------------------------------ */
-.gs-stage {
+/* --- Carrousel d'accueil (HeroSlider) ------------------------------- */
+.hs-stage {
   --gap: 14px;
-  --w: min(1120px, calc(100vw - 32px));
+  --w: min(1180px, calc(100vw - 32px));
   --ratio: 1.15;
   overflow-x: clip;
-  padding-block: 4px 0;
 }
 @media (min-width: 640px) {
-  .gs-stage {
-    --w: min(1120px, calc(100vw - 112px));
-    --ratio: 0.72;
+  .hs-stage {
+    --w: min(1180px, calc(100vw - 112px));
+    --ratio: 0.66;
     --gap: 22px;
   }
 }
 @media (min-width: 1024px) {
-  .gs-stage {
-    --w: min(1120px, calc(100vw - 260px));
+  .hs-stage {
+    --w: min(1180px, calc(100vw - 240px));
     --ratio: 0.5625;
-    --gap: 32px;
+    --gap: 28px;
   }
 }
-.gs-track {
+/* La scène tient dans l'écran sous l'en-tête et laisse voir la pagination. */
+.hs-track {
   position: relative;
-  height: calc(var(--w) * var(--ratio));
+  height: min(calc(var(--w) * var(--ratio)), calc(100svh - 200px));
+  min-height: 320px;
 }
-.gs-slide {
+.hs-slide {
   position: absolute;
   inset-block: 0;
   left: 50%;
@@ -516,28 +517,40 @@
   margin-left: calc(var(--w) / -2);
   overflow: hidden;
   border-radius: 28px;
-  background: #2a160d;
+  background: var(--muted);
   cursor: pointer;
-  opacity: 0.7;
-  filter: saturate(0.8) brightness(0.92);
+  opacity: 0.55;
   transform: translateX(calc(var(--rel) * (var(--w) + var(--gap)))) scale(0.94);
   transition:
     transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.9s ease,
-    filter 0.9s ease;
+    opacity 0.9s ease;
 }
-.gs-slide.is-active {
+.hs-slide.is-far {
+  visibility: hidden;
+}
+.hs-slide.is-active {
   z-index: 1;
   cursor: default;
   opacity: 1;
-  filter: none;
   transform: translateX(0) scale(1);
-  box-shadow: 0 50px 90px -50px rgba(90, 45, 12, 0.6);
+  box-shadow: 0 50px 90px -50px rgba(17, 17, 17, 0.55);
 }
-.gs-slide.no-anim {
+.hs-slide.no-anim {
   transition: none;
 }
-.gs-caption {
+.hs-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 50% 60%;
+  animation: hs-zoom 9s cubic-bezier(0.25, 0.6, 0.35, 1) both;
+}
+.hs-photo.is-paused {
+  animation-play-state: paused;
+}
+.hs-caption {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
@@ -545,31 +558,31 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  padding: 80px 28px 26px;
-  background: linear-gradient(to top, rgba(14, 7, 3, 0.78), rgba(14, 7, 3, 0) 100%);
-  animation: gs-fade 0.9s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+  padding: 96px 30px 26px;
+  background: linear-gradient(to top, rgba(10, 8, 6, 0.78), rgba(10, 8, 6, 0.35) 55%, rgba(10, 8, 6, 0));
+  animation: hs-fade 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @media (max-width: 639px) {
-  .gs-caption {
+  .hs-caption {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    padding: 40px 16px 16px;
+    padding: 56px 16px 16px;
   }
 }
-.gs-progress {
+.hs-progress {
   position: absolute;
   left: 0;
   bottom: 0;
   height: 3px;
   width: 100%;
-  background: #ffd79e;
+  background: rgba(255, 255, 255, 0.85);
   transform-origin: left;
-  animation-name: gs-progress;
+  animation-name: hs-progress;
   animation-timing-function: linear;
   animation-fill-mode: both;
 }
-.gs-btn {
+.hs-btn {
   display: inline-flex;
   width: 2.25rem;
   height: 2.25rem;
@@ -580,182 +593,24 @@
   background: var(--card);
   color: var(--foreground);
   box-shadow: var(--shadow-paper-sm);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
-.gs-btn:hover {
+.hs-btn:hover {
   background: var(--muted);
   transform: translateY(-1px);
 }
 
-/* Pied du produit à y = 800 sur 900 dans la scène. */
-.gs-push {
-  transform-origin: 50% 89%;
-  will-change: transform;
-  animation: gs-push 9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-}
-.gs-far,
-.gs-mid,
-.gs-near {
-  will-change: transform;
-}
-.gs-far {
-  animation: gs-drift-far 9s linear both;
-}
-.gs-mid {
-  animation: gs-drift-mid 9s linear both;
-}
-.gs-near {
-  animation: gs-drift-near 9s linear both;
-}
-.gs-sun {
-  animation: gs-sun 5s ease-in-out infinite alternate;
-}
-.gs-rays {
-  animation: gs-rays 7s ease-in-out infinite alternate;
-}
-.gs-vignette {
-  pointer-events: none;
-  background: radial-gradient(75% 75% at 50% 55%, transparent 55%, rgba(11, 6, 4, 0.65) 100%);
-}
-.gs-sheen {
-  animation: gs-sheen 6s ease-in-out 1.4s infinite;
-}
-.gs-dust {
-  position: absolute;
-  border-radius: 9999px;
-  background: #ffe4b5;
-  box-shadow: 0 0 6px rgba(255, 220, 160, 0.8);
-  animation: gs-dust 7s ease-in-out infinite;
-}
-.gs-led {
-  animation: gs-led 1.4s ease-in-out infinite alternate;
-}
-.gs-roll {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gs-roll 9s cubic-bezier(0.3, 0.6, 0.4, 1) both;
-}
-.gs-ball {
-  animation: gs-ball 2.6s ease-in-out infinite alternate;
-}
-.gs-net {
-  transform-box: fill-box;
-  transform-origin: 50% 0;
-  animation: gs-net 3.2s ease-in-out infinite alternate;
-}
-.gs-paused,
-.gs-paused * {
-  animation-play-state: paused !important;
-}
-
-@keyframes gs-push {
+@keyframes hs-zoom {
   from {
-    transform: translateX(-40px) scale(0.93);
+    transform: scale(1.02) translateX(0.6%);
   }
   to {
-    transform: translateX(16px) scale(1.03);
+    transform: scale(1.1) translateX(-0.6%);
   }
 }
-/* Petit écran : la scène est recadrée en hauteur, le produit est réduit pour rester entier. */
-@media (max-width: 639px) {
-  .gs-push {
-    animation-name: gs-push-sm;
-  }
-}
-@keyframes gs-push-sm {
-  from {
-    transform: translateX(-10px) scale(0.74);
-  }
-  to {
-    transform: translateX(4px) scale(0.8);
-  }
-}
-@keyframes gs-drift-far {
-  to {
-    transform: translateX(-1.5%);
-  }
-}
-@keyframes gs-drift-mid {
-  to {
-    transform: translateX(-4%);
-  }
-}
-@keyframes gs-drift-near {
-  to {
-    transform: translateX(-8%);
-  }
-}
-@keyframes gs-sun {
-  from {
-    opacity: 0.82;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes gs-rays {
-  from {
-    opacity: 0.5;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes gs-sheen {
-  0% {
-    transform: translateX(0);
-  }
-  55%,
-  100% {
-    transform: translateX(1150px);
-  }
-}
-@keyframes gs-dust {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: translate(-70px, -90px);
-    opacity: 0;
-  }
-}
-@keyframes gs-led {
-  from {
-    opacity: 0.5;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes gs-roll {
-  from {
-    transform: translate(0, 0) scale(1) rotate(0);
-  }
-  to {
-    transform: translate(-14px, -118px) scale(0.62) rotate(320deg);
-  }
-}
-@keyframes gs-ball {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(130px, 30px);
-  }
-}
-@keyframes gs-net {
-  from {
-    transform: skewX(-3deg);
-  }
-  to {
-    transform: skewX(3deg);
-  }
-}
-@keyframes gs-fade {
+@keyframes hs-fade {
   from {
     opacity: 0;
     transform: translateY(14px);
@@ -765,7 +620,7 @@
     transform: translateY(0);
   }
 }
-@keyframes gs-progress {
+@keyframes hs-progress {
   from {
     transform: scaleX(0);
   }

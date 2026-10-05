@@ -62,3 +62,6 @@ export const logo = asset('/img/logo/restart.webp')
 
 /** Miniature d'article reprise du blog d'origine. */
 export const blogImage = (slug: string) => asset(`/img/blog/${slug}.webp`)
+
+/** Visuel en situation de chaque gamme, pour le carrousel d'accueil (scripts/gen_hero.py). */
+export const heroImage = (universSlug: string) => asset(`/img/hero/${universSlug}.webp`)

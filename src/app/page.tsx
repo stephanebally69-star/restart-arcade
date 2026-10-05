@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { ArrowRight, BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
-import { allModels, findUnivers, formatPrice, univers } from '@/data/catalogue'
+import { allModels, formatPrice, univers } from '@/data/catalogue'
 import { AudienceSwitch } from '@/components/AudienceSwitch'
-import { GoldenStage, type StageSlide } from '@/components/GoldenStage'
+import { HeroSlider, type HeroSlide } from '@/components/HeroSlider'
 import { Reveal } from '@/components/Reveal'
 import {
   ArticleRows,
@@ -13,7 +13,6 @@ import {
   CtaBand,
   DarkCta,
   FeatureTrio,
-  InfoCard,
   MakerCard,
   PaperCard,
   RowList,
@@ -22,7 +21,7 @@ import {
 } from '@/components/kit'
 import { Faq, FinalCta } from '@/components/ui'
 import { blogPosts } from '@/data/blog'
-import { ambiance, universImage } from '@/data/images'
+import { ambiance, heroImage, universImage } from '@/data/images'
 
 export const metadata: Metadata = {
   title: "Bornes d'arcade, fléchettes et baby-foot personnalisés, en vente et en location",
@@ -115,49 +114,53 @@ const valueProps = [
   },
 ]
 
+/** Accroche de chaque gamme dans le carrousel, tirée de sa page univers. */
+const heroTitles: Record<string, string> = {
+  'borne-arcade': 'De la borne enfant à la borne pro avec monnayeur',
+  flechettes: 'Plus de 30 modes de jeu, comptage automatique',
+  'baby-foot': "Du hêtre massif aux modèles qui restent dehors toute l'année",
+  'fauteuil-massant': 'Zéro gravité, chauffage lombaire et sept zones de massage',
+  billard: "L'équipement qui retient le plus longtemps autour de lui",
+  'flipper-numerique': 'Plus de 500 tables dans une seule machine',
+  'cocon-de-repos': 'Vingt minutes de micro-sieste, isolé du bruit et de la lumière',
+}
+
+const heroAlt: Record<string, string> = {
+  'borne-arcade': "Deux collègues jouent sur une borne d'arcade dans un espace de pause",
+  flechettes: 'Partie de fléchettes électroniques sur une borne RESTART dans un bar',
+  'baby-foot': 'Baby-foot en bois installé dans une salle aux murs de briques',
+  'fauteuil-massant': "Fauteuil massant dans un salon de détente d'entreprise",
+  billard: "Partie de billard dans l'espace détente d'un établissement client",
+  'flipper-numerique': 'Flipper numérique dans un open space, des collègues autour',
+  'cocon-de-repos': 'Cocons de repos Nap&Up installés dans une salle de récupération',
+}
+
 export default function Home() {
-  const dart = findUnivers('flechettes')!.models
   const prices = allModels.flatMap((m) => (m.price != null ? [m.price] : []))
-  const slides: StageSlide[] = [
-    {
-      product: 'flipper',
-      name: 'Flipper numérique',
-      title: 'Plus de 500 tables dans une seule machine',
-      detail: 'Retour de force et accéléromètre · Sur devis',
-      href: '/produits/flipper-numerique/',
-      cta: 'Voir le flipper',
-    },
-    {
-      product: 'flechettes',
-      name: 'Fléchettes électroniques',
-      title: 'Plus de 30 modes de jeu, comptage automatique',
-      detail: dart.map((m) => `${m.name} ${formatPrice(m.price!)}`).join(' · '),
-      href: '/produits/flechettes/',
-      cta: 'Voir les fléchettes',
-    },
-    {
-      product: 'basket',
-      name: 'Basket arcade',
-      title: "Le panier de salle d'arcade, à votre image",
-      detail: 'Sur demande',
-      href: '/contact/',
-      cta: 'Nous consulter',
-    },
-  ]
+  const slides: HeroSlide[] = univers.map((u) => {
+    const priced = u.models.flatMap((m) => (m.price != null ? [m.price] : []))
+    return {
+      slug: u.slug,
+      image: heroImage(u.slug),
+      alt: heroAlt[u.slug],
+      name: u.name,
+      title: heroTitles[u.slug],
+      detail:
+        priced.length > 1
+          ? `${u.models.length} modèles, de ${formatPrice(Math.min(...priced))} à ${formatPrice(Math.max(...priced))}`
+          : priced.length === 1
+            ? `${formatPrice(priced[0])}, livré monté et installé`
+            : 'Sur devis, en achat ou en location',
+      href: `/produits/${u.slug}/`,
+    }
+  })
 
   return (
     <>
-      <section className="mx-auto w-full max-w-5xl px-4 pb-6 pt-8 sm:px-6 md:pt-10">
-        <InfoCard
-          eyebrow="Flipper, fléchettes, basket et bornes d'arcade"
-          title="Le jeu qui fait revenir les gens dans vos espaces."
-          lead="Personnalisés à votre image, livrés montés et installés partout en France, en vente ou en location."
-          primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
-          secondary={{ href: '/produits/', label: 'Le catalogue' }}
-        />
-      </section>
-
-      <GoldenStage slides={slides} />
+      <h1 className="sr-only">Le jeu qui fait revenir les gens dans vos espaces.</h1>
+      <div className="pt-6 md:pt-8">
+        <HeroSlider slides={slides} />
+      </div>
 
       <section className="mx-auto w-full max-w-5xl px-4 pb-8 pt-8 sm:px-6">
         <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
