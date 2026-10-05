@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { ArrowRight, BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
-import { allModels, formatPrice, univers } from '@/data/catalogue'
+import { allModels, findUnivers, formatPrice, univers } from '@/data/catalogue'
 import { AudienceSwitch } from '@/components/AudienceSwitch'
 import { HeroSlider, type HeroSlide } from '@/components/HeroSlider'
+import { CinemaHero, type FreezeLine } from '@/components/CinemaHero'
 import { Reveal } from '@/components/Reveal'
 import {
   ArticleRows,
@@ -155,11 +156,29 @@ export default function Home() {
     }
   })
 
+  const from = (slug: string) => {
+    const p = findUnivers(slug)!.models.flatMap((m) => (m.price != null ? [m.price] : []))
+    return `dès ${formatPrice(Math.min(...p))}`
+  }
+  // Version Cinéma : produits affichés pendant le gel de la fléchette (de 1,66 s à 7,26 s du film).
+  const freezeLines: FreezeLine[] = [
+    { at: 2.2, title: 'Fléchettes électroniques', detail: from('flechettes'), href: '/produits/flechettes/' },
+    { at: 3.1, title: 'Baby-foot', detail: from('baby-foot'), href: '/produits/baby-foot/' },
+    { at: 4.0, title: 'Flippers numériques', detail: '500 tables, sur devis', href: '/produits/flipper-numerique/' },
+    { at: 4.9, title: "Bornes d'arcade", detail: `5 000 jeux, ${from('borne-arcade')}`, href: '/produits/borne-arcade/' },
+  ]
+
   return (
     <>
       <h1 className="sr-only">Le jeu qui fait revenir les gens dans vos espaces.</h1>
-      <div className="pt-6 md:pt-8">
+      <div className="version-studio pt-6 md:pt-8">
         <HeroSlider slides={slides} />
+      </div>
+      <div className="version-cinema pt-3 md:pt-4">
+        <CinemaHero
+          lines={freezeLines}
+          closing="Personnalisés à votre image, livrés montés, en vente ou en location."
+        />
       </div>
 
       <section className="mx-auto w-full max-w-5xl px-4 pb-8 pt-8 sm:px-6">

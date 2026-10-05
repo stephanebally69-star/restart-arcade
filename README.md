@@ -61,6 +61,23 @@ Plan de taggage GA4 complet avec Consent Mode v2 : voir
 - Accessibilité : lien d'évitement, navigation au clavier, `aria-*` sur les onglets et le menu,
   contrastes conformes, `prefers-reduced-motion` respecté.
 
+## Versions du site
+
+Un bouton « Version » en bas à gauche bascule le hero de l'accueil entre le **carrousel** photo
+et la version **Cinéma** (le reste du site est commun). Le choix dure le temps de la visite ;
+`?version=cinema` dans l'URL ouvre directement la version Cinéma.
+
+Le film de la version Cinéma (`public/video/hero-cinema-*.mp4`) est rendu avec le studio Remotion
+de l'agence (`mbn-ads-agency/studio`, modèle `BulletTime`) à partir des réglages de `video/` :
+
+```bash
+cd ../mbn-ads-agency/studio
+node render.mjs <jobs.json>   # jobs : composition BulletTime, props video/hero-cinema*.props.json, "gl": "angle"
+```
+
+Les repères de temps du film (gel de la fléchette, scènes) sont repris dans
+`src/components/CinemaHero.tsx` et `src/app/page.tsx` : à mettre à jour si le film change.
+
 ## Démarrer
 
 ```bash

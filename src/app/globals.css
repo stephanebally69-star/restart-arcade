@@ -628,3 +628,38 @@
     transform: scaleX(1);
   }
 }
+
+/* --- Versions du site ---------------------------------------------------- */
+/* La version (html[data-version]) ne change que le hero de l'accueil. */
+:root[data-version='cinema'] .version-studio,
+:root:not([data-version='cinema']) .version-cinema {
+  display: none;
+}
+
+/* Hero Cinéma : apparition des textes pendant le gel de la fléchette. */
+.cinema-line,
+.cinema-fade {
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.5s ease;
+}
+.cinema-line {
+  transform: translateY(12px);
+  filter: blur(6px);
+}
+.cinema-line.is-on,
+.cinema-fade.is-on {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinema-line,
+  .cinema-fade {
+    transition: none;
+  }
+}

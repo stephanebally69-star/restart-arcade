@@ -11,11 +11,14 @@ import { site } from '@/lib/site'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { fontVariables } from '@/lib/fonts'
 import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
+import { VersionSwitch } from '@/components/VersionSwitch'
+import { DEFAULT_VERSION, VERSION_STORAGE_KEY, versions } from '@/lib/version'
 
 /**
  * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
  * un flash. Le choix vit en sessionStorage : chaque nouvelle visite repart sur le
- * thème par défaut (Studio doré). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
+ * thème par défaut (Studio doré). Même principe pour la version du site
+ * (`?version=cinema` la force). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
  */
 const themeBootScript = `(function(){try{
 var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};
@@ -26,6 +29,10 @@ var S=sessionStorage;
 if(q&&m[q]){S.setItem(K,q);S.removeItem(C);}
 var t=S.getItem(K);
 if(t&&m[t]){d.dataset.theme=t;d.dataset.scheme=m[t];}
+var V=${JSON.stringify(VERSION_STORAGE_KEY)},vs=${JSON.stringify(versions.map((v) => v.id))};
+var qv=new URLSearchParams(location.search).get('version');
+if(qv&&vs.indexOf(qv)>-1)S.setItem(V,qv);
+var v=S.getItem(V);if(v&&vs.indexOf(v)>-1)d.dataset.version=v;
 var c=S.getItem(C);
 if(c){c=JSON.parse(c);for(var k in c.vars)d.style.setProperty(k,c.vars[k]);d.dataset.scheme=c.scheme;d.dataset.custom='true';}
 }catch(e){}})();`
@@ -124,6 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="fr"
       className={fontVariables}
       data-theme={DEFAULT_THEME}
+      data-version={DEFAULT_VERSION}
       data-scheme={themes.find((t) => t.id === DEFAULT_THEME)!.scheme}
       suppressHydrationWarning
     >
@@ -144,6 +152,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <ConsentBanner />
         <ThemeSwitcher />
+        <VersionSwitch />
       </body>
     </html>
   )

@@ -11,7 +11,7 @@
     },
     "fonts": { "display": "Inter", "body": "Inter" }
   },
-  "format": "landscape",
+  "format": "story",
   "person": { "skin": "#E8B592", "hairColor": "#4A2E1C", "beard": false, "top": "#A4502E", "bottom": "#34465E" },
   "sign": "RESTART"
 }
