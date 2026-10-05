@@ -16,7 +16,7 @@ import {
   Trophy,
 } from 'lucide-react'
 import { allModels, audiences, findUnivers, formatPrice, modelsFor, univers, type Audience } from '@/data/catalogue'
-import { productImage } from '@/data/images'
+import { ambiance, productImage } from '@/data/images'
 import { googleRating, reviews } from '@/data/reviews'
 import { PlateauHero, type PlateauProduct } from './PlateauHero'
 import { ProjectTabs, type ProjectSheet } from './ProjectTabs'
@@ -26,22 +26,16 @@ const priceFrom = (slug: string) => {
   return p.length ? `dès ${formatPrice(Math.min(...p))}` : 'sur devis'
 }
 
-const formulas: Record<Audience, [string, string][]> = {
-  entreprise: [
-    ['formule', 'achat ou location'],
-    ['location', 'livraison, installation et maintenance incluses'],
-    ['usage', 'libre, sans monnayeur'],
-  ],
-  'bar-commerce': [
-    ['formule', 'location, sans immobiliser de trésorerie'],
-    ['monnayeur', 'en option, pour un revenu direct'],
-    ['maintenance', 'assurée pendant toute la location'],
-  ],
-  particulier: [
-    ['formule', 'achat'],
-    ['paiement', 'en 2x, 3x ou 4x'],
-    ['prise en main', 'sur place, le jour de la livraison'],
-  ],
+const formulas: Record<Audience, string[]> = {
+  entreprise: ['Achat ou location', 'Maintenance incluse en location', 'Usage libre, sans monnayeur', "Garantie jusqu'à 3 ans"],
+  'bar-commerce': ['Location sans immobiliser de trésorerie', 'Monnayeur en option', 'Maintenance assurée', 'À vos couleurs'],
+  particulier: ['Paiement en 2x, 3x ou 4x', 'Livré monté et installé', 'Prise en main sur place', "Garantie jusqu'à 3 ans"],
+}
+
+const audiencePhotos: Record<Audience, { src: string; alt: string }> = {
+  entreprise: { src: ambiance.equipe, alt: "Collègues autour d'une borne d'arcade dans un espace de pause" },
+  'bar-commerce': { src: ambiance.bar, alt: "Borne d'arcade personnalisée dans un bar" },
+  particulier: { src: ambiance.salleDePause, alt: 'Salon équipé d’un baby-foot, d’un billard et d’une borne' },
 }
 
 const icons: Record<string, LucideIcon> = {
@@ -73,24 +67,26 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
   ]
 
   const sheets: ProjectSheet[] = audiences.map((a) => {
+    const seen = new Set<string>()
     const picks = modelsFor(a.id)
-      .filter((m) => m.price != null)
+      .filter((m) => m.price != null && !seen.has(m.universSlug) && seen.add(m.universSlug))
       .slice(0, 3)
-      .map((m) => `${m.name} (${formatPrice(m.price!)})`)
-      .join(', ')
+      .map((m) => ({
+        name: m.name,
+        family: m.universName,
+        price: formatPrice(m.price!),
+        image: productImage(m.slug),
+        href: `/produits/${m.universSlug}/${m.slug}/`,
+      }))
     return {
       id: a.id,
       label: a.label,
-      file: `projet-${a.id}.restart`,
-      lines: [
-        ['pour', a.short.toLowerCase()],
-        ['modèles', picks],
-        ...formulas[a.id],
-        ['personnalisation', 'covering, couleurs, logo'],
-        ['livraison', 'monté, testé et installé'],
-        ['délai', '2 à 3 semaines'],
-        ['garantie', "jusqu'à 3 ans"],
-      ],
+      title: a.short,
+      blurb: a.blurb,
+      photo: audiencePhotos[a.id].src,
+      photoAlt: audiencePhotos[a.id].alt,
+      picks,
+      points: formulas[a.id],
     }
   })
 
