@@ -9,13 +9,15 @@ import { JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { VersionSwitcher } from '@/components/VersionSwitcher'
+import { CursorGlow } from '@/components/CursorGlow'
 import { fontVariables } from '@/lib/fonts'
 import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
 
 /**
  * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
  * un flash. Le choix vit en sessionStorage : chaque nouvelle visite repart sur le
- * thème par défaut (Studio doré). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
+ * thème par défaut (Onde pixel). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
  */
 const themeBootScript = `(function(){try{
 var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};
@@ -52,8 +54,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport = {
-  themeColor: '#f6f6f5',
-  colorScheme: 'light',
+  themeColor: '#070908',
+  colorScheme: 'dark',
 }
 
 /**
@@ -144,6 +146,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <ConsentBanner />
         <ThemeSwitcher />
+        <VersionSwitcher />
+        <CursorGlow />
       </body>
     </html>
   )

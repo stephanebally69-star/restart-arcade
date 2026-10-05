@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { ArrowRight, BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
-import { allModels, findUnivers, formatPrice, univers } from '@/data/catalogue'
+import { ArrowUpRight, BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
+import { allModels, formatPrice, univers } from '@/data/catalogue'
 import { AudienceSwitch } from '@/components/AudienceSwitch'
-import { GoldenStage, type StageSlide } from '@/components/GoldenStage'
+import { PixelHero, type HeroUnivers } from '@/components/PixelHero'
 import { Reveal } from '@/components/Reveal'
 import {
   ArticleRows,
@@ -13,7 +13,6 @@ import {
   CtaBand,
   DarkCta,
   FeatureTrio,
-  InfoCard,
   MakerCard,
   PaperCard,
   RowList,
@@ -116,50 +115,47 @@ const valueProps = [
 ]
 
 export default function Home() {
-  const dart = findUnivers('flechettes')!.models
   const prices = allModels.flatMap((m) => (m.price != null ? [m.price] : []))
-  const slides: StageSlide[] = [
-    {
-      product: 'flipper',
-      name: 'Flipper numérique',
-      title: 'Plus de 500 tables dans une seule machine',
-      detail: 'Retour de force et accéléromètre · Sur devis',
-      href: '/produits/flipper-numerique/',
-      cta: 'Voir le flipper',
-    },
-    {
-      product: 'flechettes',
-      name: 'Fléchettes électroniques',
-      title: 'Plus de 30 modes de jeu, comptage automatique',
-      detail: dart.map((m) => `${m.name} ${formatPrice(m.price!)}`).join(' · '),
-      href: '/produits/flechettes/',
-      cta: 'Voir les fléchettes',
-    },
-    {
-      product: 'basket',
-      name: 'Basket arcade',
-      title: "Le panier de salle d'arcade, à votre image",
-      detail: 'Sur demande',
-      href: '/contact/',
-      cta: 'Nous consulter',
-    },
-  ]
+  const heroItems: HeroUnivers[] = univers.map((u) => {
+    const unitPrices = u.models.flatMap((m) => (m.price != null ? [m.price] : []))
+    const first = u.intro.split('. ')[0].replace(/\.$/, '')
+    return {
+      slug: u.slug,
+      name: u.navLabel,
+      count: u.models.length > 0 ? String(u.models.length).padStart(2, '0') : 'Sur mesure',
+      from: unitPrices.length ? `Dès ${formatPrice(Math.min(...unitPrices))}` : 'Sur devis',
+      line: first.length > 120 ? `${first.slice(0, 117).trimEnd()}…` : `${first}.`,
+      image: universImage(u.slug),
+    }
+  })
+  const ticker = univers.map((u) => u.navLabel)
 
   return (
     <>
-      <section className="mx-auto w-full max-w-5xl px-4 pb-6 pt-8 sm:px-6 md:pt-10">
-        <InfoCard
-          eyebrow="Flipper, fléchettes, basket et bornes d'arcade"
-          title="Le jeu qui fait revenir les gens dans vos espaces."
-          lead="Personnalisés à votre image, livrés montés et installés partout en France, en vente ou en location."
-          primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
-          secondary={{ href: '/produits/', label: 'Le catalogue' }}
-        />
-      </section>
+      <PixelHero items={heroItems} />
 
-      <GoldenStage slides={slides} />
+      {/* --- Bandeau défilant ------------------------------------------- */}
+      <div className="overflow-hidden border-b border-border py-6" aria-hidden="true">
+        <div className="animate-marquee-x flex w-max">
+          {[0, 1].map((k) => (
+            <ul key={k} className="flex shrink-0 items-center">
+              {ticker.map((t, i) => (
+                <li
+                  key={t}
+                  className={`flex items-center gap-10 pr-10 text-[clamp(1.75rem,4vw,3.25rem)] font-light tracking-[-0.04em] ${
+                    i % 2 ? 'text-transparent [-webkit-text-stroke:1px_var(--t-text-muted)]' : 'text-heading'
+                  }`}
+                >
+                  {t}
+                  <span className="inline-block size-3 bg-accent" />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
 
-      <section className="mx-auto w-full max-w-5xl px-4 pb-8 pt-8 sm:px-6">
+      <section className="mx-auto w-full max-w-7xl px-4 pb-8 pt-14 sm:px-8 md:pt-20">
         <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
           <div className="flex flex-col gap-6">
             <FeatureTrio
@@ -226,9 +222,7 @@ export default function Home() {
             <PaperCard
               key={title}
               delayMs={(i % 3) * 120}
-              icon={
-                <Icon className="size-6 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
-              }
+              icon={<Icon className="size-5 shrink-0 text-accent" strokeWidth={1.5} aria-hidden="true" />}
               title={title}
             >
               {text}
@@ -261,9 +255,9 @@ export default function Home() {
             <Reveal key={u.slug} delayMs={(i % 4) * 100} className="h-full">
               <Link
                 href={`/produits/${u.slug}/`}
-                className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card p-2 shadow-[var(--shadow-paper-sm)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[var(--shadow-paper-md)]"
+                className="ox-glow group relative flex h-full flex-col overflow-hidden border border-border bg-card p-2 transition duration-300"
               >
-                <span className="flex h-44 items-center justify-center overflow-hidden rounded-[18px] bg-white">
+                <span className="flex h-44 items-center justify-center overflow-hidden bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={universImage(u.slug)}
@@ -272,9 +266,12 @@ export default function Home() {
                     className="h-full w-full object-contain p-3 transition duration-500 group-hover:scale-105"
                   />
                 </span>
-                <span className="flex items-center justify-between gap-3 px-3 pb-2 pt-3">
+                <span className="flex items-center justify-between gap-3 px-2 pb-2 pt-3">
                   <span>
-                    <span className="block text-base font-semibold tracking-tight text-heading">
+                    <span className="block font-mono text-[10px] text-accent">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="mt-1 block text-base tracking-tight text-heading">
                       {u.name}
                     </span>
                     <span className="text-[13px] text-muted-foreground">
@@ -283,8 +280,8 @@ export default function Home() {
                         : 'Sur devis'}
                     </span>
                   </span>
-                  <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border transition group-hover:bg-primary group-hover:text-primary-foreground">
-                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  <span className="inline-flex size-8 shrink-0 items-center justify-center border border-border transition group-hover:border-accent group-hover:bg-accent group-hover:text-primary-foreground">
+                    <ArrowUpRight className="size-3.5" aria-hidden="true" />
                   </span>
                 </span>
               </Link>
@@ -299,17 +296,20 @@ export default function Home() {
           title="De l'idée à la première partie, en quatre étapes"
           subtitle="Nous ne vendons pas un carton à monter : nous regardons votre espace, dessinons l'équipement avec vous et l'installons."
         />
-        <ol className="mt-12 center-grid [--cols:4]">
+        <ol className="mt-12 grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, index) => (
-            <li key={s.n} className="card relative flex flex-col gap-3 p-6">
-              <span className="inline-flex size-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                {String(index + 1).padStart(2, '0')}
+            <li
+              key={s.n}
+              className="ox-glow relative flex flex-col gap-4 border-b border-r border-border p-6 md:p-7"
+            >
+              <span className="flex items-center justify-between">
+                <span className="inline-flex size-10 items-center justify-center bg-accent font-mono text-sm text-primary-foreground">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="ox-mono text-muted-foreground">{s.time}</span>
               </span>
-              <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
-              <p className="text-sm leading-relaxed text-foreground/70">{s.text}</p>
-              <p className="mt-auto text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                {s.time}
-              </p>
+              <h3 className="mt-6 text-xl tracking-tight">{s.title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{s.text}</p>
             </li>
           ))}
         </ol>
@@ -323,28 +323,29 @@ export default function Home() {
             src={ambiance.salleDePause}
             alt="Salle de pause équipée d'un baby-foot, d'un billard et d'une borne d'arcade"
             loading="lazy"
-            className="aspect-[3/2] w-full rounded-[28px] border border-border object-cover shadow-[var(--shadow-paper-md)]"
+            className="aspect-[3/2] w-full border border-border object-cover"
           />
           <div>
-            <h2 className="text-balance font-serif text-3xl font-medium tracking-tight md:text-4xl">
+            <p aria-hidden="true" className="ox-mono ox-index text-accent" />
+            <h2 className="mt-4 text-balance text-[clamp(1.9rem,3.4vw,2.9rem)] font-light leading-[1.04] tracking-[-0.045em]">
               Un espace de pause vide reste vide. Avec un jeu, il se remplit tout seul.
             </h2>
             <p className="mt-4 text-muted-foreground">
               La partie dure cinq minutes, tout le monde sait jouer, et deux personnes qui ne se
               seraient pas parlé se retrouvent du même côté de la table.
             </p>
-            <Link
-              href="/realisations/"
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:brightness-125"
-            >
-              Voir nos réalisations
+            <Link href="/realisations/" className="ox-btn mt-8">
+              <span>Voir nos réalisations</span>
+              <span aria-hidden="true">
+                <ArrowUpRight className="size-4" />
+              </span>
             </Link>
           </div>
         </div>
       </Block>
 
       {/* --- FAQ -------------------------------------------------------- */}
-      <section className="mx-auto w-full max-w-3xl px-6 py-10 md:py-14">
+      <section className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-8 md:py-20">
         <Faq items={homeFaq} title="Vos questions, nos réponses" />
       </section>
 

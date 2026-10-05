@@ -3,7 +3,7 @@
 // un fichier que si un élément l'utilise : seules les polices du thème actif
 // sont chargées. Seules celles du thème par défaut sont préchargées.
 import localFont from 'next/font/local'
-import { Audiowide, Baloo_2, Bebas_Neue, Bungee, Chakra_Petch, DM_Sans, Exo_2, Fredoka, IBM_Plex_Mono, Kanit, Luckiest_Guy, Orbitron, Outfit, Pixelify_Sans, Press_Start_2P, Rajdhani, Righteous, Russo_One, Share_Tech_Mono, Silkscreen, Space_Grotesk, Space_Mono, VT323 } from 'next/font/google'
+import { Audiowide, Baloo_2, Bebas_Neue, Bungee, Chakra_Petch, DM_Sans, Exo_2, Fredoka, IBM_Plex_Mono, JetBrains_Mono, Kanit, Luckiest_Guy, Orbitron, Outfit, Pixelify_Sans, Press_Start_2P, Rajdhani, Righteous, Russo_One, Share_Tech_Mono, Silkscreen, Space_Grotesk, Space_Mono, VT323 } from 'next/font/google'
 
 const f_inter = localFont({ src: '../fonts/inter-variable.woff2', variable: '--ff-inter', display: 'swap', weight: '100 900' })
 const f_fraunces = localFont({ src: '../fonts/fraunces-variable.woff2', variable: '--ff-fraunces', display: 'swap', weight: '100 900', preload: false })
@@ -30,5 +30,6 @@ const f_vt323 = VT323({ subsets: ['latin'], variable: '--ff-vt323', display: 'sw
 const f_spacemono = Space_Mono({ subsets: ['latin'], variable: '--ff-spacemono', display: 'swap', weight: ['400', '700'], preload: false })
 const f_sharetech = Share_Tech_Mono({ subsets: ['latin'], variable: '--ff-sharetech', display: 'swap', weight: '400', preload: false })
 const f_plexmono = IBM_Plex_Mono({ subsets: ['latin'], variable: '--ff-plexmono', display: 'swap', weight: ['400', '500', '600'], preload: false })
+const f_jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--ff-jetmono', display: 'swap', weight: ['400', '500'] })
 
-export const fontVariables = [f_inter, f_fraunces, f_space, f_outfit, f_dmsans, f_exo2, f_kanit, f_rajdhani, f_baloo, f_fredoka, f_chakra, f_orbitron, f_audiowide, f_russo, f_righteous, f_bungee, f_bebas, f_luckiest, f_press, f_pixelify, f_silkscreen, f_vt323, f_spacemono, f_sharetech, f_plexmono].map((f) => f.variable).join(' ')
+export const fontVariables = [f_inter, f_fraunces, f_space, f_outfit, f_dmsans, f_exo2, f_kanit, f_rajdhani, f_baloo, f_fredoka, f_chakra, f_orbitron, f_audiowide, f_russo, f_righteous, f_bungee, f_bebas, f_luckiest, f_press, f_pixelify, f_silkscreen, f_vt323, f_spacemono, f_sharetech, f_plexmono, f_jetmono].map((f) => f.variable).join(' ')

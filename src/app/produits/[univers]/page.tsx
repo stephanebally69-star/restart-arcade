@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  */
 
 const VISUAL_CARD_CLASS =
-  'relative isolate flex flex-col gap-2 overflow-hidden rounded-[24px] border border-border bg-card p-2 pb-5 shadow-[var(--shadow-paper-sm)]'
+  'ox-glow relative isolate flex flex-col gap-2 overflow-hidden border border-border bg-card p-2 pb-5'
 
 const AUDIENCE_ICONS: Record<Audience, LucideIcon> = {
   entreprise: Briefcase,

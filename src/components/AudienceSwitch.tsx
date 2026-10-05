@@ -22,7 +22,7 @@ export function AudienceSwitch() {
       <div
         role="tablist"
         aria-label="Choisir votre situation"
-        className="mx-auto flex w-fit flex-wrap justify-center gap-1 rounded-full border border-border bg-paper p-1 shadow-[var(--shadow-paper-sm)]"
+        className="flex w-full flex-col border border-border sm:w-fit sm:flex-row"
       >
         {audiences.map((a) => (
           <button
@@ -35,14 +35,14 @@ export function AudienceSwitch() {
               setActive(a.id)
               selectAudience(a.id, 'home_switcher')
             }}
-            className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
+            className={`border-border px-5 py-3.5 text-left text-sm font-medium transition [&:not(:first-child)]:border-t sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-t-0 ${
               active === a.id
-                ? 'bg-primary text-primary-foreground shadow-[0_6px_14px_-4px_rgba(30,27,75,0.4)]'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-accent text-primary-foreground'
+                : 'text-muted-foreground hover:bg-muted hover:text-heading'
             }`}
           >
             {a.label}
-            <span className="ml-2 hidden text-xs opacity-70 sm:inline">{a.short}</span>
+            <span className="ml-2 hidden font-mono text-[11px] uppercase tracking-wider opacity-70 sm:inline">{a.short}</span>
           </button>
         ))}
       </div>
@@ -53,20 +53,17 @@ export function AudienceSwitch() {
         aria-labelledby={`tab-${active}`}
         className="mt-8"
       >
-        <p className="mx-auto text-center text-lg text-ink-soft lg:whitespace-nowrap">{current.blurb}</p>
+        <p key={active} className="ox-swap max-w-3xl text-lg text-ink-soft">{current.blurb}</p>
 
-        <div className="mt-8 center-grid [--cols:4]">
+        <div key={`grid-${active}`} className="ox-swap mt-8 center-grid [--cols:4]">
           {models.map((m) => (
             <ProductCard key={m.sku} model={m} list={`home_${active}`} />
           ))}
         </div>
 
-        <Link
-          href="/produits/"
-          className="btn-secondary mx-auto mt-10 flex w-fit bg-paper"
-        >
+        <Link href="/produits/" className="ox-link mt-10">
           Voir tout le catalogue
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true">↗</span>
         </Link>
       </div>
     </div>

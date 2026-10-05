@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { ArrowRight, ChevronRight, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Plus, Sparkles } from 'lucide-react'
 import { site } from '@/lib/site'
+import { WaveField } from '@/components/WaveField'
 
 /** Injecte un bloc JSON-LD. Le contenu vient toujours de nos données, jamais d'une saisie. */
 export function JsonLd({ data }: { data: Record<string, unknown> | Record<string, unknown>[] }) {
@@ -83,8 +84,8 @@ export function SectionTitle({
 export function Breadcrumbs({ items }: { items: { href: string; label: string }[] }) {
   return (
     <>
-      <nav aria-label="Fil d'Ariane" className="mb-6">
-        <ol className="flex flex-wrap items-center gap-1.5 px-1 text-sm text-muted-foreground">
+      <nav aria-label="Fil d'Ariane" className="mb-8">
+        <ol className="ox-mono flex flex-wrap items-center gap-2 text-muted-foreground">
           <li>
             <Link href="/" className="hover:text-foreground">
               Accueil
@@ -135,26 +136,29 @@ export function Faq({
   return (
     <>
       <div>
-        <h2 className="mx-auto max-w-3xl text-balance text-center font-serif text-3xl font-medium tracking-tight md:text-4xl">
-          {title}
-        </h2>
-        <div className="mt-10 overflow-hidden rounded-[24px] border border-border bg-card shadow-[var(--shadow-paper-sm)]">
+        <div className="border-t border-border pt-6">
+          <p aria-hidden="true" className="ox-mono ox-index text-accent" />
+          <h2 className="mt-4 max-w-3xl text-balance text-[clamp(2rem,4vw,3.25rem)] font-light leading-[1.02] tracking-[-0.045em]">
+            {title}
+          </h2>
+        </div>
+        <div className="mt-10 border-t border-border">
           {items.map((f, i) => (
-            <details
-              key={f.q}
-              className={`group px-5 py-5 sm:px-7 ${i < items.length - 1 ? 'border-b border-border' : ''}`}
-            >
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left font-medium text-foreground">
-                <span className="text-base">{f.q}</span>
-                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-border transition group-open:bg-primary group-open:text-primary-foreground">
-                  <ChevronRight
-                    className="size-3.5 transition-transform group-open:rotate-90"
+            <details key={f.q} className="group border-b border-border">
+              <summary className="flex cursor-pointer list-none items-start gap-5 py-5 text-left text-heading transition hover:text-accent">
+                <span className="ox-mono mt-1 w-6 shrink-0 text-muted-foreground">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="flex-1 text-[17px] font-light tracking-tight">{f.q}</span>
+                <span className="inline-flex size-7 shrink-0 items-center justify-center border border-border transition group-open:border-accent group-open:bg-accent group-open:text-primary-foreground">
+                  <Plus
+                    className="size-3.5 transition-transform duration-300 group-open:rotate-45"
                     strokeWidth={2}
                     aria-hidden="true"
                   />
                 </span>
               </summary>
-              <p className="mt-3 max-w-3xl pr-10 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              <p className="max-w-3xl pb-6 pl-11 pr-12 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
             </details>
           ))}
         </div>
@@ -220,31 +224,36 @@ export function FinalCta({
   primary?: { href: string; label: string }
 }) {
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 pb-10 pt-6 sm:px-6 md:pb-14">
-      <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-[32px] border border-border px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
-        <h2 className="mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-[1.1] tracking-tight md:text-5xl">
+    <section className="relative isolate mt-10 overflow-hidden border-t border-border">
+      <WaveField cell={96} minCell={44} intensity={0.9} className="-z-20" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_50%_50%,color-mix(in_srgb,var(--t-bg)_78%,transparent)_0%,transparent_100%)]"
+      />
+      <div className="mx-auto w-full max-w-7xl px-4 py-20 text-center sm:px-8 md:py-28">
+        <p className="ox-mono inline-flex items-center gap-2 text-accent">
+          <span className="ox-led" aria-hidden="true" />
+          Insert coin · Devis gratuit
+        </p>
+        <h2 className="mx-auto mt-5 max-w-4xl text-balance text-[clamp(2.2rem,5vw,4.25rem)] font-light leading-[1] tracking-[-0.05em]">
           {title}
           {em}
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
+        <p className="mx-auto mt-5 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
           {subtitle}
         </p>
-        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href={primary.href}
-            className="group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-[0_8px_20px_-10px_rgba(0,0,0,0.55)] transition hover:-translate-y-px hover:brightness-125"
-          >
-            {primary.label}
-            <ArrowRight
-              className="size-4 transition-transform group-hover:translate-x-0.5"
-              aria-hidden="true"
-            />
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link href={primary.href} className="ox-btn ox-btn-lg">
+            <span>{primary.label}</span>
+            <span aria-hidden="true">
+              <ArrowUpRight className="size-4" />
+            </span>
           </Link>
-          <a
-            href={`tel:${site.phoneE164}`}
-            className="inline-flex h-12 items-center justify-center rounded-full border border-input bg-card px-6 text-base font-semibold transition hover:bg-muted"
-          >
-            {site.phone}
+          <a href={`tel:${site.phoneE164}`} className="ox-btn ox-btn-lg ox-btn-ghost">
+            <span>{site.phone}</span>
+            <span aria-hidden="true">
+              <ArrowUpRight className="size-4" />
+            </span>
           </a>
         </div>
       </div>

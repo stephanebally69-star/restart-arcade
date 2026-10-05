@@ -1,29 +1,56 @@
 /* Généré par scripts/gen_themes.py : ne pas éditer à la main. */
 
 :root {
-  --t-bg: #f6f6f5;
-  --t-bg-2: #efeeec;
-  --t-surface: #ffffff;
-  --t-surface-2: #f1f0ee;
-  --t-text: #161514;
-  --t-text-soft: #3d3b39;
-  --t-text-muted: #75726e;
-  --t-heading: #111111;
-  --t-primary: #141414;
-  --t-primary-fg: #ffffff;
-  --t-accent: #a65f1b;
-  --t-price: #8f4f12;
-  --t-brand-from: #24170e;
-  --t-brand-to: #0e0b09;
-  --t-footer: #0e0d0c;
-  --t-border: rgba(17,17,17,0.07);
-  --t-input: rgba(17,17,17,0.14);
-  --t-page-bg: radial-gradient(1200px 520px at 50% -12%, rgba(233,160,82,0.10), transparent 62%);
+  --t-bg: #070908;
+  --t-bg-2: #0a0d0c;
+  --t-surface: #0c100f;
+  --t-surface-2: #121716;
+  --t-text: #e6ebe8;
+  --t-text-soft: #bfc7c3;
+  --t-text-muted: #7d8883;
+  --t-heading: #f3f6f4;
+  --t-primary: #5ce1e6;
+  --t-primary-fg: #031516;
+  --t-accent: #5ce1e6;
+  --t-price: #5ce1e6;
+  --t-brand-from: #0e1716;
+  --t-brand-to: #080b0b;
+  --t-footer: #050706;
+  --t-border: rgba(230,240,236,0.09);
+  --t-input: rgba(230,240,236,0.18);
+  --t-page-bg: radial-gradient(1000px 520px at 85% -10%, rgba(92,225,230,0.06), transparent 62%);
   --t-page-bg-size: auto;
   --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-head-adjust: none;
-  --t-head-tracking: -0.035em;
+  --t-head-tracking: -0.045em;
+  --t-em-glow: none;
+}
+
+:root[data-theme="onde"] {
+  --t-bg: #070908;
+  --t-bg-2: #0a0d0c;
+  --t-surface: #0c100f;
+  --t-surface-2: #121716;
+  --t-text: #e6ebe8;
+  --t-text-soft: #bfc7c3;
+  --t-text-muted: #7d8883;
+  --t-heading: #f3f6f4;
+  --t-primary: #5ce1e6;
+  --t-primary-fg: #031516;
+  --t-accent: #5ce1e6;
+  --t-price: #5ce1e6;
+  --t-brand-from: #0e1716;
+  --t-brand-to: #080b0b;
+  --t-footer: #050706;
+  --t-border: rgba(230,240,236,0.09);
+  --t-input: rgba(230,240,236,0.18);
+  --t-page-bg: radial-gradient(1000px 520px at 85% -10%, rgba(92,225,230,0.06), transparent 62%);
+  --t-page-bg-size: auto;
+  --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-head-adjust: none;
+  --t-head-tracking: -0.045em;
   --t-em-glow: none;
 }
 

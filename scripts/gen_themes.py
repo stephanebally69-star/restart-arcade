@@ -41,8 +41,9 @@ FONTS = {
     'spacemono': ('Space Mono', 'Space_Mono', "weight: ['400', '700']", 'ui-monospace, monospace', 'none', '0'),
     'sharetech': ('Share Tech Mono', 'Share_Tech_Mono', "weight: '400'", 'ui-monospace, monospace', 'none', '0'),
     'plexmono': ('IBM Plex Mono', 'IBM_Plex_Mono', "weight: ['400', '500', '600']", 'ui-monospace, monospace', 'none', '0'),
+    'jetmono': ('JetBrains Mono', 'JetBrains_Mono', "weight: ['400', '500']", 'ui-monospace, monospace', 'none', '0'),
 }
-PRELOADED = {'inter'}  # polices du thème par défaut (Studio doré)
+PRELOADED = {'inter', 'jetmono'}  # polices du thème par défaut (Onde pixel)
 
 
 def stack(fid):
@@ -51,6 +52,14 @@ def stack(fid):
 
 # --- Thèmes -------------------------------------------------------------------
 THEMES = [
+    dict(id='onde', name='Onde pixel', desc='Grille de pixels vivante, noir et cyan', scheme='dark',
+         bg='#070908', bg2='#0a0d0c', surface='#0c100f', surface2='#121716',
+         text='#e6ebe8', soft='#bfc7c3', muted='#7d8883', heading='#f3f6f4',
+         primary='#5ce1e6', pfg='#031516', accent='#5ce1e6', price='#5ce1e6',
+         brand=('#0e1716', '#080b0b'), footer='#050706',
+         border='rgba(230,240,236,0.09)', input='rgba(230,240,236,0.18)',
+         page='radial-gradient(1000px 520px at 85% -10%, rgba(92,225,230,0.06), transparent 62%)',
+         head='inter', body='inter', tracking='-0.045em', glow='none'),
     dict(id='studio', name='Studio doré', desc="Blanc studio, noir et lumière d'heure dorée", scheme='light',
          bg='#f6f6f5', bg2='#efeeec', surface='#ffffff', surface2='#f1f0ee',
          text='#161514', soft='#3d3b39', muted='#75726e', heading='#111111',
@@ -282,7 +291,7 @@ THEMES = [
          head='fraunces', body='inter', glow='none'),
 ]
 
-DEFAULT = 'studio'
+DEFAULT = 'onde'
 
 
 def block(t):

@@ -17,11 +17,24 @@ export type ThemeMeta = {
 
 export type FontMeta = { id: string; label: string; stack: string; adjust: string; tracking: string }
 
-export const DEFAULT_THEME = 'studio'
+export const DEFAULT_THEME = 'onde'
 export const THEME_STORAGE_KEY = 'restart-theme'
 export const CUSTOM_STORAGE_KEY = 'restart-theme-custom'
 
 export const themes: ThemeMeta[] = [
+  {
+    "id": "onde",
+    "name": "Onde pixel",
+    "desc": "Grille de pixels vivante, noir et cyan",
+    "scheme": "dark",
+    "head": "inter",
+    "body": "inter",
+    "bg": "#070908",
+    "primary": "#5ce1e6",
+    "accent": "#5ce1e6",
+    "price": "#5ce1e6",
+    "headingIsPrimary": false
+  },
   {
     "id": "studio",
     "name": "Studio doré",
@@ -522,6 +535,13 @@ export const fonts: FontMeta[] = [
     "id": "plexmono",
     "label": "IBM Plex Mono",
     "stack": "var(--ff-plexmono), ui-monospace, monospace",
+    "adjust": "none",
+    "tracking": "0"
+  },
+  {
+    "id": "jetmono",
+    "label": "JetBrains Mono",
+    "stack": "var(--ff-jetmono), ui-monospace, monospace",
     "adjust": "none",
     "tracking": "0"
   }
