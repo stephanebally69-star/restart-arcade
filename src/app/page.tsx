@@ -5,6 +5,7 @@ import { allModels, findUnivers, formatPrice, univers } from '@/data/catalogue'
 import { AudienceSwitch } from '@/components/AudienceSwitch'
 import { HeroSlider, type HeroSlide } from '@/components/HeroSlider'
 import { CinemaHero, type FreezeLine } from '@/components/CinemaHero'
+import { PlateauHome } from '@/components/plateau/PlateauHome'
 import { Reveal } from '@/components/Reveal'
 import {
   ArticleRows,
@@ -171,6 +172,11 @@ export default function Home() {
   return (
     <>
       <h1 className="sr-only">Le jeu qui fait revenir les gens dans vos espaces.</h1>
+      <div className="version-plateau">
+        <PlateauHome faq={homeFaq} />
+      </div>
+
+      <div className="version-classic">
       <div className="version-studio pt-6 md:pt-8">
         <HeroSlider slides={slides} />
       </div>
@@ -403,6 +409,7 @@ export default function Home() {
         title="Un espace vide, une idée vague, un budget à cadrer ?"
         subtitle="Décrivez-nous votre projet en deux minutes. Nous revenons vers vous sous 48 heures avec une proposition chiffrée."
       />
+      </div>
     </>
   )
 }

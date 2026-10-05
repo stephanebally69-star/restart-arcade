@@ -63,12 +63,16 @@ Plan de taggage GA4 complet avec Consent Mode v2 : voir
 
 ## Versions du site
 
-Un bouton « Version » en bas à gauche bascule le hero de l'accueil entre le **carrousel** photo
-et la version **Cinéma** (le reste du site est commun). Le choix dure le temps de la visite ;
-`?version=cinema` dans l'URL ouvre directement la version Cinéma.
+L'onglet « Version », sur le bord gauche, propose trois versions de l'accueil. Le choix dure le
+temps de la visite ; `?version=cinema` ou `?version=plateau` dans l'URL ouvre directement une version.
 
-Le film de la version Cinéma (`public/video/hero-cinema-*.mp4`) est rendu avec le studio Remotion
-de l'agence (`mbn-ads-agency/studio`, modèle `BulletTime`) à partir des réglages de `video/` :
+- **Carrousel** : carrousel photo, une gamme par slide.
+- **Cinéma** : film du lancer de fléchette figé, puis baby-foot et flipper.
+- **Plateau** : mise en page sombre inspirée de resend.com, qui s'applique à tout le site ; hero
+  avec un plateau tournant qui présente les produits un à un (`src/components/plateau/`).
+
+Les films (`public/video/`) sont rendus avec le studio Remotion de l'agence
+(`mbn-ads-agency/studio`, modèles `BulletTime` et `Turntable`) à partir des réglages de `video/` :
 
 ```bash
 cd ../mbn-ads-agency/studio

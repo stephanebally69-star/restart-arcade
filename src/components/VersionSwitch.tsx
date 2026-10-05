@@ -1,49 +1,114 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Clapperboard, Images } from 'lucide-react'
+import { Check, Clapperboard, Disc3, Images } from 'lucide-react'
 import { applyVersion, currentVersion, versions, type VersionId } from '@/lib/version'
 import { track } from '@/lib/analytics'
 
-const icons: Record<VersionId, typeof Images> = { studio: Images, cinema: Clapperboard }
+const icons: Record<VersionId, typeof Images> = { studio: Images, cinema: Clapperboard, plateau: Disc3 }
 
 /**
  * Bascule de version : un onglet sur le bord gauche, pendant de l'onglet
- * Thèmes. Un clic passe à l'autre version. Les versions ne diffèrent que par
- * le hero de l'accueil ; basculer depuis une autre page y ramène pour le montrer.
+ * Thèmes, qui ouvre la liste des versions. Choisir une version depuis une
+ * autre page ramène à l'accueil, où les versions diffèrent le plus.
  */
 export function VersionSwitch() {
   const [current, setCurrent] = useState<VersionId>('studio')
+  const [open, setOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
+  const panelRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => setCurrent(currentVersion()), [])
 
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        buttonRef.current?.focus()
+      }
+    }
+    const onPointer = (e: PointerEvent) => {
+      const target = e.target as Node
+      if (panelRef.current?.contains(target) || buttonRef.current?.contains(target)) return
+      setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onPointer)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onPointer)
+    }
+  }, [open])
+
   const active = versions.find((v) => v.id === current) ?? versions[0]
-  const next = versions[(versions.indexOf(active) + 1) % versions.length]
   const Icon = icons[active.id]
 
-  const toggle = () => {
-    applyVersion(next.id)
-    setCurrent(next.id)
-    track('version_change', { version: next.id })
+  const choose = (id: VersionId) => {
+    setOpen(false)
+    if (id === current) return
+    applyVersion(id)
+    setCurrent(id)
+    track('version_change', { version: id })
     if (pathname !== '/') router.push('/')
     else window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={`Version ${active.name} affichée. Passer à la version ${next.name}`}
-      title={`Passer à la version ${next.name} : ${next.desc}`}
-      className="fixed left-0 top-1/2 z-[60] flex -translate-y-1/2 flex-col items-center gap-2 rounded-r-xl border border-l-0 border-border bg-card px-2 py-3 text-foreground shadow-[var(--shadow-paper-lg)] transition hover:pl-3"
-    >
-      <Icon className="size-5 text-accent" aria-hidden="true" />
-      <span className="rotate-180 font-sans text-[11px] font-semibold uppercase tracking-wider [writing-mode:vertical-rl]">
-        Version <span className="text-muted-foreground">{active.name}</span>
-      </span>
-    </button>
+    <>
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="version-panel"
+        aria-label={`Version ${active.name} affichée. Changer de version`}
+        className="fixed left-0 top-1/2 z-[60] flex -translate-y-1/2 flex-col items-center gap-2 rounded-r-xl border border-l-0 border-border bg-card px-2 py-3 text-foreground shadow-[var(--shadow-paper-lg)] transition hover:pl-3"
+      >
+        <Icon className="size-5 text-accent" aria-hidden="true" />
+        <span className="rotate-180 font-sans text-[11px] font-semibold uppercase tracking-wider [writing-mode:vertical-rl]">
+          Version <span className="text-muted-foreground">{active.name}</span>
+        </span>
+      </button>
+
+      {open && (
+        <div
+          ref={panelRef}
+          id="version-panel"
+          role="dialog"
+          aria-label="Choisir une version du site"
+          className="fixed left-14 top-1/2 z-[60] w-[min(18rem,calc(100vw-4.5rem))] -translate-y-1/2 overflow-hidden rounded-2xl border border-border bg-card font-sans text-foreground shadow-[var(--shadow-paper-lg)]"
+        >
+          <p className="border-b border-border px-4 py-3 text-sm font-semibold">Versions du site</p>
+          <ul role="radiogroup" aria-label="Version" className="p-1.5">
+            {versions.map((v) => {
+              const VIcon = icons[v.id]
+              const selected = v.id === current
+              return (
+                <li key={v.id}>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    onClick={() => choose(v.id)}
+                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition ${selected ? 'bg-muted' : 'hover:bg-muted'}`}
+                  >
+                    <VIcon className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden="true" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold">{v.name}</span>
+                      <span className="block text-xs text-muted-foreground">{v.desc}</span>
+                    </span>
+                    {selected && <Check className="mt-0.5 size-4 shrink-0" aria-hidden="true" />}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+    </>
   )
 }

@@ -4,12 +4,18 @@
  * sessionStorage, comme le thème : une nouvelle visite repart sur la version par
  * défaut. `?version=cinema` dans l'URL force une version (lien de démo).
  */
-export type VersionId = 'studio' | 'cinema'
+import { themes } from '@/lib/themes'
+
+export type VersionId = 'studio' | 'cinema' | 'plateau'
 
 export const versions: { id: VersionId; name: string; desc: string }[] = [
   { id: 'studio', name: 'Carrousel', desc: 'Carrousel photo, une gamme par slide' },
   { id: 'cinema', name: 'Cinéma', desc: 'Hero animé : fléchettes, baby-foot, flipper' },
+  { id: 'plateau', name: 'Plateau', desc: 'Mise en page sombre, plateau tournant des produits' },
 ]
+
+/** Versions qui imposent leur propre palette, quel que soit le thème choisi. */
+export const DARK_VERSIONS: VersionId[] = ['plateau']
 
 export const DEFAULT_VERSION: VersionId = 'studio'
 export const VERSION_STORAGE_KEY = 'restart-version'
@@ -25,7 +31,11 @@ export function currentVersion(): VersionId {
 }
 
 export function applyVersion(id: VersionId) {
-  document.documentElement.dataset.version = id
+  const root = document.documentElement
+  root.dataset.version = id
+  root.dataset.scheme = DARK_VERSIONS.includes(id)
+    ? 'dark'
+    : (themes.find((t) => t.id === root.dataset.theme)?.scheme ?? 'light')
   try {
     sessionStorage.setItem(VERSION_STORAGE_KEY, id)
   } catch {
