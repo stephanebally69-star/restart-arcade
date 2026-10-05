@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { allModels, univers } from '@/data/catalogue'
+import { audiencePages } from '@/data/audiencePages'
 import { blogPosts } from '@/data/blog'
 import { site } from '@/lib/site'
 
@@ -23,6 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url('/blog/'), changeFrequency: 'weekly', priority: 0.7, lastModified: now },
   ]
 
+  const publics: MetadataRoute.Sitemap = audiencePages.map((p) => ({
+    url: url(`/${p.slug}/`),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+    lastModified: now,
+  }))
+
   const pagesUnivers: MetadataRoute.Sitemap = univers.map((u) => ({
     url: url(`/produits/${u.slug}/`),
     changeFrequency: 'monthly',
@@ -44,5 +52,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(p.date),
   }))
 
-  return [...statiques, ...pagesUnivers, ...fiches, ...articles]
+  return [...statiques, ...publics, ...pagesUnivers, ...fiches, ...articles]
 }

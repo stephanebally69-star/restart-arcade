@@ -790,7 +790,7 @@
   --pl-ring: 0;
   --pl-scan: 0;
   --pl-angle: 0deg;
-  --pl-sway: 0deg;
+  --pl-turn: 0deg;
 }
 .pl-tt-light {
   position: absolute;
@@ -823,10 +823,15 @@
   background:
     radial-gradient(ellipse 60% 70% at 38% 30%, rgba(255, 255, 255, 0.09), transparent 70%),
     radial-gradient(ellipse at 50% 45%, #1b1b1f, #09090b 72%);
-  border: 1.5px solid rgba(246, 227, 190, calc(0.22 + 0.78 * var(--pl-ring)));
+  --pl-lit: max(var(--pl-ring), var(--pl-hover, 0));
+  border: 1.5px solid rgba(246, 227, 190, calc(0.22 + 0.78 * var(--pl-lit)));
   box-shadow:
-    inset 0 0 calc(6px + 26px * var(--pl-ring)) rgba(246, 227, 190, calc(0.08 + 0.5 * var(--pl-ring))),
-    0 0 calc(8px + 44px * var(--pl-ring)) rgba(246, 227, 190, calc(0.1 + 0.55 * var(--pl-ring)));
+    inset 0 0 calc(6px + 26px * var(--pl-lit)) rgba(246, 227, 190, calc(0.08 + 0.5 * var(--pl-lit))),
+    0 0 calc(8px + 44px * var(--pl-lit)) rgba(246, 227, 190, calc(0.1 + 0.55 * var(--pl-lit)));
+}
+/* Survol : l'anneau s'allume, le produit s'élève et s'éclaire, sans arrêter le plateau. */
+.pl-turntable:hover {
+  --pl-hover: 0.7;
 }
 /* Carré tourné puis écrasé à la hauteur du disque : la rotation suit la perspective. */
 .pl-tt-spin {
@@ -849,7 +854,16 @@
   left: 50%;
   bottom: 20%;
   display: none;
-  transform: translateX(-50%) perspective(1200px) rotateY(var(--pl-sway));
+  transform: translateX(-50%) perspective(1200px) rotateY(var(--pl-turn));
+  transition:
+    translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.6s ease;
+}
+.pl-turntable:hover .pl-tt-item {
+  translate: 0 -16px;
+  scale: 1.06;
+  filter: brightness(1.08) drop-shadow(0 0 34px rgba(246, 227, 190, 0.28));
 }
 .pl-tt-item.is-on {
   display: block;
@@ -901,11 +915,42 @@
   background: var(--pl-bg);
   color: var(--pl-ink);
 }
+/* Passage du noir au blanc : progression adoucie aux deux bouts (le gris du
+ * milieu passe vite) et teintée chaud, avec une lueur dorée à l'horizon. */
 .pl-fade-in {
-  background: linear-gradient(180deg, var(--pl-bg), #fafaf8);
+  background:
+    radial-gradient(ellipse 55% 70% at 50% 78%, rgba(214, 160, 72, 0.16), transparent 70%),
+    linear-gradient(
+      in oklab 180deg,
+      var(--pl-bg) 0%,
+      color-mix(in oklab, var(--pl-bg), #fafaf8 2%) 14%,
+      color-mix(in oklab, var(--pl-bg), #f3ece0 9%) 28%,
+      color-mix(in oklab, var(--pl-bg), #efe6d6 24%) 42%,
+      color-mix(in oklab, var(--pl-bg), #f1e9dc 50%) 56%,
+      color-mix(in oklab, var(--pl-bg), #f6f1e8 76%) 70%,
+      color-mix(in oklab, var(--pl-bg), #fafaf8 92%) 84%,
+      #fafaf8 100%
+    );
 }
-.pl-fade-out {
-  background: linear-gradient(180deg, #fafaf8, var(--pl-bg));
+
+/* Cartes cliquables : elles se soulèvent, le liseré se dore. */
+.pl-lift {
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+.pl-lift:hover,
+.pl-lift:focus-within {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--pl-gold) 45%, transparent);
+  box-shadow:
+    0 2px 4px rgba(12, 12, 13, 0.04),
+    0 30px 60px -28px rgba(12, 12, 13, 0.38);
+}
+.pl-lift:has(:focus-visible) {
+  outline: 2px solid var(--pl-gold);
+  outline-offset: 3px;
 }
 
 .pl-stat {

@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { ArrowRight, BadgeCheck, Check, ChevronRight, Star } from 'lucide-react'
 import { allModels, audiences, findUnivers, formatPrice, modelsFor, univers, type Audience } from '@/data/catalogue'
-import { ambiance, productImage, universImage } from '@/data/images'
+import { audiencePath } from '@/data/audiencePages'
+import { ambiance, productImage } from '@/data/images'
 import { googleRating, reviews } from '@/data/reviews'
 import { asset } from '@/lib/site'
 import { PlateauHero, type PlateauProduct } from './PlateauHero'
@@ -19,13 +20,27 @@ const formulas: Record<Audience, string[]> = {
 
 const audiencePhotos: Record<Audience, { src: string; alt: string }> = {
   entreprise: { src: ambiance.equipe, alt: "Collègues autour d'une borne d'arcade dans un espace de pause" },
-  'bar-commerce': { src: asset('/img/realisations/r140.webp'), alt: "Deux clients jouent sur une borne d'arcade RESTART dans un pub lyonnais" },
+  'bar-commerce': {
+    src: asset('/img/situations/bar.webp'),
+    alt: "Pub équipé d'un flipper, de fléchettes et d'une borne à son enseigne, d'un baby-foot et d'un billard",
+  },
   particulier: { src: ambiance.salleDePause, alt: 'Salle de jeux équipée d’un baby-foot, d’un billard et d’une borne' },
 }
 
-/** Photos détourées des produits (public/img/plateau/), pour le hero et le catalogue. */
+/** Photos détourées des produits pour le plateau du hero (public/img/plateau/). */
 const cutout = (slug: string) => asset(`/img/plateau/${slug}.webp`)
-const OWN_CUTOUTS = ['flipper-numerique', 'cocon-de-repos', 'fauteuil-massant']
+/** Photos en situation, tirées de restart-arcade.fr (public/img/situations/). */
+const situation = (slug: string) => asset(`/img/situations/${slug}.webp`)
+
+const situationAlt: Record<string, string> = {
+  'borne-arcade': "Amis autour d'une borne d'arcade",
+  flechettes: 'Partie de fléchettes électroniques sur une borne de fléchettes',
+  'baby-foot': 'Baby-foot en bois dans une pièce lumineuse décorée de plantes',
+  'fauteuil-massant': "Fauteuil massant dans l'espace détente d'une entreprise",
+  billard: "Collègues autour d'un billard dans un espace de pause",
+  'flipper-numerique': "Flipper numérique installé dans la cuisine d'un bureau",
+  'cocon-de-repos': 'Cocon de repos dans une salle de récupération',
+}
 
 function SectionTitle({ title, text, center = true }: { title: string; text?: string; center?: boolean }) {
   return (
@@ -59,6 +74,7 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
       }))
     return {
       id: a.id,
+      href: audiencePath(a.id),
       label: a.label,
       title: a.short,
       blurb: a.blurb,
@@ -71,7 +87,8 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
 
   const grid = univers.map((u) => ({
     href: `/produits/${u.slug}/`,
-    image: OWN_CUTOUTS.includes(u.slug) ? cutout(u.slug) : universImage(u.slug),
+    image: situation(u.slug),
+    alt: situationAlt[u.slug] ?? u.name,
     title: u.name,
     text: u.intro.split('. ')[0].replace(/\.$/, '') + '.',
     price: priceFrom(u.slug),
@@ -118,7 +135,7 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
       </section>
 
       {/* Zone claire : un dégradé depuis le noir, puis les cartes et le catalogue sur fond blanc. */}
-      <div aria-hidden="true" className="pl-fade-in h-40 sm:h-56" />
+      <div aria-hidden="true" className="pl-fade-in h-64 sm:h-80" />
       <div className="pl-light">
         {/* Une carte par situation : entreprise, bar et commerce, particulier. */}
         <section className="mx-auto max-w-6xl px-5 pb-24 pt-4 sm:px-6 lg:pb-32">
@@ -128,21 +145,31 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
           />
           <ul className="mt-14 grid gap-5 lg:grid-cols-3">
             {sheets.map((sheet) => (
-              <li key={sheet.id} className="pl-card flex flex-col overflow-hidden rounded-2xl">
+              <li key={sheet.id} className="pl-card pl-lift group relative flex flex-col overflow-hidden rounded-2xl">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={sheet.photo} alt={sheet.photoAlt} loading="lazy" className="size-full object-cover" />
+                  <img
+                    src={sheet.photo}
+                    alt={sheet.photoAlt}
+                    loading="lazy"
+                    className="size-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]"
+                  />
                   <span className="absolute left-4 top-4 rounded-full bg-black/55 px-3 py-1 text-[12px] font-semibold text-white backdrop-blur">
                     {sheet.label}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="text-lg font-semibold">{sheet.title}</h3>
+                  <h3 className="text-lg font-semibold text-pl-ink">
+                    {/* Lien étiré : toute la carte mène à la page du public ; les modèles restent cliquables. */}
+                    <Link href={sheet.href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+                      {sheet.title}
+                    </Link>
+                  </h3>
                   <p className="mt-2 text-[14px] leading-relaxed text-pl-ink/55">{sheet.blurb}</p>
                   <ul className="mt-5 divide-y divide-pl-ink/[0.07] border-y border-pl-ink/[0.07]" aria-label="Nos conseils">
                     {sheet.picks.map((pick) => (
                       <li key={pick.href}>
-                        <Link href={pick.href} className="group flex items-center gap-3 py-2.5">
+                        <Link href={pick.href} className="group/pick relative z-10 flex items-center gap-3 py-2.5">
                           <span className="pl-thumb flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-lg">
                             {pick.image && (
                               // eslint-disable-next-line @next/next/no-img-element
@@ -154,7 +181,7 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
                             <span className="block text-[12px] text-pl-ink/45">{pick.family}</span>
                           </span>
                           <span className="text-[13px] text-pl-gold">{pick.price}</span>
-                          <ArrowRight className="size-3.5 text-pl-ink/30 transition group-hover:translate-x-0.5 group-hover:text-pl-ink" aria-hidden="true" />
+                          <ArrowRight className="size-3.5 text-pl-ink/30 transition group-hover/pick:translate-x-0.5 group-hover/pick:text-pl-ink" aria-hidden="true" />
                         </Link>
                       </li>
                     ))}
@@ -167,6 +194,10 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
                       </li>
                     ))}
                   </ul>
+                  <span aria-hidden="true" className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-semibold text-pl-ink">
+                    Découvrir
+                    <ArrowRight className="size-3.5 transition group-hover:translate-x-1" />
+                  </span>
                 </div>
               </li>
             ))}
@@ -187,12 +218,12 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
           <div className="mx-auto max-w-6xl px-5 pb-24 pt-8 sm:px-6 lg:pb-32">
             <SectionTitle title="Tout ce qui fait jouer" text="Sept familles d'équipements, livrés montés et installés. Chaque univers a sa page : modèles, prix, avantages selon votre situation." />
             <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {grid.map(({ href, image, title, text, price }) => (
+              {grid.map(({ href, image, alt, title, text, price }) => (
                 <li key={title}>
-                  <Link href={href} className="pl-card group flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5">
-                    <span className="pl-tile relative flex h-52 items-end justify-center overflow-hidden px-6 pt-6">
+                  <Link href={href} className="pl-card pl-lift group flex h-full flex-col overflow-hidden rounded-2xl">
+                    <span className="relative block aspect-[4/3] overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={image} alt="" loading="lazy" className="relative max-h-full w-auto max-w-full object-contain pb-4 drop-shadow-[0_18px_22px_var(--pl-shadow)] transition duration-500 group-hover:scale-105" />
+                      <img src={image} alt={alt} loading="lazy" className="size-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]" />
                     </span>
                     <span className="flex flex-1 flex-col gap-1.5 p-5">
                       <span className="text-[15px] font-semibold">{title}</span>
@@ -206,13 +237,13 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
                 </li>
               ))}
               <li>
-                <Link href="/contact/" className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl">
+                <Link href="/contact/" className="pl-lift group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={asset('/img/realisations/r129.webp')}
-                    alt="Espace de jeux complet installé par RESTART : billard, fléchettes et bornes d'arcade"
+                    src={situation('sur-mesure')}
+                    alt="Salle de jeux complète : baby-foot, borne d'arcade, fléchettes et néons"
                     loading="lazy"
-                    className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
+                    className="absolute inset-0 size-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]"
                   />
                   <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                   <span className="relative flex flex-col gap-1.5 p-5 text-white">
@@ -230,7 +261,6 @@ export function PlateauHome({ faq }: { faq: { q: string; a: string }[] }) {
         </section>
 
       </div>
-      <div aria-hidden="true" className="pl-fade-out h-40 sm:h-56" />
 
       {/* Avis : le défilé « Beyond expectations » de Resend. */}
       <section>

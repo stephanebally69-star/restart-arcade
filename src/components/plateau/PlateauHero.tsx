@@ -8,15 +8,17 @@ import { ctaClick } from '@/lib/analytics'
 /**
  * Rythme du plateau, repris du modèle Turntable du studio de l'agence : chaque
  * produit reste SLOT secondes, s'efface en EXIT secondes en descendant dans le
- * plateau, et le suivant en remonte en ENTER secondes. Le plateau tourne en
- * continu et accélère pendant chaque changement.
+ * plateau, et le suivant en remonte en ENTER secondes.
+ *
+ * Le plateau tourne lentement et le produit tourne avec lui. Une photo ne
+ * montre qu'une face : chaque produit ne pivote que de ±SPEED·SLOT/2 pendant
+ * son passage, de quoi suivre le plateau sans laisser voir l'envers.
  */
 const SLOT = 4
 const EXIT = 0.55
 const ENTER = 0.75
 const LEAD = 2
-const BASE_SPEED = 36 // degrés par seconde
-const BOOST = 72 // degrés ajoutés pendant un changement
+const SPEED = 11 // degrés par seconde
 
 const easeOut = (x: number) => 1 - (1 - x) ** 3
 const easeIn = (x: number) => x ** 3
@@ -27,7 +29,6 @@ export type PlateauProduct = { name: string; image: string; height: number }
 export function PlateauHero({ products }: { products: PlateauProduct[] }) {
   const stageRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
-  const paused = useRef(false)
 
   useEffect(() => {
     const stage = stageRef.current
@@ -37,7 +38,6 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
     let frame = 0
     let last = performance.now()
     let t = LEAD
-    let angle = 0
     let shown = 0
     const total = SLOT * products.length
 
@@ -45,8 +45,8 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
       frame = requestAnimationFrame(tick)
       const dt = Math.min(0.1, (now - last) / 1000)
       last = now
-      // Version masquée (display: none) ou survol : rien à calculer.
-      if (paused.current || !stage.offsetParent) return
+      // Version masquée (display: none) : rien à calculer.
+      if (!stage.offsetParent) return
       t += dt
 
       const tau = t % total
@@ -56,13 +56,11 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
         local < ENTER ? easeOut(local / ENTER) : local > SLOT - EXIT ? 1 - easeIn((local - (SLOT - EXIT)) / EXIT) : 1
       const cutting = local < ENTER || local > SLOT - EXIT
 
-      // Le plateau accélère en cloche pendant le changement de produit.
-      let speed = BASE_SPEED
-      if (cutting) {
-        const p = local > SLOT - EXIT ? (local - (SLOT - EXIT)) / (EXIT + ENTER) : (EXIT + local) / (EXIT + ENTER)
-        speed += (BOOST / (EXIT + ENTER)) * (Math.PI / 2) * Math.sin(Math.PI * p)
-      }
-      angle = (angle + speed * dt) % 360
+      // Le plateau tourne à vitesse constante ; le produit pivote du même angle
+      // autour de son axe, centré sur le milieu de son passage. Le sens est
+      // inversé car le bord avant du disque part vers la gauche.
+      const angle = (t * SPEED) % 360
+      const turn = -(local - SLOT / 2) * SPEED
 
       if (index !== shown) {
         itemRefs.current.forEach((el, i) => el?.classList.toggle('is-on', i === index))
@@ -70,7 +68,7 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
       }
       const ring = cutting ? Math.sin(reveal * Math.PI) * 0.9 + 0.1 : 0
       stage.style.setProperty('--pl-angle', `${angle.toFixed(2)}deg`)
-      stage.style.setProperty('--pl-sway', `${(Math.sin((angle * Math.PI) / 180) * 6).toFixed(2)}deg`)
+      stage.style.setProperty('--pl-turn', `${turn.toFixed(2)}deg`)
       stage.style.setProperty('--pl-ring', ring.toFixed(3))
       stage.style.setProperty('--pl-reveal', reveal.toFixed(4))
       stage.style.setProperty('--pl-scan', cutting && reveal > 0.02 && reveal < 0.98 ? '1' : '0')
@@ -85,7 +83,7 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-24">
         <div>
           <p aria-hidden="true" className="pl-display text-[3.1rem] leading-[0.98] sm:text-[4.2rem] lg:text-[4.9rem]">
-            Transformez vos espaces avec RESTART
+            Transformez vos espaces
           </p>
           <p className="mt-6 max-w-md text-[17px] leading-relaxed text-pl-ink/60">
             Bornes d&apos;arcade, fléchettes, baby-foot, billards et flippers. Personnalisés à votre
@@ -109,14 +107,12 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
           </div>
         </div>
 
-        {/* Plateau tournant : les photos détourées montent du plateau puis y redescendent. */}
+        {/* Plateau tournant : les photos détourées montent du plateau puis y redescendent. Au survol, le produit s'élève. */}
         <div
           ref={stageRef}
           className="pl-turntable relative mx-auto aspect-square w-full max-w-[560px]"
           role="img"
           aria-label={`Produits RESTART : ${products.map((p) => p.name).join(', ')}`}
-          onMouseEnter={() => (paused.current = true)}
-          onMouseLeave={() => (paused.current = false)}
         >
           <div aria-hidden="true" className="pl-tt-light" />
           <div aria-hidden="true" className="pl-tt-platform">

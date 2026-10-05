@@ -1,7 +1,8 @@
 # Plan de redirections 301 — ancien site vers refonte
 
 La refonte fusionne les trois parcours parallèles (`/accueil/`, `/accueil-particulier/`,
-`/accueil-bars-commerces/`) en une seule arborescence. Chaque ancienne URL doit donc être
+`/accueil-bars-commerces/`) en une seule arborescence, avec une page par public
+(`/entreprises/`, `/bars-commerces/`, `/particuliers/`). Chaque ancienne URL doit donc être
 redirigée en **301** vers son équivalent, sans quoi l'autorité accumulée est perdue et les
 visiteurs venant de Google tombent sur des 404.
 
@@ -13,9 +14,9 @@ visiteurs venant de Google tombent sur des 404.
 
 | Ancienne URL | Nouvelle URL |
 |---|---|
-| `/accueil/` | `/` |
-| `/accueil-particulier/` | `/` |
-| `/accueil-bars-commerces/` | `/` |
+| `/accueil/` | `/entreprises/` |
+| `/accueil-particulier/` | `/particuliers/` |
+| `/accueil-bars-commerces/` | `/bars-commerces/` |
 | `/qui-sommes-nous/` | `/qui-sommes-nous/` |
 | `/qui-sommes-nous-particulier/` | `/qui-sommes-nous/` |
 | `/qui-sommes-nous-bars-commerces/` | `/qui-sommes-nous/` |
