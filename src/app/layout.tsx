@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Header } from '@/components/Header'
+import { TopBar } from '@/components/TopBar'
 import { Footer } from '@/components/Footer'
 import { Analytics } from '@/components/Analytics'
 import { ConsentBanner } from '@/components/ConsentBanner'
@@ -14,7 +15,7 @@ import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/
 /**
  * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
  * un flash. Le choix vit en sessionStorage : chaque nouvelle visite repart sur le
- * thème par défaut (Papier). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
+ * thème par défaut (Studio doré). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
  */
 const themeBootScript = `(function(){try{
 var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};
@@ -51,8 +52,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport = {
-  themeColor: '#07061a',
-  colorScheme: 'dark',
+  themeColor: '#f6f6f5',
+  colorScheme: 'light',
 }
 
 /**
@@ -133,7 +134,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Analytics />
-        <div className="surface-app flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col">
+          <TopBar />
           <Header />
           <main id="contenu" className="flex-1">
             {children}

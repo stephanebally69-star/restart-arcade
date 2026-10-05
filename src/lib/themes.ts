@@ -17,11 +17,24 @@ export type ThemeMeta = {
 
 export type FontMeta = { id: string; label: string; stack: string; adjust: string; tracking: string }
 
-export const DEFAULT_THEME = 'papier'
+export const DEFAULT_THEME = 'studio'
 export const THEME_STORAGE_KEY = 'restart-theme'
 export const CUSTOM_STORAGE_KEY = 'restart-theme-custom'
 
 export const themes: ThemeMeta[] = [
+  {
+    "id": "studio",
+    "name": "Studio doré",
+    "desc": "Blanc studio, noir et lumière d'heure dorée",
+    "scheme": "light",
+    "head": "inter",
+    "body": "inter",
+    "bg": "#f6f6f5",
+    "primary": "#141414",
+    "accent": "#a65f1b",
+    "price": "#8f4f12",
+    "headingIsPrimary": false
+  },
   {
     "id": "borne",
     "name": "Borne",

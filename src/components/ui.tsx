@@ -84,7 +84,7 @@ export function Breadcrumbs({ items }: { items: { href: string; label: string }[
   return (
     <>
       <nav aria-label="Fil d'Ariane" className="mb-6">
-        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+        <ol className="flex flex-wrap items-center gap-1.5 px-1 text-sm text-muted-foreground">
           <li>
             <Link href="/" className="hover:text-foreground">
               Accueil
@@ -92,9 +92,9 @@ export function Breadcrumbs({ items }: { items: { href: string; label: string }[
           </li>
           {items.map((it, i) => (
             <li key={it.href} className="flex min-w-0 items-center gap-1.5">
-              <ChevronRight className="size-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
+              <span aria-hidden="true" className="text-foreground/25">/</span>
               {i === items.length - 1 ? (
-                <span className="truncate text-accent">{it.label}</span>
+                <span className="truncate text-foreground">{it.label}</span>
               ) : (
                 <Link href={it.href} className="hover:text-foreground">
                   {it.label}
@@ -138,21 +138,23 @@ export function Faq({
         <h2 className="mx-auto max-w-3xl text-balance text-center font-serif text-3xl font-medium tracking-tight md:text-4xl">
           {title}
         </h2>
-        <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="mt-10 overflow-hidden rounded-[24px] border border-border bg-card shadow-[var(--shadow-paper-sm)]">
           {items.map((f, i) => (
             <details
               key={f.q}
-              className={`group px-4 py-5 sm:px-6 ${i < items.length - 1 ? 'border-b border-border' : ''}`}
+              className={`group px-5 py-5 sm:px-7 ${i < items.length - 1 ? 'border-b border-border' : ''}`}
             >
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left font-medium text-foreground">
                 <span className="text-base">{f.q}</span>
-                <ChevronRight
-                  className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-90"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
+                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-border transition group-open:bg-primary group-open:text-primary-foreground">
+                  <ChevronRight
+                    className="size-3.5 transition-transform group-open:rotate-90"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </span>
               </summary>
-              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-soft/80">{f.a}</p>
+              <p className="mt-3 max-w-3xl pr-10 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
             </details>
           ))}
         </div>
@@ -179,7 +181,7 @@ export function Faq({
  */
 export function AnswerBox({ children }: { children: ReactNode }) {
   return (
-    <div className="flex gap-4 rounded-2xl border border-amber-500/25 bg-amber-50/70 p-5 sm:p-6">
+    <div className="flex gap-4 rounded-[24px] border border-border bg-card p-5 shadow-[var(--shadow-paper-sm)] sm:p-6">
       <span
         aria-hidden="true"
         className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-400/20 text-amber-700"
@@ -218,8 +220,8 @@ export function FinalCta({
   primary?: { href: string; label: string }
 }) {
   return (
-    <section className="mx-auto w-full max-w-6xl px-6 pb-16 pt-6 md:pb-24">
-      <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-3xl border border-primary/16 px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
+    <section className="mx-auto w-full max-w-6xl px-4 pb-10 pt-6 sm:px-6 md:pb-14">
+      <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-[32px] border border-border px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
         <h2 className="mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-[1.1] tracking-tight md:text-5xl">
           {title}
           {em}
@@ -228,25 +230,19 @@ export function FinalCta({
           {subtitle}
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <span className="relative inline-flex overflow-hidden rounded-lg shadow-[var(--shadow-paper-md)]">
-            <Link
-              href={primary.href}
-              className="group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-7 text-base font-medium text-primary-foreground transition hover:brightness-110"
-            >
-              {primary.label}
-              <ArrowRight
-                className="size-4 transition-transform group-hover:translate-x-1"
-                aria-hidden="true"
-              />
-            </Link>
-            <span
+          <Link
+            href={primary.href}
+            className="group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-[0_8px_20px_-10px_rgba(0,0,0,0.55)] transition hover:-translate-y-px hover:brightness-125"
+          >
+            {primary.label}
+            <ArrowRight
+              className="size-4 transition-transform group-hover:translate-x-0.5"
               aria-hidden="true"
-              className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
             />
-          </span>
+          </Link>
           <a
             href={`tel:${site.phoneE164}`}
-            className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-card px-6 text-base font-medium transition hover:bg-muted"
+            className="inline-flex h-12 items-center justify-center rounded-full border border-input bg-card px-6 text-base font-semibold transition hover:bg-muted"
           >
             {site.phone}
           </a>

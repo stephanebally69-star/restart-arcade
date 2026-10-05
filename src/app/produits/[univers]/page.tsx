@@ -1,23 +1,23 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import {
-  ArrowRight,
-  BookOpen,
-  Briefcase,
-  Check,
-  ChevronRight,
-  Home,
-  type LucideIcon,
-  Phone,
-  Store,
-} from 'lucide-react'
+import { Briefcase, Check, Home, type LucideIcon, Store } from 'lucide-react'
 import { allModels, audiences, findUnivers, formatPrice, univers, type Audience } from '@/data/catalogue'
-import { blogPosts, readingTime } from '@/data/blog'
+import { blogPosts } from '@/data/blog'
 import { productImage, universGallery, universImage } from '@/data/images'
 import { Reveal } from '@/components/Reveal'
 import { UniversShowcase, type ShowcaseItem } from '@/components/UniversShowcase'
-import { Breadcrumbs, Faq, JsonLd } from '@/components/ui'
+import {
+  ArticleRows,
+  Block,
+  BriefPoints,
+  CtaBand,
+  PageHero,
+  RowList,
+  SECTION_HEADING,
+  SectionHeading,
+} from '@/components/kit'
+import { Faq, FinalCta, JsonLd } from '@/components/ui'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ univers: string }> }
@@ -39,18 +39,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /*
- * Gabarit repris de la page « Réponses automatiques » de Ma Belle Note
- * (variante surface « app » du layout Solutions) : H1 pleine largeur, visuel
- * animé à gauche et encadré « En bref » indigo à droite, cartes paper qui
- * s'estompent au survol, bandeau CTA, liste des autres univers, articles,
- * carte CTA finale.
+ * Gabarit Studio : carte d'en-tête, vitrine des modèles, synthèse sur carte
+ * sombre, cartes blanches qui s'estompent au survol, bandeau CTA, liste des
+ * autres univers, articles, carte CTA finale.
  */
 
-const SECTION_HEADING =
-  'mx-auto max-w-3xl text-balance text-center font-serif text-3xl font-medium tracking-tight md:text-4xl'
-
 const VISUAL_CARD_CLASS =
-  'relative isolate flex flex-col gap-3 overflow-hidden rounded-2xl border border-primary/16 bg-gradient-to-br from-primary/8 via-card to-card px-5 pb-6 pt-5 shadow-[var(--shadow-paper-md)]'
+  'relative isolate flex flex-col gap-2 overflow-hidden rounded-[24px] border border-border bg-card p-2 pb-5 shadow-[var(--shadow-paper-sm)]'
 
 const AUDIENCE_ICONS: Record<Audience, LucideIcon> = {
   entreprise: Briefcase,
@@ -110,72 +105,17 @@ export default async function UniversPage({ params }: Props) {
     : universGallery(u.slug).map((image, i) => ({ image, label: `${u.name} · visuel ${i + 1}` }))
 
   return (
-    <div className="surface-app">
+    <>
       {/* --- Hero ------------------------------------------------------- */}
-      <section className="relative mx-auto w-full max-w-6xl px-6 pb-8 pt-10 md:pb-10 md:pt-14">
-        <Breadcrumbs
-          items={[
-            { href: '/produits/', label: 'Produits' },
-            { href: `/produits/${u.slug}/`, label: u.name },
-          ]}
-        />
-
-        <h1 className="mb-10 font-serif text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl lg:text-[clamp(2.25rem,4vw,3rem)]">
-          {u.h1}
-        </h1>
-
-        <div className="grid items-start gap-10 lg:grid-cols-[65fr_35fr] lg:gap-16">
-          <div className="flex flex-col items-start gap-6 lg:order-2">
-            <aside
-              aria-label="En bref"
-              className="card-brand w-full rounded-2xl px-6 py-6 text-sm leading-relaxed md:text-[15px]"
-            >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-10 -top-16 -z-10 size-40 rounded-full bg-accent/40 blur-3xl"
-              />
-              <ul className="flex flex-col gap-3">
-                {briefPoints.map((point, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <Check
-                      className="mt-0.5 size-4 shrink-0 md:mt-1"
-                      strokeWidth={2.5}
-                      aria-hidden="true"
-                    />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-            <div className="mt-2 flex w-full flex-wrap items-center gap-3">
-              <span className="relative inline-flex flex-1 overflow-hidden rounded-lg shadow-sm">
-                <Link
-                  href="/contact/"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:brightness-110"
-                >
-                  Demander un devis
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-                <span
-                  aria-hidden="true"
-                  className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
-                />
-              </span>
-              <a
-                href={`tel:${site.phoneE164}`}
-                className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border bg-card px-4 text-sm font-medium transition hover:bg-muted"
-              >
-                <Phone className="size-4" aria-hidden="true" />
-                Appeler
-              </a>
-            </div>
-          </div>
-
-          <div className="relative lg:order-1">
-            <UniversShowcase items={showcase} />
-          </div>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[
+          { href: '/produits/', label: 'Produits' },
+          { href: `/produits/${u.slug}/`, label: u.name },
+        ]}
+        title={u.h1}
+        visual={<UniversShowcase items={showcase} />}
+        brief={<BriefPoints items={briefPoints} />}
+      />
 
       {/* --- La gamme (cartes visuelles) ------------------------------- */}
       <section id="gamme" className="mx-auto w-full max-w-6xl scroll-mt-28 px-6 py-10 md:py-14">
@@ -192,11 +132,7 @@ export default async function UniversPage({ params }: Props) {
                     href={`/produits/${u.slug}/${m.slug}/`}
                     className={`${VISUAL_CARD_CLASS} h-full transition duration-300 hover:-translate-y-0.5`}
                   >
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute -right-12 -top-14 -z-10 size-40 rounded-full bg-accent/16 blur-3xl"
-                    />
-                    <span className="mb-3 flex h-44 items-center justify-center overflow-hidden rounded-xl bg-white">
+                    <span className="mb-2 flex h-48 items-center justify-center overflow-hidden rounded-[18px] bg-white">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={productImage(m.slug)}
@@ -205,30 +141,26 @@ export default async function UniversPage({ params }: Props) {
                         className="h-full w-full object-contain p-2"
                       />
                     </span>
-                    <span className="flex items-baseline justify-between gap-3">
-                      <span className="font-serif text-lg font-medium tracking-tight text-heading">
+                    <span className="flex items-baseline justify-between gap-3 px-3">
+                      <span className="text-lg font-semibold tracking-tight text-heading">
                         {m.name}
                       </span>
-                      <span className="font-serif text-base text-amber-700">
+                      <span className="text-base font-semibold text-[color:var(--t-price)]">
                         {m.price != null ? formatPrice(m.price) : 'Sur devis'}
                       </span>
                     </span>
-                    <span className="text-[13px] leading-snug text-foreground/65">{m.headline}</span>
+                    <span className="px-3 text-[13px] leading-snug text-muted-foreground">{m.headline}</span>
                   </Link>
                 </Reveal>
               ))
             : universGallery(u.slug).map((src, index) => (
                 <Reveal key={src} delayMs={(index % 3) * 120} className={VISUAL_CARD_CLASS}>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -right-12 -top-14 -z-10 size-40 rounded-full bg-accent/16 blur-3xl"
-                  />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={src}
                     alt={`${u.name} RESTART, visuel ${index + 1}`}
                     loading="lazy"
-                    className="h-56 w-full rounded-xl bg-white object-contain p-2"
+                    className="h-56 w-full rounded-[18px] bg-white object-contain p-2"
                   />
                 </Reveal>
               ))}
@@ -245,7 +177,7 @@ export default async function UniversPage({ params }: Props) {
               <Reveal
                 key={a.id}
                 delayMs={index * 120}
-                className="card-paper flex cursor-default flex-col gap-3 rounded-2xl p-6 transition duration-300 hover:-translate-y-0.5"
+                className="card-paper flex cursor-default flex-col gap-3 rounded-[24px] p-6 transition duration-300 hover:-translate-y-0.5"
               >
                 <div id={a.id} className="flex items-center gap-3">
                   <Icon className="size-6 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
@@ -274,34 +206,7 @@ export default async function UniversPage({ params }: Props) {
         </div>
       </section>
 
-      {/* --- Bandeau CTA ------------------------------------------------ */}
-      <div className="mt-6 border-y border-border bg-primary/4">
-        <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between md:py-12">
-          <div>
-            <h2 className="font-serif text-2xl font-medium tracking-tight md:text-3xl">
-              Livré monté, installé, prêt à jouer
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              Devis gratuit sous 48 h. Achat ou location, partout en France.
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap gap-3">
-            <Link
-              href="/contact/"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition hover:brightness-110"
-            >
-              Demander un devis
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
-            <Link
-              href="/realisations/"
-              className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-card px-5 text-sm font-medium transition hover:bg-muted"
-            >
-              Nos réalisations
-            </Link>
-          </div>
-        </section>
-      </div>
+      <CtaBand />
 
       {/* --- FAQ -------------------------------------------------------- */}
       <section className="mx-auto w-full max-w-3xl px-6 py-14 md:py-20">
@@ -309,104 +214,37 @@ export default async function UniversPage({ params }: Props) {
       </section>
 
       {/* --- Autres univers --------------------------------------------- */}
-      <div className="border-y border-border bg-primary/4">
-        <section className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
-          <h2 className={SECTION_HEADING}>Nos autres univers</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base text-muted-foreground">
-            Tous personnalisables, tous livrés montés, et combinables dans un même espace.
-          </p>
-          <ul className="rows-dim mt-10 grid gap-x-10 border-t border-border sm:grid-cols-2">
-            {related.map((o) => (
-              <li key={o.slug} className="border-b border-border">
-                <Link href={`/produits/${o.slug}/`} className="group flex items-center gap-4 py-4">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={universImage(o.slug)}
-                    alt=""
-                    loading="lazy"
-                    className="size-11 shrink-0 rounded-lg border border-border bg-white object-contain p-0.5 transition duration-500 group-hover:scale-110"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-serif text-base font-medium leading-snug tracking-tight text-heading">
-                      {o.name}
-                    </span>
-                    <span className="mt-0.5 block truncate text-xs text-muted-foreground">
-                      {o.models.length > 0
-                        ? `${o.models.length} modèle${o.models.length > 1 ? 's' : ''} · ${o.intro.split('.')[0]}`
-                        : `Sur devis · ${o.intro.split('.')[0]}`}
-                    </span>
-                  </span>
-                  <ChevronRight
-                    className="size-4 shrink-0 text-accent transition-transform group-hover:translate-x-0.5"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+      <Block band>
+        <SectionHeading
+          title="Nos autres univers"
+          subtitle="Tous personnalisables, tous livrés montés, et combinables dans un même espace."
+        />
+        <RowList
+          items={related.map((o) => ({
+            href: `/produits/${o.slug}/`,
+            title: o.name,
+            summary:
+              o.models.length > 0
+                ? `${o.models.length} modèle${o.models.length > 1 ? 's' : ''} · ${o.intro.split('.')[0]}`
+                : `Sur devis · ${o.intro.split('.')[0]}`,
+            image: universImage(o.slug),
+          }))}
+        />
+      </Block>
 
       {/* --- Pour aller plus loin --------------------------------------- */}
-      <section className="mx-auto w-full max-w-6xl px-6 pb-14 pt-8 md:pb-20 md:pt-16">
-        <h2 className={SECTION_HEADING}>Pour aller plus loin</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base text-muted-foreground">
-          Nos guides sur le sujet, à lire avant de vous lancer.
-        </p>
-        <ul className="mt-10 divide-y divide-border border-t border-border">
-          {articles.map((p) => (
-            <li key={p.slug}>
-              <Link
-                href={`/blog/${p.slug}/`}
-                className="group -mx-3 flex items-center gap-4 rounded-lg px-3 py-4 transition hover:bg-muted"
-              >
-                <BookOpen className="size-4 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
-                <span className="min-w-0 flex-1 font-medium leading-snug">{p.title}</span>
-                <span className="hidden shrink-0 text-xs text-muted-foreground sm:block">
-                  {readingTime(p.words)} min de lecture
-                </span>
-                <ChevronRight
-                  className="size-4 shrink-0 text-accent transition-transform group-hover:translate-x-0.5"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <Block>
+        <SectionHeading
+          title="Pour aller plus loin"
+          subtitle="Nos guides sur le sujet, à lire avant de vous lancer."
+        />
+        <ArticleRows posts={articles} />
+      </Block>
 
-      {/* --- Carte CTA finale (variante « paper ») ---------------------- */}
-      <section className="mx-auto w-full max-w-6xl px-6 pb-16 md:pb-24">
-        <div className="bg-gradient-paper-brand relative isolate overflow-hidden rounded-3xl border border-primary/16 px-6 py-14 text-center shadow-[var(--shadow-paper-sm)] sm:px-10 md:px-16 md:py-20">
-          <h2 className="mx-auto max-w-3xl text-balance font-serif text-3xl font-medium leading-[1.1] tracking-tight md:text-5xl">
-            Un projet {u.name.toLowerCase()} ? Parlons-en.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted-foreground md:text-lg">
-            Décrivez votre espace : nous revenons vers vous sous 48 heures avec une proposition
-            chiffrée, en achat comme en location.
-          </p>
-          <div className="mt-9 flex justify-center">
-            <span className="relative inline-flex overflow-hidden rounded-lg shadow-[var(--shadow-paper-md)]">
-              <Link
-                href="/contact/"
-                className="group relative inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-7 text-base font-medium text-primary-foreground transition hover:brightness-110"
-              >
-                Demander un devis gratuit
-                <ArrowRight
-                  className="size-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </Link>
-              <span
-                aria-hidden="true"
-                className="cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent"
-              />
-            </span>
-          </div>
-        </div>
-      </section>
+      <FinalCta
+        title={`Un projet ${u.name.toLowerCase()} ? Parlons-en.`}
+        subtitle="Décrivez votre espace : nous revenons vers vous sous 48 heures avec une proposition chiffrée, en achat comme en location."
+      />
 
       <JsonLd
         data={{
@@ -419,6 +257,6 @@ export default async function UniversPage({ params }: Props) {
           isPartOf: { '@id': `${site.url}/#website` },
         }}
       />
-    </div>
+    </>
   )
 }

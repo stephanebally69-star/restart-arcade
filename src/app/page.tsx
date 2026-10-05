@@ -1,25 +1,28 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
-import { allModels, formatPrice, univers } from '@/data/catalogue'
+import { ArrowRight, BadgeCheck, Gamepad2, Paintbrush, Timer, Truck, Wallet } from 'lucide-react'
+import { allModels, findUnivers, formatPrice, univers } from '@/data/catalogue'
 import { AudienceSwitch } from '@/components/AudienceSwitch'
+import { GoldenStage, type StageSlide } from '@/components/GoldenStage'
 import { Reveal } from '@/components/Reveal'
-import { UniversShowcase } from '@/components/UniversShowcase'
 import {
   ArticleRows,
   Block,
+  BriefCard,
+  BriefPoints,
   CtaBand,
-  Glow,
-  PageHero,
+  DarkCta,
+  FeatureTrio,
+  InfoCard,
+  MakerCard,
   PaperCard,
   RowList,
   SectionHeading,
-  VISUAL_CARD_CLASS,
-  BriefPoints,
+  SpecsCard,
 } from '@/components/kit'
 import { Faq, FinalCta } from '@/components/ui'
 import { blogPosts } from '@/data/blog'
-import { ambiance, productImage, universImage } from '@/data/images'
+import { ambiance, universImage } from '@/data/images'
 
 export const metadata: Metadata = {
   title: "Bornes d'arcade, fléchettes et baby-foot personnalisés, en vente et en location",
@@ -113,30 +116,107 @@ const valueProps = [
 ]
 
 export default function Home() {
-  const showcase = allModels.map((m) => ({
-    image: productImage(m.slug)!,
-    label: m.name,
-    detail: m.price != null ? formatPrice(m.price) : 'Sur devis',
-  }))
+  const dart = findUnivers('flechettes')!.models
+  const prices = allModels.flatMap((m) => (m.price != null ? [m.price] : []))
+  const slides: StageSlide[] = [
+    {
+      product: 'flipper',
+      name: 'Flipper numérique',
+      title: 'Plus de 500 tables dans une seule machine',
+      detail: 'Retour de force et accéléromètre · Sur devis',
+      href: '/produits/flipper-numerique/',
+      cta: 'Voir le flipper',
+    },
+    {
+      product: 'flechettes',
+      name: 'Fléchettes électroniques',
+      title: 'Plus de 30 modes de jeu, comptage automatique',
+      detail: dart.map((m) => `${m.name} ${formatPrice(m.price!)}`).join(' · '),
+      href: '/produits/flechettes/',
+      cta: 'Voir les fléchettes',
+    },
+    {
+      product: 'basket',
+      name: 'Basket arcade',
+      title: "Le panier de salle d'arcade, à votre image",
+      detail: 'Sur demande',
+      href: '/contact/',
+      cta: 'Nous consulter',
+    },
+  ]
 
   return (
     <>
-      <PageHero
-        title="Le jeu qui fait revenir les gens dans vos espaces."
-        visual={<UniversShowcase items={showcase} />}
-        brief={
-          <BriefPoints
-            items={[
-              "Bornes d'arcade, fléchettes, baby-foot, billards et flippers, en vente ou en location",
-              'Personnalisés à votre image : covering, couleurs, logo',
-              'Livrés montés et installés partout en France',
-              'De 899 € à 2 638,80 €, devis gratuit sous 48 heures',
-            ]}
+      <section className="mx-auto w-full max-w-5xl px-4 pb-6 pt-8 sm:px-6 md:pt-10">
+        <InfoCard
+          eyebrow="Flipper, fléchettes, basket et bornes d'arcade"
+          title="Le jeu qui fait revenir les gens dans vos espaces."
+          lead="Personnalisés à votre image, livrés montés et installés partout en France, en vente ou en location."
+          primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
+          secondary={{ href: '/produits/', label: 'Le catalogue' }}
+        />
+      </section>
+
+      <GoldenStage slides={slides} />
+
+      <section className="mx-auto w-full max-w-5xl px-4 pb-8 pt-8 sm:px-6">
+        <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="flex flex-col gap-6">
+            <FeatureTrio
+              items={[
+                {
+                  icon: <Truck className="size-4" aria-hidden="true" />,
+                  title: 'Livré monté',
+                  text: 'Assemblé, testé et installé chez vous',
+                },
+                {
+                  icon: <Paintbrush className="size-4" aria-hidden="true" />,
+                  title: 'À votre image',
+                  text: 'Covering, couleurs, logo',
+                },
+                {
+                  icon: <BadgeCheck className="size-4" aria-hidden="true" />,
+                  title: "Jusqu'à 3 ans de garantie",
+                  text: 'Et une ligne directe après la vente',
+                },
+              ]}
+            />
+            <BriefCard>
+              <BriefPoints
+                items={[
+                  "Bornes d'arcade, fléchettes, baby-foot, billards et flippers, en vente ou en location",
+                  'Personnalisés à votre image : covering, couleurs, logo',
+                  'Livrés montés et installés partout en France',
+                  'De 899 € à 2 638,80 €, devis gratuit sous 48 heures',
+                ]}
+              />
+            </BriefCard>
+          </div>
+          <div className="flex flex-col gap-6">
+            <MakerCard />
+            <SpecsCard
+              rows={[
+                { label: 'Modèles au catalogue', value: allModels.length },
+                { label: 'Jeux sur les bornes PRO', value: "Jusqu'à 5 000" },
+                {
+                  label: 'Prix',
+                  value: `${formatPrice(Math.min(...prices))} à ${formatPrice(Math.max(...prices))}`,
+                },
+                { label: 'Devis', value: 'Sous 48 heures' },
+                { label: 'Paiement', value: 'En 2x, 3x ou 4x' },
+                { label: 'Livraison', value: 'Toute la France' },
+              ]}
+            />
+          </div>
+        </div>
+        <div className="mt-6">
+          <DarkCta
+            title="Pas encore décidé ?"
+            text="Un échange de 20 minutes, sur place ou en visio, pour cadrer l'usage, la place et le budget."
+            label="Parler de mon projet"
           />
-        }
-        primary={{ href: '/contact/', label: 'Demander un devis gratuit' }}
-        secondary={{ href: '/produits/', label: 'Le catalogue' }}
-      />
+        </div>
+      </section>
 
       {/* --- Ce que RESTART fait pour vous ----------------------------- */}
       <Block>
@@ -181,25 +261,31 @@ export default function Home() {
             <Reveal key={u.slug} delayMs={(i % 4) * 100} className="h-full">
               <Link
                 href={`/produits/${u.slug}/`}
-                className={`${VISUAL_CARD_CLASS} h-full transition duration-300 hover:-translate-y-0.5`}
+                className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-card p-2 shadow-[var(--shadow-paper-sm)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[var(--shadow-paper-md)]"
               >
-                <Glow />
-                <span className="mb-2 flex h-40 items-center justify-center overflow-hidden rounded-xl bg-white">
+                <span className="flex h-44 items-center justify-center overflow-hidden rounded-[18px] bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={universImage(u.slug)}
                     alt={u.name}
                     loading="lazy"
-                    className="h-full w-full object-contain p-2"
+                    className="h-full w-full object-contain p-3 transition duration-500 group-hover:scale-105"
                   />
                 </span>
-                <span className="font-serif text-lg font-medium tracking-tight text-heading">
-                  {u.name}
-                </span>
-                <span className="text-[13px] leading-snug text-foreground/65">
-                  {u.models.length > 0
-                    ? `${u.models.length} modèle${u.models.length > 1 ? 's' : ''}`
-                    : 'Sur devis'}
+                <span className="flex items-center justify-between gap-3 px-3 pb-2 pt-3">
+                  <span>
+                    <span className="block text-base font-semibold tracking-tight text-heading">
+                      {u.name}
+                    </span>
+                    <span className="text-[13px] text-muted-foreground">
+                      {u.models.length > 0
+                        ? `${u.models.length} modèle${u.models.length > 1 ? 's' : ''}`
+                        : 'Sur devis'}
+                    </span>
+                  </span>
+                  <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border transition group-hover:bg-primary group-hover:text-primary-foreground">
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  </span>
                 </span>
               </Link>
             </Reveal>
@@ -216,10 +302,10 @@ export default function Home() {
         <ol className="mt-12 center-grid [--cols:4]">
           {steps.map((s, index) => (
             <li key={s.n} className="card relative flex flex-col gap-3 p-6">
-              <span className="font-serif text-5xl font-medium leading-none text-accent/60">
+              <span className="inline-flex size-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <h3 className="font-serif text-lg font-medium tracking-tight">{s.title}</h3>
+              <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
               <p className="text-sm leading-relaxed text-foreground/70">{s.text}</p>
               <p className="mt-auto text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 {s.time}
@@ -237,7 +323,7 @@ export default function Home() {
             src={ambiance.salleDePause}
             alt="Salle de pause équipée d'un baby-foot, d'un billard et d'une borne d'arcade"
             loading="lazy"
-            className="aspect-[3/2] w-full rounded-2xl border border-border object-cover shadow-[var(--shadow-paper-md)]"
+            className="aspect-[3/2] w-full rounded-[28px] border border-border object-cover shadow-[var(--shadow-paper-md)]"
           />
           <div>
             <h2 className="text-balance font-serif text-3xl font-medium tracking-tight md:text-4xl">
@@ -249,7 +335,7 @@ export default function Home() {
             </p>
             <Link
               href="/realisations/"
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-lg border border-border bg-card px-5 text-sm font-medium transition hover:bg-muted"
+              className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:brightness-125"
             >
               Voir nos réalisations
             </Link>

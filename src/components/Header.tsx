@@ -17,15 +17,16 @@ const nav = [
 ]
 
 /**
- * Header « pilule » flottant, repris du layout Ma Belle Note : barre arrondie
- * translucide détachée du bord, mega-menu Produits pleine largeur avec le
- * visuel de chaque univers, panneau mobile en carte flottante.
+ * Header du gabarit Studio : barre transparente en haut de page, qui se
+ * resserre en pilule translucide flottante dès qu'on fait défiler. Mega-menu
+ * Produits avec le visuel de chaque univers, panneau mobile en carte flottante.
  */
 export function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const panelId = useId()
 
@@ -35,6 +36,13 @@ export function Header() {
     setProductsOpen(false)
     setMobileProductsOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     if (!productsOpen) return
@@ -76,15 +84,19 @@ export function Header() {
 
       <div
         ref={rootRef}
-        className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 rounded-full border border-border/60 bg-background/90 pl-4 pr-2 shadow-[0_10px_30px_-14px_rgba(30,27,75,0.18)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/75 md:gap-8 md:pl-6 md:pr-3"
+        className={`mx-auto flex h-16 items-center justify-between gap-3 rounded-full border pl-4 pr-2 transition-all duration-500 md:gap-8 md:pl-6 md:pr-3 ${
+          scrolled || open
+            ? 'max-w-6xl border-border bg-card/80 shadow-[0_14px_40px_-18px_rgba(17,17,17,0.28)] backdrop-blur-xl'
+            : 'max-w-7xl border-transparent bg-transparent'
+        }`}
       >
         <Link href="/" className="flex shrink-0 items-center" aria-label="RESTART, retour à l'accueil">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logo} alt="RESTART" width={1350} height={498} className="h-8 w-auto md:h-10" />
+          <img src={logo} alt="RESTART" width={1350} height={498} className="h-8 w-auto md:h-9" />
         </Link>
 
         <nav
-          className="hidden items-center gap-7 text-sm font-medium text-muted-foreground lg:flex"
+          className="hidden items-center gap-7 text-[15px] font-medium text-foreground/80 lg:flex"
           aria-label="Navigation principale"
         >
           <div>
@@ -106,16 +118,16 @@ export function Header() {
             {productsOpen && (
               <div
                 id={panelId}
-                className="fixed left-1/2 top-[4.75rem] z-40 w-[calc(100vw-1.5rem)] max-w-7xl -translate-x-1/2 overflow-hidden rounded-3xl border border-border bg-background shadow-[0_20px_60px_-20px_rgba(30,27,75,0.25)] sm:top-[5rem] sm:w-[calc(100vw-3rem)]"
+                className="fixed left-1/2 top-[4.75rem] z-40 w-[calc(100vw-1.5rem)] max-w-6xl -translate-x-1/2 overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_30px_70px_-24px_rgba(17,17,17,0.3)] sm:top-[5rem] sm:w-[calc(100vw-3rem)]"
               >
                 <ul className="grid grid-cols-4 gap-3 p-5 xl:grid-cols-7">
                   {univers.map((u) => (
                     <li key={u.slug}>
                       <Link
                         href={`/produits/${u.slug}/`}
-                        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-paper transition hover:border-primary/25 hover:shadow-[var(--shadow-paper-md)]"
+                        className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-border bg-card p-1.5 transition hover:shadow-[var(--shadow-paper-md)]"
                       >
-                        <span className="product-shot block aspect-[4/3] overflow-hidden">
+                        <span className="product-shot block aspect-[4/3] overflow-hidden rounded-[14px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={universImage(u.slug)}
@@ -136,7 +148,7 @@ export function Header() {
                     </li>
                   ))}
                 </ul>
-                <div className="flex items-center justify-between gap-6 border-t border-border bg-cream-2/60 px-6 py-4">
+                <div className="flex items-center justify-between gap-6 border-t border-border bg-muted/60 px-6 py-4">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-foreground">
                       Pas sûr du modèle ? On vous conseille.
@@ -147,7 +159,7 @@ export function Header() {
                   </div>
                   <Link
                     href="/produits/"
-                    className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-700 transition hover:gap-1.5"
+                    className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:brightness-125"
                   >
                     Tout le catalogue
                     <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -168,7 +180,7 @@ export function Header() {
           <a
             href={`tel:${site.phoneE164}`}
             onClick={() => contactClick('phone', 'header')}
-            className="hidden h-9 items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground transition hover:text-foreground xl:inline-flex"
+            className="hidden h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-foreground/80 transition hover:text-foreground xl:inline-flex"
           >
             <Phone className="size-3.5" aria-hidden="true" />
             {site.phone}
@@ -176,7 +188,7 @@ export function Header() {
           <Link
             href="/contact/"
             onClick={() => ctaClick('Demander un devis', 'header')}
-            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_14px_-4px_rgba(30,27,75,0.4)] transition hover:-translate-y-px hover:brightness-110 sm:inline-flex"
+            className="hidden h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-[0_8px_20px_-10px_rgba(0,0,0,0.55)] transition hover:-translate-y-px hover:brightness-125 sm:inline-flex"
           >
             Devis gratuit
           </Link>
@@ -186,7 +198,7 @@ export function Header() {
             aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={open}
             aria-controls="menu-mobile"
-            className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-background text-foreground transition hover:bg-cream-2 lg:hidden"
+            className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:bg-muted lg:hidden"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -196,14 +208,14 @@ export function Header() {
       {open && (
         <div
           id="menu-mobile"
-          className="fixed left-3 right-3 top-[5.25rem] z-30 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-border bg-background/95 shadow-[0_20px_60px_-20px_rgba(30,27,75,0.25)] backdrop-blur sm:left-6 sm:right-6 sm:top-[6rem] lg:hidden"
+          className="fixed left-3 right-3 top-[5.25rem] z-30 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-[28px] border border-border bg-card/95 shadow-[0_30px_70px_-24px_rgba(17,17,17,0.3)] backdrop-blur sm:left-6 sm:right-6 sm:top-[6rem] lg:hidden"
         >
           <nav className="flex flex-col gap-1 px-6 py-4 text-base" aria-label="Navigation mobile">
             <button
               type="button"
               aria-expanded={mobileProductsOpen}
               onClick={() => setMobileProductsOpen((v) => !v)}
-              className="flex items-center justify-between rounded-md px-2 py-3 text-left text-foreground transition hover:bg-cream-2"
+              className="flex items-center justify-between rounded-md px-2 py-3 text-left text-foreground transition hover:bg-muted"
             >
               Produits
               <ChevronDown
@@ -217,7 +229,7 @@ export function Header() {
                   <li key={u.slug}>
                     <Link
                       href={`/produits/${u.slug}/`}
-                      className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-muted-foreground transition hover:bg-cream-2 hover:text-foreground"
+                      className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -235,7 +247,7 @@ export function Header() {
               <Link
                 key={n.href}
                 href={n.href}
-                className="rounded-md px-2 py-3 text-foreground transition hover:bg-cream-2"
+                className="rounded-md px-2 py-3 text-foreground transition hover:bg-muted"
               >
                 {n.label}
               </Link>

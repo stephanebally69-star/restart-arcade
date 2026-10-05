@@ -42,7 +42,7 @@ FONTS = {
     'sharetech': ('Share Tech Mono', 'Share_Tech_Mono', "weight: '400'", 'ui-monospace, monospace', 'none', '0'),
     'plexmono': ('IBM Plex Mono', 'IBM_Plex_Mono', "weight: ['400', '500', '600']", 'ui-monospace, monospace', 'none', '0'),
 }
-PRELOADED = {'inter', 'fraunces'}  # polices du thème par défaut (Papier)
+PRELOADED = {'inter'}  # polices du thème par défaut (Studio doré)
 
 
 def stack(fid):
@@ -51,6 +51,14 @@ def stack(fid):
 
 # --- Thèmes -------------------------------------------------------------------
 THEMES = [
+    dict(id='studio', name='Studio doré', desc="Blanc studio, noir et lumière d'heure dorée", scheme='light',
+         bg='#f6f6f5', bg2='#efeeec', surface='#ffffff', surface2='#f1f0ee',
+         text='#161514', soft='#3d3b39', muted='#75726e', heading='#111111',
+         primary='#141414', pfg='#ffffff', accent='#a65f1b', price='#8f4f12',
+         brand=('#24170e', '#0e0b09'), footer='#0e0d0c',
+         border='rgba(17,17,17,0.07)', input='rgba(17,17,17,0.14)',
+         page='radial-gradient(1200px 520px at 50% -12%, rgba(233,160,82,0.10), transparent 62%)',
+         head='inter', body='inter', tracking='-0.035em', glow='none'),
     dict(id='borne', name='Borne', desc='Nuit bleutée, magenta et cyan', scheme='dark',
          bg='#0b0d17', bg2='#10131f', surface='#151a2a', surface2='#1c2236',
          text='#e8ebf5', soft='#c3c8da', muted='#8e95ad', heading='#ffffff',
@@ -274,7 +282,7 @@ THEMES = [
          head='fraunces', body='inter', glow='none'),
 ]
 
-DEFAULT = 'papier'
+DEFAULT = 'studio'
 
 
 def block(t):

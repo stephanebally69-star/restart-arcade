@@ -33,7 +33,7 @@ const fontStack = (id: string) => fonts.find((f) => f.id === id)?.stack
 /**
  * Sélecteur de thème flottant : un onglet sur le bord droit ouvre un panneau
  * avec 24 ambiances prêtes et un éditeur (couleurs, polices). Tout est
- * conservé pendant la visite (sessionStorage) : une nouvelle visite repart sur Papier.
+ * conservé pendant la visite (sessionStorage) : une nouvelle visite repart sur Studio doré.
  */
 export function ThemeSwitcher() {
   const [open, setOpen] = useState(false)

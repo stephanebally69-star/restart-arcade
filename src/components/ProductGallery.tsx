@@ -23,7 +23,7 @@ export function ProductGallery({
     <div>
       <div
         className={`product-shot relative overflow-hidden ${
-          bare ? '' : 'rounded-3xl border border-border shadow-[var(--shadow-paper-md)]'
+          bare ? '' : 'rounded-[28px] border border-border shadow-[var(--shadow-paper-md)]'
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -51,7 +51,7 @@ export function ProductGallery({
                 onClick={() => setActive(i)}
                 aria-label={`Voir le visuel ${i + 1}`}
                 aria-current={i === active}
-                className={`product-shot block w-full overflow-hidden rounded-xl border-2 transition ${
+                className={`product-shot block w-full overflow-hidden rounded-2xl border-2 transition ${
                   i === active
                     ? 'border-primary'
                     : 'border-border opacity-75 hover:opacity-100'

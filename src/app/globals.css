@@ -58,11 +58,9 @@
 }
 
 :root[data-scheme='light'] {
-  --shadow-paper-sm: 0 1px 2px rgba(20, 20, 40, 0.06), 0 2px 6px rgba(20, 20, 40, 0.05);
-  --shadow-paper-md: 0 8px 24px -8px rgba(20, 20, 40, 0.18), 0 2px 6px rgba(20, 20, 40, 0.06);
-  --shadow-paper-lg:
-    0 30px 60px -20px rgba(20, 20, 40, 0.28),
-    0 8px 20px -8px color-mix(in srgb, var(--t-primary) 25%, transparent);
+  --shadow-paper-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 4px 14px -6px rgba(17, 17, 17, 0.06);
+  --shadow-paper-md: 0 14px 34px -16px rgba(17, 17, 17, 0.18), 0 2px 6px rgba(17, 17, 17, 0.04);
+  --shadow-paper-lg: 0 34px 70px -28px rgba(17, 17, 17, 0.28), 0 4px 12px rgba(17, 17, 17, 0.05);
 }
 
 @theme inline {
@@ -226,18 +224,13 @@
     color: var(--amber-600);
   }
 
-  /* Carte « paper » du gabarit Solutions : léger dégradé indigo à gauche. */
+  /* Carte blanche du gabarit Studio : liseré discret, ombre douce. */
   .card {
     position: relative;
-    border: 1px solid color-mix(in srgb, var(--primary) 16%, transparent);
-    border-radius: var(--radius-card);
-    background-clip: padding-box;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--primary) 6%, var(--card)) 0%,
-      var(--card) 70%
-    );
-    box-shadow: var(--shadow-paper-md);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--card);
+    box-shadow: var(--shadow-paper-sm);
     transition:
       border-color 0.3s ease,
       box-shadow 0.3s ease,
@@ -245,8 +238,7 @@
       opacity 0.3s ease;
   }
   .card:hover {
-    border-color: color-mix(in srgb, var(--primary) 32%, transparent);
-    box-shadow: var(--shadow-paper-lg);
+    box-shadow: var(--shadow-paper-md);
     transform: translateY(-2px);
   }
 
@@ -256,7 +248,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: 9999px;
     background: var(--primary);
     padding-inline: 1.5rem;
     font-size: 0.875rem;
@@ -279,8 +271,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border);
+    border-radius: 9999px;
+    border: 1px solid var(--input);
     background: var(--card);
     padding-inline: 1.5rem;
     font-size: 0.875rem;
@@ -373,50 +365,30 @@
  * (page Réponses automatiques). Palette neutralisée, accent doré, cartes
  * « paper », survol qui estompe les voisines. Activée par `.surface-app`.
  * --------------------------------------------------------------------- */
-body:has(.surface-app) footer {
-  border-top-color: color-mix(in srgb, var(--primary) 25%, transparent);
-}
-body:has(.surface-app) header > div:first-of-type {
-  background-color: color-mix(in srgb, var(--t-surface) 88%, transparent);
-  border-color: var(--border);
-  box-shadow: var(--shadow-paper-md);
-}
 
 .card-paper {
   position: relative;
-  border: 1px solid color-mix(in srgb, var(--primary) 16%, transparent);
-  background-clip: padding-box;
-  background-image: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--primary) 8%, var(--card)) 0%,
-    var(--card) 70%
-  );
-  box-shadow: var(--shadow-paper-md);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow-paper-sm);
 }
 .card-brand {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background-image: linear-gradient(135deg, var(--t-brand-from) 0%, var(--t-brand-to) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #fff;
-  box-shadow:
-    var(--shadow-paper-md),
-    0 0 40px -12px color-mix(in srgb, var(--t-brand-from) 60%, transparent);
+  box-shadow: var(--shadow-paper-md);
 }
 .bg-gradient-paper-brand {
   background-image:
     radial-gradient(
-      58% 104% at -2% -16%,
-      color-mix(in srgb, var(--magenta) 30%, transparent) 0%,
-      transparent 56%
+      70% 120% at 100% 120%,
+      color-mix(in srgb, #f2a457 22%, transparent) 0%,
+      transparent 60%
     ),
-    radial-gradient(
-      58% 104% at 102% 116%,
-      color-mix(in srgb, var(--cyan) 22%, transparent) 0%,
-      transparent 56%
-    ),
-    linear-gradient(to right, color-mix(in srgb, var(--primary) 8%, var(--card)) 0%, var(--card) 70%);
+    linear-gradient(var(--card), var(--card));
 }
 
 .cards-dim > *,
@@ -436,7 +408,6 @@ body:has(.surface-app) header > div:first-of-type {
 }
 .cards-dim:hover > *:hover {
   opacity: 1;
-  border-color: color-mix(in srgb, var(--primary) 32%, transparent);
   box-shadow: var(--shadow-paper-lg);
 }
 
@@ -493,5 +464,312 @@ body:has(.surface-app) header > div:first-of-type {
 @media (min-width: 1024px) {
   .center-grid > * {
     width: calc((100% - (var(--cols, 4) - 1) * var(--gap)) / var(--cols, 4));
+  }
+}
+
+/* ------------------------------------------------------------------------
+ * Studio doré : surfaces blanches très arrondies, boutons pilule, titres
+ * Inter serrés. Appliqué au thème par défaut ; les autres thèmes gardent
+ * leurs polices et leurs couleurs dans la même mise en page.
+ * --------------------------------------------------------------------- */
+:root[data-theme='studio'] :is(h1, h2, h3, h4) {
+  font-weight: 600;
+}
+:root[data-theme='studio'] .eyebrow {
+  font-family: var(--t-font-body);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+}
+
+/* --- Scène « heure dorée » (GoldenStage) ------------------------------ */
+.gs-stage {
+  --gap: 14px;
+  --w: min(1120px, calc(100vw - 32px));
+  --ratio: 1.15;
+  overflow-x: clip;
+  padding-block: 4px 0;
+}
+@media (min-width: 640px) {
+  .gs-stage {
+    --w: min(1120px, calc(100vw - 112px));
+    --ratio: 0.72;
+    --gap: 22px;
+  }
+}
+@media (min-width: 1024px) {
+  .gs-stage {
+    --w: min(1120px, calc(100vw - 260px));
+    --ratio: 0.5625;
+    --gap: 32px;
+  }
+}
+.gs-track {
+  position: relative;
+  height: calc(var(--w) * var(--ratio));
+}
+.gs-slide {
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: var(--w);
+  margin-left: calc(var(--w) / -2);
+  overflow: hidden;
+  border-radius: 28px;
+  background: #2a160d;
+  cursor: pointer;
+  opacity: 0.7;
+  filter: saturate(0.8) brightness(0.92);
+  transform: translateX(calc(var(--rel) * (var(--w) + var(--gap)))) scale(0.94);
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.9s ease,
+    filter 0.9s ease;
+}
+.gs-slide.is-active {
+  z-index: 1;
+  cursor: default;
+  opacity: 1;
+  filter: none;
+  transform: translateX(0) scale(1);
+  box-shadow: 0 50px 90px -50px rgba(90, 45, 12, 0.6);
+}
+.gs-slide.no-anim {
+  transition: none;
+}
+.gs-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 80px 28px 26px;
+  background: linear-gradient(to top, rgba(14, 7, 3, 0.78), rgba(14, 7, 3, 0) 100%);
+  animation: gs-fade 0.9s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (max-width: 639px) {
+  .gs-caption {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 40px 16px 16px;
+  }
+}
+.gs-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: #ffd79e;
+  transform-origin: left;
+  animation-name: gs-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+.gs-btn {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--shadow-paper-sm);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.gs-btn:hover {
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+/* Pied du produit à y = 800 sur 900 dans la scène. */
+.gs-push {
+  transform-origin: 50% 89%;
+  will-change: transform;
+  animation: gs-push 9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.gs-far,
+.gs-mid,
+.gs-near {
+  will-change: transform;
+}
+.gs-far {
+  animation: gs-drift-far 9s linear both;
+}
+.gs-mid {
+  animation: gs-drift-mid 9s linear both;
+}
+.gs-near {
+  animation: gs-drift-near 9s linear both;
+}
+.gs-sun {
+  animation: gs-sun 5s ease-in-out infinite alternate;
+}
+.gs-rays {
+  animation: gs-rays 7s ease-in-out infinite alternate;
+}
+.gs-vignette {
+  pointer-events: none;
+  background: radial-gradient(75% 75% at 50% 55%, transparent 55%, rgba(11, 6, 4, 0.65) 100%);
+}
+.gs-sheen {
+  animation: gs-sheen 6s ease-in-out 1.4s infinite;
+}
+.gs-dust {
+  position: absolute;
+  border-radius: 9999px;
+  background: #ffe4b5;
+  box-shadow: 0 0 6px rgba(255, 220, 160, 0.8);
+  animation: gs-dust 7s ease-in-out infinite;
+}
+.gs-led {
+  animation: gs-led 1.4s ease-in-out infinite alternate;
+}
+.gs-roll {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gs-roll 9s cubic-bezier(0.3, 0.6, 0.4, 1) both;
+}
+.gs-ball {
+  animation: gs-ball 2.6s ease-in-out infinite alternate;
+}
+.gs-net {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: gs-net 3.2s ease-in-out infinite alternate;
+}
+.gs-paused,
+.gs-paused * {
+  animation-play-state: paused !important;
+}
+
+@keyframes gs-push {
+  from {
+    transform: translateX(-40px) scale(0.93);
+  }
+  to {
+    transform: translateX(16px) scale(1.03);
+  }
+}
+/* Petit écran : la scène est recadrée en hauteur, le produit est réduit pour rester entier. */
+@media (max-width: 639px) {
+  .gs-push {
+    animation-name: gs-push-sm;
+  }
+}
+@keyframes gs-push-sm {
+  from {
+    transform: translateX(-10px) scale(0.74);
+  }
+  to {
+    transform: translateX(4px) scale(0.8);
+  }
+}
+@keyframes gs-drift-far {
+  to {
+    transform: translateX(-1.5%);
+  }
+}
+@keyframes gs-drift-mid {
+  to {
+    transform: translateX(-4%);
+  }
+}
+@keyframes gs-drift-near {
+  to {
+    transform: translateX(-8%);
+  }
+}
+@keyframes gs-sun {
+  from {
+    opacity: 0.82;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gs-rays {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gs-sheen {
+  0% {
+    transform: translateX(0);
+  }
+  55%,
+  100% {
+    transform: translateX(1150px);
+  }
+}
+@keyframes gs-dust {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-70px, -90px);
+    opacity: 0;
+  }
+}
+@keyframes gs-led {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gs-roll {
+  from {
+    transform: translate(0, 0) scale(1) rotate(0);
+  }
+  to {
+    transform: translate(-14px, -118px) scale(0.62) rotate(320deg);
+  }
+}
+@keyframes gs-ball {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(130px, 30px);
+  }
+}
+@keyframes gs-net {
+  from {
+    transform: skewX(-3deg);
+  }
+  to {
+    transform: skewX(3deg);
+  }
+}
+@keyframes gs-fade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes gs-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }

@@ -44,12 +44,7 @@ export function UniversShowcase({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_30%_20%,color-mix(in_srgb,var(--primary)_35%,transparent),transparent_70%),radial-gradient(60%_60%_at_80%_90%,color-mix(in_srgb,var(--accent)_25%,transparent),transparent_70%)] blur-2xl"
-      />
-
-      <div className="overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-[var(--shadow-paper-lg)]">
+      <div className="overflow-hidden rounded-[28px] border border-border bg-card shadow-[var(--shadow-paper-md)]">
         <div className="relative bg-white">
           <span
             aria-hidden="true"
@@ -67,7 +62,7 @@ export function UniversShowcase({
           />
 
           {n > 1 && (
-            <span className="absolute left-4 top-4 rounded-md bg-black/80 px-2 py-1 font-mono text-[11px] font-semibold tracking-wider text-white">
+            <span className="absolute left-4 top-4 rounded-full bg-black/80 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-wider text-white">
               <span className="text-[color:var(--accent)]">{pad(active + 1)}</span> / {pad(n)}
             </span>
           )}

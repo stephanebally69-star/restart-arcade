@@ -1,29 +1,56 @@
 /* Généré par scripts/gen_themes.py : ne pas éditer à la main. */
 
 :root {
-  --t-bg: #faf6ee;
-  --t-bg-2: #f4ecda;
-  --t-surface: #fffdf7;
-  --t-surface-2: #f4ecda;
-  --t-text: #1a1530;
-  --t-text-soft: #3a3556;
-  --t-text-muted: #625e78;
-  --t-heading: #1e1b4b;
-  --t-primary: #1e1b4b;
-  --t-primary-fg: #f6d896;
-  --t-accent: #b0791f;
-  --t-price: #9a6b1c;
-  --t-brand-from: #1e1b4b;
-  --t-brand-to: #3b3490;
-  --t-footer: #1e1b4b;
-  --t-border: rgba(30,27,75,0.1);
-  --t-input: rgba(30,27,75,0.18);
-  --t-page-bg: radial-gradient(circle at 20% 10%, rgba(232,178,82,0.10), transparent 40%), radial-gradient(circle at 90% 80%, rgba(91,82,200,0.07), transparent 45%);
+  --t-bg: #f6f6f5;
+  --t-bg-2: #efeeec;
+  --t-surface: #ffffff;
+  --t-surface-2: #f1f0ee;
+  --t-text: #161514;
+  --t-text-soft: #3d3b39;
+  --t-text-muted: #75726e;
+  --t-heading: #111111;
+  --t-primary: #141414;
+  --t-primary-fg: #ffffff;
+  --t-accent: #a65f1b;
+  --t-price: #8f4f12;
+  --t-brand-from: #24170e;
+  --t-brand-to: #0e0b09;
+  --t-footer: #0e0d0c;
+  --t-border: rgba(17,17,17,0.07);
+  --t-input: rgba(17,17,17,0.14);
+  --t-page-bg: radial-gradient(1200px 520px at 50% -12%, rgba(233,160,82,0.10), transparent 62%);
   --t-page-bg-size: auto;
-  --t-font-head: var(--ff-fraunces), Georgia, serif;
+  --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-head-adjust: none;
-  --t-head-tracking: -0.02em;
+  --t-head-tracking: -0.035em;
+  --t-em-glow: none;
+}
+
+:root[data-theme="studio"] {
+  --t-bg: #f6f6f5;
+  --t-bg-2: #efeeec;
+  --t-surface: #ffffff;
+  --t-surface-2: #f1f0ee;
+  --t-text: #161514;
+  --t-text-soft: #3d3b39;
+  --t-text-muted: #75726e;
+  --t-heading: #111111;
+  --t-primary: #141414;
+  --t-primary-fg: #ffffff;
+  --t-accent: #a65f1b;
+  --t-price: #8f4f12;
+  --t-brand-from: #24170e;
+  --t-brand-to: #0e0b09;
+  --t-footer: #0e0d0c;
+  --t-border: rgba(17,17,17,0.07);
+  --t-input: rgba(17,17,17,0.14);
+  --t-page-bg: radial-gradient(1200px 520px at 50% -12%, rgba(233,160,82,0.10), transparent 62%);
+  --t-page-bg-size: auto;
+  --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-head-adjust: none;
+  --t-head-tracking: -0.035em;
   --t-em-glow: none;
 }
 
