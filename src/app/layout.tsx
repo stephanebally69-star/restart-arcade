@@ -12,7 +12,7 @@ import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { fontVariables } from '@/lib/fonts'
 import { CUSTOM_STORAGE_KEY, DEFAULT_THEME, THEME_STORAGE_KEY, themes } from '@/lib/themes'
 import { VersionSwitch } from '@/components/VersionSwitch'
-import { DARK_VERSIONS, DEFAULT_VERSION, VERSION_STORAGE_KEY, versions } from '@/lib/version'
+import { DEFAULT_VERSION, VERSION_SCHEMES, VERSION_STORAGE_KEY, versions } from '@/lib/version'
 
 /**
  * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
@@ -33,10 +33,10 @@ var V=${JSON.stringify(VERSION_STORAGE_KEY)},vs=${JSON.stringify(versions.map((v
 var qv=new URLSearchParams(location.search).get('version');
 if(qv&&vs.indexOf(qv)>-1)S.setItem(V,qv);
 var v=S.getItem(V);if(v&&vs.indexOf(v)>-1)d.dataset.version=v;
-var dv=${JSON.stringify(DARK_VERSIONS)};
+var vsc=${JSON.stringify(VERSION_SCHEMES)};
 var c=S.getItem(C);
 if(c){c=JSON.parse(c);for(var k in c.vars)d.style.setProperty(k,c.vars[k]);d.dataset.scheme=c.scheme;d.dataset.custom='true';}
-if(dv.indexOf(d.dataset.version)>-1)d.dataset.scheme='dark';
+if(vsc[d.dataset.version])d.dataset.scheme=vsc[d.dataset.version];
 }catch(e){}})();`
 
 export const metadata: Metadata = {

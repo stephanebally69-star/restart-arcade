@@ -2,11 +2,16 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Check, Clapperboard, Disc3, Images } from 'lucide-react'
+import { Check, Clapperboard, Disc3, Images, Sun } from 'lucide-react'
 import { applyVersion, currentVersion, versions, type VersionId } from '@/lib/version'
 import { track } from '@/lib/analytics'
 
-const icons: Record<VersionId, typeof Images> = { studio: Images, cinema: Clapperboard, plateau: Disc3 }
+const icons: Record<VersionId, typeof Images> = {
+  studio: Images,
+  cinema: Clapperboard,
+  plateau: Disc3,
+  'plateau-clair': Sun,
+}
 
 /**
  * Bascule de version : un onglet sur le bord gauche, pendant de l'onglet

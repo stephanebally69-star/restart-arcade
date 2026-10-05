@@ -665,7 +665,9 @@
 }
 
 /* --- Version Plateau ----------------------------------------------------- */
-/* Palette sombre façon resend.com, imposée sur tout le site quel que soit le thème. */
+/* Palette façon resend.com, imposée sur tout le site quel que soit le thème :
+ * sombre pour « plateau », claire pour « plateau-clair ». Les composants
+ * Plateau n'emploient que les couleurs pl-ink, pl-bg et pl-gold. */
 :root[data-version='plateau'],
 :root[data-version='plateau'][data-theme] {
   --t-bg: #000000;
@@ -688,11 +690,60 @@
   --t-page-bg: none;
   --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
   --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --pl-ink: #ffffff;
+  --pl-bg: #000000;
+  --pl-gold: #f6e3be;
+  --pl-glow: rgba(246, 227, 190, 0.09);
+  --pl-card-from: rgba(255, 255, 255, 0.035);
+  --pl-card-to: rgba(255, 255, 255, 0.01);
+  --pl-tile: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(246, 227, 190, 0.1), transparent 70%), #0a0a0b;
+  --pl-thumb: rgba(255, 255, 255, 0.06);
+  --pl-shadow: rgba(0, 0, 0, 0.35);
   color-scheme: dark;
 }
 
-:root[data-version='plateau'] .version-classic,
-:root:not([data-version='plateau']) .version-plateau {
+:root[data-version='plateau-clair'],
+:root[data-version='plateau-clair'][data-theme] {
+  --t-bg: #fbfaf7;
+  --t-bg-2: #f4f2ed;
+  --t-surface: #ffffff;
+  --t-surface-2: #f2f0ea;
+  --t-text: #1b1a18;
+  --t-text-soft: #3d3b37;
+  --t-text-muted: #75716a;
+  --t-heading: #0c0c0d;
+  --t-primary: #0c0c0d;
+  --t-primary-fg: #ffffff;
+  --t-accent: #94621c;
+  --t-price: #8a5a12;
+  --t-brand-from: #1a1612;
+  --t-brand-to: #0c0b0a;
+  --t-footer: #0c0c0d;
+  --t-border: rgba(12, 12, 13, 0.08);
+  --t-input: rgba(12, 12, 13, 0.14);
+  --t-page-bg: none;
+  --t-font-head: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-font-body: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  --pl-ink: #0c0c0d;
+  --pl-bg: #fbfaf7;
+  --pl-gold: #8a5a12;
+  --pl-glow: rgba(214, 160, 72, 0.16);
+  --pl-card-from: #ffffff;
+  --pl-card-to: #ffffff;
+  --pl-tile: radial-gradient(ellipse 70% 60% at 50% 40%, #ffffff, transparent 75%), #f1eee7;
+  --pl-thumb: #f1eee7;
+  --pl-shadow: rgba(60, 40, 10, 0.16);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-pl-ink: var(--pl-ink);
+  --color-pl-bg: var(--pl-bg);
+  --color-pl-gold: var(--pl-gold);
+}
+
+:root:is([data-version='plateau'], [data-version='plateau-clair']) .version-classic,
+:root:not([data-version='plateau'], [data-version='plateau-clair']) .version-plateau {
   display: none;
 }
 
@@ -701,10 +752,7 @@
   font-weight: 380;
   font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 0;
   letter-spacing: -0.035em;
-  background: linear-gradient(180deg, #ffffff 35%, rgba(255, 255, 255, 0.58));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--pl-ink);
   text-wrap: balance;
 }
 
@@ -712,50 +760,69 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 45% 38% at 72% 42%, rgba(246, 227, 190, 0.09), transparent 70%),
-    linear-gradient(162deg, transparent 52%, rgba(255, 255, 255, 0.045) 60%, transparent 68%);
-}
-
-.pl-badge {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  background: radial-gradient(ellipse 45% 38% at 72% 48%, var(--pl-glow), transparent 70%);
 }
 
 .pl-btn-primary {
-  background: #ffffff;
-  color: #000000;
-  transition: background 0.2s ease;
+  background: var(--pl-ink);
+  color: var(--pl-bg);
+  transition: opacity 0.2s ease;
 }
 .pl-btn-primary:hover {
-  background: #e4e4e4;
+  opacity: 0.86;
 }
 
 .pl-btn-secondary {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--pl-ink) 14%, transparent);
+  background: color-mix(in srgb, var(--pl-ink) 5%, transparent);
+  color: var(--pl-ink);
   transition: background 0.2s ease;
 }
 .pl-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--pl-ink) 10%, transparent);
 }
 
-.pl-stage {
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 71%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 71%);
+/* Plateau du hero : un projecteur, un sol en ellipse et les produits en fondu. */
+.pl-stage-light {
+  position: absolute;
+  inset: 4% 8% 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, var(--pl-glow), transparent 68%);
+  filter: blur(8px);
 }
-
-.pl-caption {
-  display: inline-block;
-  animation: pl-caption-in 0.6s ease both;
+.pl-stage-floor {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 9%;
+  height: 13%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--pl-ink) 14%, transparent), transparent 70%);
+  border-top: 1px solid color-mix(in srgb, var(--pl-ink) 10%, transparent);
 }
-@keyframes pl-caption-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-    filter: blur(4px);
-  }
+.pl-stage-item {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  max-width: 88%;
+  max-height: 78%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateX(-50%) translateY(14px) scale(0.96);
+  filter: drop-shadow(0 26px 28px var(--pl-shadow));
+  /* Le produit sortant s'efface d'abord, le suivant entre ensuite : jamais deux à la fois. */
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s ease;
+}
+.pl-stage-item.is-on {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  transition:
+    opacity 0.7s ease 0.4s,
+    transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s;
 }
 
 .pl-stat {
@@ -765,49 +832,34 @@
   font-size: 30px;
   font-weight: 380;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--pl-ink);
 }
 .pl-stat-label {
   display: block;
   margin-top: 2px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.pl-panel {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0a0a0a;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.6),
-    0 40px 80px -40px rgba(246, 227, 190, 0.12);
+  color: color-mix(in srgb, var(--pl-ink) 45%, transparent);
 }
 
 .pl-card {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  border: 1px solid color-mix(in srgb, var(--pl-ink) 8%, transparent);
+  background: linear-gradient(180deg, var(--pl-card-from), var(--pl-card-to));
+}
+:root[data-version='plateau-clair'] .pl-card {
+  box-shadow: 0 1px 2px rgba(12, 12, 13, 0.04), 0 12px 30px -18px rgba(12, 12, 13, 0.18);
 }
 
-.pl-mock {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #111112;
+.pl-tile {
+  background: var(--pl-tile);
+  border-bottom: 1px solid color-mix(in srgb, var(--pl-ink) 7%, transparent);
 }
 
-.pl-fade-y {
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 82%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 82%, transparent);
+.pl-thumb {
+  background: var(--pl-thumb);
 }
 
 .pl-section-glow {
-  background: radial-gradient(ellipse 55% 320px at 50% 0%, rgba(255, 255, 255, 0.05), transparent);
-}
-
-.pl-grid {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-}
-.pl-grid > li {
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(ellipse 55% 320px at 50% 0%, color-mix(in srgb, var(--pl-ink) 5%, transparent), transparent);
 }
 
 .pl-marquee {
@@ -834,6 +886,9 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background: radial-gradient(ellipse 40% 60% at 50% 110%, var(--pl-glow), transparent 70%);
+}
+:root[data-version='plateau'] .pl-final-glow {
   background: radial-gradient(ellipse 40% 60% at 50% 110%, rgba(246, 227, 190, 0.16), transparent 70%);
 }
 
@@ -841,8 +896,10 @@
   .pl-marquee {
     overflow-x: auto;
   }
-  .pl-marquee-track,
-  .pl-caption {
+  .pl-marquee-track {
     animation: none;
+  }
+  .pl-stage-item {
+    transition: none;
   }
 }

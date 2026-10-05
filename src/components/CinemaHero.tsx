@@ -180,7 +180,7 @@ export function CinemaHero({ lines, closing }: { lines: FreezeLine[]; closing: s
                 aria-hidden="true"
                 className="text-balance text-[2rem] font-semibold leading-[1.04] tracking-tight sm:text-[2.6rem] lg:text-[3.2rem]"
               >
-                Le jeu qui fait revenir les gens dans vos espaces.
+                Transformez vos espaces avec RESTART.
               </p>
               <p className="mt-3 max-w-lg text-base text-white/75 sm:text-lg">
                 Personnalisés à votre image, livrés montés et installés partout en France, en vente

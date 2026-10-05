@@ -171,7 +171,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="sr-only">Le jeu qui fait revenir les gens dans vos espaces.</h1>
+      <h1 className="sr-only">Transformez vos espaces avec RESTART.</h1>
       <div className="version-plateau">
         <PlateauHome faq={homeFaq} />
       </div>

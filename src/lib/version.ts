@@ -6,16 +6,20 @@
  */
 import { themes } from '@/lib/themes'
 
-export type VersionId = 'studio' | 'cinema' | 'plateau'
+export type VersionId = 'studio' | 'cinema' | 'plateau' | 'plateau-clair'
 
 export const versions: { id: VersionId; name: string; desc: string }[] = [
   { id: 'studio', name: 'Carrousel', desc: 'Carrousel photo, une gamme par slide' },
   { id: 'cinema', name: 'Cinéma', desc: 'Hero animé : fléchettes, baby-foot, flipper' },
-  { id: 'plateau', name: 'Plateau', desc: 'Mise en page sombre, plateau tournant des produits' },
+  { id: 'plateau', name: 'Plateau', desc: 'Mise en page sombre, produits en photo sur le plateau' },
+  { id: 'plateau-clair', name: 'Plateau clair', desc: 'La version Plateau, déclinée en thème clair' },
 ]
 
 /** Versions qui imposent leur propre palette, quel que soit le thème choisi. */
-export const DARK_VERSIONS: VersionId[] = ['plateau']
+export const VERSION_SCHEMES: Partial<Record<VersionId, 'dark' | 'light'>> = {
+  plateau: 'dark',
+  'plateau-clair': 'light',
+}
 
 export const DEFAULT_VERSION: VersionId = 'studio'
 export const VERSION_STORAGE_KEY = 'restart-version'
@@ -33,9 +37,8 @@ export function currentVersion(): VersionId {
 export function applyVersion(id: VersionId) {
   const root = document.documentElement
   root.dataset.version = id
-  root.dataset.scheme = DARK_VERSIONS.includes(id)
-    ? 'dark'
-    : (themes.find((t) => t.id === root.dataset.theme)?.scheme ?? 'light')
+  root.dataset.scheme =
+    VERSION_SCHEMES[id] ?? themes.find((t) => t.id === root.dataset.theme)?.scheme ?? 'light'
   try {
     sessionStorage.setItem(VERSION_STORAGE_KEY, id)
   } catch {
