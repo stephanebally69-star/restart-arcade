@@ -145,16 +145,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Analytics />
         <div className="flex min-h-screen flex-col">
-          <TopBar />
-          <Header />
+          <div className="site-chrome">
+            <TopBar />
+            <Header />
+          </div>
           <main id="contenu" className="flex-1">
             {children}
           </main>
           <Footer />
         </div>
         <ConsentBanner />
-        <ThemeSwitcher />
-        <VersionSwitch />
+        <div className="site-chrome">
+          <ThemeSwitcher />
+          <VersionSwitch />
+        </div>
       </body>
     </html>
   )

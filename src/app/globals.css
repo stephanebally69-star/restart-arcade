@@ -1029,3 +1029,12 @@
     animation: none;
   }
 }
+
+/* L'accueil Panorama porte son propre en-tête : celui du site et les sélecteurs
+   s'effacent sur cette page. `display: contents` garde l'en-tête collant ailleurs. */
+.site-chrome {
+  display: contents;
+}
+body:has(.pano-page) .site-chrome {
+  display: none;
+}
