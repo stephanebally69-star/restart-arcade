@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
-import { ArrowRight, ChevronDown, Menu, Phone, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, Menu, Phone, Power, X } from 'lucide-react'
 import { univers } from '@/data/catalogue'
-import { logo, universImage } from '@/data/images'
+import { universImage } from '@/data/images'
 import { site } from '@/lib/site'
 import { contactClick, ctaClick } from '@/lib/analytics'
 
@@ -74,7 +74,11 @@ export function Header() {
     `transition hover:text-foreground ${isActive(href) ? 'text-foreground' : ''}`
 
   return (
-    <header className="sticky top-0 z-40 w-full px-3 pt-3 sm:px-6 sm:pt-4">
+    <header
+      className="sticky top-0 z-40 w-full px-3 pt-3 sm:px-6 sm:pt-4"
+      data-home={pathname === '/' || undefined}
+      data-top={(!scrolled && !open) || undefined}
+    >
       <a
         href="#contenu"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"
@@ -84,19 +88,29 @@ export function Header() {
 
       <div
         ref={rootRef}
-        className={`mx-auto flex h-16 items-center justify-between gap-3 rounded-full border pl-4 pr-2 transition-all duration-500 md:gap-8 md:pl-6 md:pr-3 ${
+        className={`header-pill mx-auto flex h-16 items-center justify-between gap-3 rounded-full border pl-4 pr-2 transition-all duration-500 md:gap-8 md:pl-6 md:pr-3 ${
           scrolled || open
             ? 'max-w-6xl border-border bg-card/80 shadow-[0_14px_40px_-18px_rgba(17,17,17,0.28)] backdrop-blur-xl'
             : 'max-w-7xl border-transparent bg-transparent'
         }`}
       >
-        <Link href="/" className="flex shrink-0 items-center" aria-label="RESTART, retour à l'accueil">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logo} alt="RESTART" width={1350} height={498} className="h-8 w-auto md:h-9" />
+        {/* Même marque que le pied de page : pastille « marche » et nom en toutes lettres. */}
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-2.5 text-xl font-semibold tracking-tight text-heading md:text-2xl"
+          aria-label="RESTART, retour à l'accueil"
+        >
+          <span
+            aria-hidden="true"
+            className="inline-flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground md:size-9"
+          >
+            <Power className="size-4 md:size-4.5" strokeWidth={2.5} />
+          </span>
+          RESTART
         </Link>
 
         <nav
-          className="hidden items-center gap-7 text-[15px] font-medium text-foreground/80 lg:flex"
+          className="header-extra hidden items-center gap-7 text-[15px] font-medium text-foreground/80 lg:flex"
           aria-label="Navigation principale"
         >
           <div>
@@ -176,7 +190,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-1.5 md:gap-2">
+        <div className="header-extra flex shrink-0 items-center gap-1.5 md:gap-2">
           <a
             href={`tel:${site.phoneE164}`}
             onClick={() => contactClick('phone', 'header')}

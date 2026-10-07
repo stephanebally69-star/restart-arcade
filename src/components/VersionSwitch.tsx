@@ -2,21 +2,33 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Check, Clapperboard, Disc3, Images, Sun } from 'lucide-react'
-import { applyVersion, currentVersion, versions, type VersionId } from '@/lib/version'
+import { ArrowUpRight, Check, Disc3, Images, Lightbulb, Sofa, Store, Sun } from 'lucide-react'
+import {
+  applyVersion,
+  currentVersion,
+  externalVersions,
+  externalVersionUrl,
+  versions,
+  type ExternalVersionId,
+  type VersionId,
+} from '@/lib/version'
 import { track } from '@/lib/analytics'
 
-const icons: Record<VersionId, typeof Images> = {
-  studio: Images,
-  cinema: Clapperboard,
+const icons: Record<VersionId | ExternalVersionId, typeof Images> = {
+  panorama: Sofa,
+  showroom: Store,
   plateau: Disc3,
   'plateau-clair': Sun,
+  halo: Lightbulb,
+  studio: Images,
 }
 
 /**
  * Bascule de version : un onglet sur le bord gauche, pendant de l'onglet
  * Thèmes, qui ouvre la liste des versions. Choisir une version depuis une
- * autre page ramène à l'accueil, où les versions diffèrent le plus.
+ * autre page ramène à l'accueil, où les versions diffèrent le plus. Panorama
+ * et Showroom sont des sites à part (sous-dossiers du même site Pages) : on y
+ * va par lien.
  */
 export function VersionSwitch() {
   const [current, setCurrent] = useState<VersionId>('studio')
@@ -88,7 +100,28 @@ export function VersionSwitch() {
           className="fixed left-14 top-1/2 z-[60] w-[min(18rem,calc(100vw-4.5rem))] -translate-y-1/2 overflow-hidden rounded-2xl border border-border bg-card font-sans text-foreground shadow-[var(--shadow-paper-lg)]"
         >
           <p className="border-b border-border px-4 py-3 text-sm font-semibold">Versions du site</p>
-          <ul role="radiogroup" aria-label="Version" className="p-1.5">
+          <ul aria-label="Autres sites de la refonte" className="px-1.5 pt-1.5">
+            {externalVersions.map((v) => {
+              const VIcon = icons[v.id]
+              return (
+                <li key={v.id}>
+                  <a
+                    href={externalVersionUrl(v)}
+                    onClick={() => track('version_change', { version: v.id })}
+                    className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-muted"
+                  >
+                    <VIcon className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden="true" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold">{v.name}</span>
+                      <span className="block text-xs text-muted-foreground">{v.desc}</span>
+                    </span>
+                    <ArrowUpRight className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+          <ul role="radiogroup" aria-label="Version" className="px-1.5 pb-1.5">
             {versions.map((v) => {
               const VIcon = icons[v.id]
               const selected = v.id === current

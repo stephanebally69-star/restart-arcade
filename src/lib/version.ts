@@ -2,21 +2,42 @@
  * Versions du site consultables sur la même URL. La version change surtout le
  * hero de l'accueil ; le reste du site est commun. Le choix vit en
  * sessionStorage, comme le thème : une nouvelle visite repart sur la version par
- * défaut. `?version=cinema` dans l'URL force une version (lien de démo).
+ * défaut. `?version=plateau` dans l'URL force une version (lien de démo).
+ *
+ * Deux autres propositions, Panorama et Showroom, sont des sites à part sur le
+ * même dépôt (branches theme-*, publiées sous /panorama/ et /showroom/) : le
+ * sélecteur les propose par lien (`externalVersions`).
  */
 import { themes } from '@/lib/themes'
 
-export type VersionId = 'studio' | 'cinema' | 'plateau' | 'plateau-clair'
+export type VersionId = 'studio' | 'halo' | 'plateau' | 'plateau-clair'
 
 export const versions: { id: VersionId; name: string; desc: string }[] = [
-  { id: 'studio', name: 'Carrousel', desc: 'Carrousel photo, une gamme par slide' },
-  { id: 'cinema', name: 'Cinéma', desc: 'Hero animé : fléchettes, baby-foot, flipper' },
-  { id: 'plateau', name: 'Plateau', desc: 'Mise en page sombre, produits en photo sur le plateau' },
-  { id: 'plateau-clair', name: 'Plateau clair', desc: 'La version Plateau, déclinée en thème clair' },
+  { id: 'plateau', name: 'Plateau', desc: 'Sombre, un produit à la fois sur un plateau tournant en 3D' },
+  { id: 'plateau-clair', name: 'Plateau clair', desc: 'La version Plateau en clair, passage au noir au défilement' },
+  { id: 'halo', name: 'Halo', desc: 'Film plein écran : flipper, fléchettes, baby-foot et sourires' },
+  { id: 'studio', name: 'Carrousel', desc: 'Carrousel photo, puis la pièce racontée par public' },
 ]
+
+/** Versions publiées comme sites à part sur le même dépôt, ouvertes par lien. */
+export type ExternalVersionId = 'panorama' | 'showroom'
+export const externalVersions: { id: ExternalVersionId; name: string; desc: string; path: string; dev?: string }[] = [
+  { id: 'panorama', name: 'Panorama', desc: 'Une pièce en plein écran qui réunit tous les jeux', path: '/panorama/', dev: 'http://localhost:3107/' },
+  { id: 'showroom', name: 'Showroom', desc: "Mise en page d'après poltronesofa.com : marine, crème et rouge", path: '/showroom/' },
+]
+
+/** Site GitHub Pages du dépôt restart-arcade, qui héberge toutes les versions. */
+export const PAGES_URL = 'https://stephanebally69-star.github.io/restart-arcade'
+
+/** Adresse d'une version externe : son serveur de dev en local, sinon le site Pages. */
+export function externalVersionUrl(v: (typeof externalVersions)[number]) {
+  const local = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+  return local && v.dev ? v.dev : `${PAGES_URL}${v.path}`
+}
 
 /** Versions qui imposent leur propre palette, quel que soit le thème choisi. */
 export const VERSION_SCHEMES: Partial<Record<VersionId, 'dark' | 'light'>> = {
+  halo: 'light',
   plateau: 'dark',
   'plateau-clair': 'light',
 }

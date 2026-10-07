@@ -1,0 +1,113 @@
+{
+ "brand": {
+  "name": "RESTART",
+  "colors": {
+   "primary": "#141414",
+   "secondary": "#3FB8C9",
+   "accent": "#FF5A1F",
+   "background": "#0B0A09",
+   "text": "#FFFFFF",
+   "textOnAccent": "#141414"
+  },
+  "fonts": {
+   "display": "Inter",
+   "body": "Inter"
+  }
+ },
+ "format": "landscape",
+ "shots": [
+  {
+   "src": "clients/restart/fete/4841201.mp4",
+   "from": 0.0,
+   "duration": 1.3,
+   "focusX": 0.5,
+   "push": [
+    1.02,
+    1.09
+   ]
+  },
+  {
+   "src": "clients/restart/fete/4841212.mp4",
+   "from": 0.1,
+   "duration": 1.2,
+   "focusX": 0.45,
+   "push": [
+    1.0,
+    1.05
+   ]
+  },
+  {
+   "src": "clients/restart/fete/8757821.mp4",
+   "from": 0.4,
+   "duration": 2.0,
+   "focusX": 0.45,
+   "push": [
+    1.0,
+    1.05
+   ]
+  },
+  {
+   "src": "clients/restart/fete/7581338.mp4",
+   "from": 0.2,
+   "duration": 0.9,
+   "focusX": 0.45,
+   "push": [
+    1.04,
+    1.1
+   ]
+  },
+  {
+   "src": "clients/restart/fete/9003124.mp4",
+   "from": 0.4,
+   "duration": 1.8,
+   "focusX": 0.6,
+   "push": [
+    1.0,
+    1.05
+   ]
+  },
+  {
+   "src": "clients/restart/footage/7986552.mp4",
+   "from": 0.0,
+   "duration": 1.0,
+   "rate": 0.7,
+   "focusX": 0.5,
+   "push": [
+    1.04,
+    1.08
+   ]
+  },
+  {
+   "src": "clients/restart/fete/7986594.mp4",
+   "from": 0.3,
+   "duration": 1.9,
+   "focusX": 0.55,
+   "push": [
+    1.0,
+    1.05
+   ]
+  },
+  {
+   "src": "clients/restart/fete/4841211.mp4",
+   "from": 0.2,
+   "duration": 1.0,
+   "focusX": 0.5,
+   "push": [
+    1.03,
+    1.08
+   ]
+  },
+  {
+   "src": "clients/restart/fete/6396177.mp4",
+   "from": 0.4,
+   "duration": 2.4,
+   "focusX": 0.36,
+   "push": [
+    1.0,
+    1.04
+   ]
+  }
+ ],
+ "blend": 0.5,
+ "grade": "contrast(1.06) saturate(1.06) brightness(1.03)"
+}

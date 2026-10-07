@@ -1,93 +1,54 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ctaClick } from '@/lib/analytics'
+import { VERSION_EVENT } from '@/lib/version'
+import type { TurntableControl } from './three/Turntable3D'
 
 /**
- * Rythme du plateau, repris du modèle Turntable du studio de l'agence : chaque
- * produit reste SLOT secondes, s'efface en EXIT secondes en descendant dans le
- * plateau, et le suivant en remonte en ENTER secondes.
+ * Plateau tournant en 3D (three.js) : un produit à la fois, en relief, posé
+ * sur le disque qui tourne. Il pivote doucement pour montrer son volume, puis
+ * s'efface et le suivant arrive d'un bond. Glisser à la souris ou au doigt le
+ * fait tourner davantage ; le survol suspend le défilement.
  *
- * Le plateau tourne lentement et le produit tourne avec lui. Une photo ne
- * montre qu'une face : chaque produit ne pivote que de ±SPEED·SLOT/2 pendant
- * son passage, de quoi suivre le plateau sans laisser voir l'envers.
+ * La scène est chargée à part, côté navigateur seulement : la page s'affiche
+ * sans attendre three.js.
  */
-const SLOT = 4
-const EXIT = 0.55
-const ENTER = 0.75
-const LEAD = 2
-const SPEED = 11 // degrés par seconde
+const Turntable3D = dynamic(() => import('./three/Turntable3D'), { ssr: false })
 
-const easeOut = (x: number) => 1 - (1 - x) ** 3
-const easeIn = (x: number) => x ** 3
-
-/** `height` : hauteur du produit en % de la scène, pour que chacun ait une taille juste. */
-export type PlateauProduct = { name: string; image: string; height: number }
+export type PlateauProduct = { name: string; image: string; height: number; href: string; price: string }
 
 export function PlateauHero({ products }: { products: PlateauProduct[] }) {
-  const stageRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([])
+  const control = useRef<TurntableControl>({ hold: false, spin: 0 })
+  const drag = useRef<{ x: number; t: number } | null>(null)
+  const [index, setIndex] = useState(0)
+  const [light, setLight] = useState(false)
 
   useEffect(() => {
-    const stage = stageRef.current
-    if (!stage || !products.length) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const sync = () => setLight(document.documentElement.dataset.version === 'plateau-clair')
+    sync()
+    window.addEventListener(VERSION_EVENT, sync)
+    return () => window.removeEventListener(VERSION_EVENT, sync)
+  }, [])
 
-    let frame = 0
-    let last = performance.now()
-    let t = LEAD
-    let shown = 0
-    const total = SLOT * products.length
-
-    const tick = (now: number) => {
-      frame = requestAnimationFrame(tick)
-      const dt = Math.min(0.1, (now - last) / 1000)
-      last = now
-      // Version masquée (display: none) : rien à calculer.
-      if (!stage.offsetParent) return
-      t += dt
-
-      const tau = t % total
-      const index = Math.floor(tau / SLOT)
-      const local = tau - index * SLOT
-      const reveal =
-        local < ENTER ? easeOut(local / ENTER) : local > SLOT - EXIT ? 1 - easeIn((local - (SLOT - EXIT)) / EXIT) : 1
-      const cutting = local < ENTER || local > SLOT - EXIT
-
-      // Le plateau tourne à vitesse constante ; le produit pivote du même angle
-      // autour de son axe, centré sur le milieu de son passage. Le sens est
-      // inversé car le bord avant du disque part vers la gauche.
-      const angle = (t * SPEED) % 360
-      const turn = -(local - SLOT / 2) * SPEED
-
-      if (index !== shown) {
-        itemRefs.current.forEach((el, i) => el?.classList.toggle('is-on', i === index))
-        shown = index
-      }
-      const ring = cutting ? Math.sin(reveal * Math.PI) * 0.9 + 0.1 : 0
-      stage.style.setProperty('--pl-angle', `${angle.toFixed(2)}deg`)
-      stage.style.setProperty('--pl-turn', `${turn.toFixed(2)}deg`)
-      stage.style.setProperty('--pl-ring', ring.toFixed(3))
-      stage.style.setProperty('--pl-reveal', reveal.toFixed(4))
-      stage.style.setProperty('--pl-scan', cutting && reveal > 0.02 && reveal < 0.98 ? '1' : '0')
-    }
-    frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [products.length])
+  const onIndex = useCallback((i: number) => setIndex(i), [])
+  const items = useMemo(() => products.map(({ name, image, height }) => ({ name, image, height })), [products])
+  const current = products[index]
 
   return (
     <section className="pl-hero relative overflow-hidden">
       <div aria-hidden="true" className="pl-hero-glow" />
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-24">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-6 px-5 pb-16 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[1fr_1.05fr] lg:gap-2 lg:pb-20">
         <div>
           <p aria-hidden="true" className="pl-display text-[3.1rem] leading-[0.98] sm:text-[4.2rem] lg:text-[4.9rem]">
             Transformez vos espaces
           </p>
           <p className="mt-6 max-w-md text-[17px] leading-relaxed text-pl-ink/60">
-            Bornes d&apos;arcade, fléchettes, baby-foot, billards et flippers. Personnalisés à votre
-            image, livrés montés et installés partout en France.
+            Bornes d&apos;arcade, fléchettes, baby-foot, billards et flippers. Personnalisés à votre image, livrés montés et
+            installés partout en France.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
@@ -107,37 +68,55 @@ export function PlateauHero({ products }: { products: PlateauProduct[] }) {
           </div>
         </div>
 
-        {/* Plateau tournant : les photos détourées montent du plateau puis y redescendent. Au survol, le produit s'élève. */}
-        <div
-          ref={stageRef}
-          className="pl-turntable relative mx-auto aspect-square w-full max-w-[560px]"
-          role="img"
-          aria-label={`Produits RESTART : ${products.map((p) => p.name).join(', ')}`}
-        >
-          <div aria-hidden="true" className="pl-tt-light" />
-          <div aria-hidden="true" className="pl-tt-platform">
-            <div className="pl-tt-side" />
-            <div className="pl-tt-disc">
-              <div className="pl-tt-spin" />
-            </div>
-          </div>
-          {products.map((p, i) => (
-            <div
-              key={p.name}
-              ref={(el) => {
-                itemRefs.current[i] = el
-              }}
-              aria-hidden="true"
-              className={`pl-tt-item ${i === 0 ? 'is-on' : ''}`}
-              style={{ height: `${p.height}%` }}
+        <div className="mx-auto w-full max-w-[640px]">
+          {/* Nom du produit de face, au-dessus du plateau. */}
+          <div className="relative z-10 -mb-[3%] flex justify-center">
+            <Link
+              href={current.href}
+              className="group inline-flex items-baseline gap-2.5 text-[17px] font-semibold text-pl-ink"
+              aria-live="polite"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.image} alt="" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" className="pl-tt-photo" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.image} alt="" loading="lazy" decoding="async" className="pl-tt-reflect" />
-              <span className="pl-tt-scan" />
-            </div>
-          ))}
+              <span key={current.name} className="pl-caption">
+                {current.name}
+              </span>
+              <span className="text-[14px] font-normal text-pl-gold">{current.price}</span>
+              <ArrowRight
+                className="size-4 self-center text-pl-ink/40 transition group-hover:translate-x-0.5 group-hover:text-pl-ink"
+                aria-hidden="true"
+              />
+            </Link>
+          </div>
+          {/* Plateau : on le fait tourner en le glissant, le survol suspend le défilement. */}
+          <div
+            className="pl-stage relative aspect-[4/3] w-full cursor-grab active:cursor-grabbing"
+            role="img"
+            aria-label={`Plateau tournant en 3D : ${products.map((p) => p.name).join(', ')}`}
+            onPointerEnter={() => (control.current.hold = true)}
+            onPointerLeave={() => {
+              control.current.hold = false
+              drag.current = null
+            }}
+            onPointerDown={(e) => {
+              drag.current = { x: e.clientX, t: e.timeStamp }
+              e.currentTarget.setPointerCapture(e.pointerId)
+            }}
+            onPointerMove={(e) => {
+              const d = drag.current
+              if (!d) return
+              const dt = Math.max(8, e.timeStamp - d.t)
+              // Vitesse du geste convertie en élan du plateau (degrés par seconde).
+              control.current.spin = Math.max(-900, Math.min(900, ((e.clientX - d.x) / dt) * 1000 * 0.45))
+              drag.current = { x: e.clientX, t: e.timeStamp }
+            }}
+            onPointerUp={() => {
+              drag.current = null
+              if (window.matchMedia('(hover: none)').matches) control.current.hold = false
+            }}
+          >
+            <div aria-hidden="true" className="pl-stage-light" />
+            <Turntable3D items={items} light={light} control={control} onIndex={onIndex} />
+          </div>
+
         </div>
       </div>
     </section>

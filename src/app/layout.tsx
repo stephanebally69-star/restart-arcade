@@ -18,7 +18,7 @@ import { DEFAULT_VERSION, VERSION_SCHEMES, VERSION_STORAGE_KEY, versions } from 
  * Applique le thème choisi pendant la visite avant le premier rendu, pour éviter
  * un flash. Le choix vit en sessionStorage : chaque nouvelle visite repart sur le
  * thème par défaut (Studio doré). Même principe pour la version du site
- * (`?version=cinema` la force). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
+ * (`?version=plateau` la force). Les anciens choix permanents sont effacés. Les valeurs viennent de nos données, jamais d'une saisie.
  */
 const themeBootScript = `(function(){try{
 var d=document.documentElement,K=${JSON.stringify(THEME_STORAGE_KEY)},C=${JSON.stringify(CUSTOM_STORAGE_KEY)};

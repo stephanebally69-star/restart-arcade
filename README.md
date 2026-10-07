@@ -63,28 +63,58 @@ Plan de taggage GA4 complet avec Consent Mode v2 : voir
 
 ## Versions du site
 
-L'onglet « Version », sur le bord gauche, propose quatre versions de l'accueil. Le choix dure le
-temps de la visite ; `?version=cinema`, `?version=plateau` ou `?version=plateau-clair` dans l'URL
-ouvre directement une version.
+L'onglet « Version », sur le bord gauche, propose six versions, toutes publiées sur le même site
+Pages de ce dépôt. Quatre vivent sur `main` et changent l'accueil : le choix dure le temps de la
+visite, et `?version=studio`, `?version=halo`, `?version=plateau` ou `?version=plateau-clair` dans
+l'URL ouvre directement une version. Les deux autres sont des sites à part, sur leur branche :
+**Panorama** (`theme-panorama`, publiée sous `/panorama/`) et **Showroom** (`theme-showroom`, sous
+`/showroom/`). Le même onglet, avec la même liste, est présent dans les trois sites
+(`src/lib/version.ts` ici, `src/lib/versions.ts` sur les branches) ; en local, il pointe vers les
+serveurs de dev (`localhost:4321` pour `main`, `localhost:3107` pour Panorama).
 
-- **Carrousel** : carrousel photo, une gamme par slide.
-- **Cinéma** : film du lancer de fléchette figé, puis baby-foot et flipper.
+- **Carrousel** : carrousel photo, une gamme par slide. Dessous, la page suit la construction de la
+  version Panorama dans sa propre palette (bleu nuit, ivoire, corail) : un chapitre par public (bar,
+  entreprise, maison) où photo et texte alternent, les sept gammes, la méthode en quatre étapes, des
+  avis clients, la FAQ, puis un appel final avec quatre installations clients
+  (`src/components/carrousel/CarrouselHome.tsx`, bloc « Version Carrousel » de `globals.css`).
+- **Halo** : d'après l'asset « Ion Halo Helmet Motion » de horizonx.so. Le film occupe tout l'écran
+  sous l'en-tête, qui n'y montre que le logo jusqu'au premier défilement. C'est un montage de vraies
+  vidéos, pas de la 3D : neuf plans dans une ambiance de fête, flipper, fléchettes,
+  baby-foot, sourires et verres qui trinquent (Pexels, licence d'usage commercial gratuit, sources
+  dans `public/clients/restart/fete/SOURCES.md` du studio), étalonnés ensemble, en boucle de 13,5 s
+  sans couture. Composition `FootageCut` du studio, réglages dans
+  `video/hero-halo*.props.json`. Une légende par plan renvoie aux
+  baby-foot. Sous le film, la page reprend exactement le contenu de la version Plateau, en gris
+  studio et orange : seuls le hero et la palette changent, pour comparer deux rendus à contenu égal
+  (`HaloHero.tsx`, prop `hero` de `PlateauHome`, bloc « Version Halo » de `globals.css`).
+  Chaque image du film fait la moyenne d'une quarantaine de rendus (profondeur de champ, flou de
+  bougé, ombres de boîte à lumière) pour un rendu photographique.
 - **Plateau** : mise en page sombre inspirée de resend.com, qui s'applique à tout le site ; le hero
-  enchaîne en fondu les photos détourées des produits (`public/img/plateau/`, tirées du catalogue
-  et de restart-arcade.fr), une carte par situation, catalogue en images (`src/components/plateau/`).
-- **Plateau clair** : la même page en thème clair. Les composants Plateau n'emploient que les
-  couleurs `pl-ink`, `pl-bg` et `pl-gold`, redéfinies par version dans `src/app/globals.css`.
+  fait défiler sur un plateau tournant en 3D (three.js) cinq produits, un à la fois : billard,
+  baby-foot, flipper, borne d'arcade et fléchettes. Les visuels du catalogue ont été retravaillés en
+  photos studio (OpenAI gpt-image-2, à partir des vraies photos des produits) puis détourés
+  (`public/img/plateau/3d/`) ; chaque détourage est gonflé en relief et pivote doucement pour montrer
+  son volume, puis s'efface et le suivant arrive d'un bond. On le fait tourner à la souris ou au doigt
+  (`src/components/plateau/three/`). Pour entrer dans la zone claire, tout le fond de la page passe
+  du noir au blanc au fil du défilement, sans bande de dégradé (`PlateauTint.tsx`) ; on en ressort
+  par une rupture franche avant les avis.
+- **Plateau clair** : la version Plateau, inversée : le haut est clair, la zone des cartes et du
+  catalogue passe au noir au défilement, puis une rupture franche ramène le clair avant les avis. Les
+  composants Plateau n'emploient que les couleurs `pl-ink`, `pl-bg` et `pl-gold`, redéfinies par
+  version dans `src/app/globals.css`.
 
-Le film de la version Cinéma (`public/video/`) est rendu avec le studio Remotion de l'agence
-(`mbn-ads-agency/studio`, modèle `BulletTime`) à partir des réglages de `video/` :
+Le film de la version Halo (`public/video/`) sont rendus avec le studio Remotion de
+l'agence (`mbn-ads-agency/studio`, modèle `FootageCut`) à partir des réglages de
+`video/` :
 
 ```bash
 cd ../mbn-ads-agency/studio
-node render.mjs <jobs.json>   # jobs : composition BulletTime, props video/hero-cinema*.props.json, "gl": "angle"
+node render.mjs <jobs.json>   # jobs : composition FootageCut, props video/hero-halo*.props.json
 ```
 
-Les repères de temps du film (gel de la fléchette, scènes) sont repris dans
-`src/components/CinemaHero.tsx` et `src/app/page.tsx` : à mettre à jour si le film change.
+Les repères de temps des films sont repris dans `src/components/CinemaHero.tsx` (gel de la
+fléchette, scènes) et `src/app/page.tsx` : à mettre à jour si un film change. Les affiches
+`hero-halo-*.jpg` sont l'image 105 (amis aux fléchettes).
 
 ## Démarrer
 

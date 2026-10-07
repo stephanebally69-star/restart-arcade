@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Clock, X } from 'lucide-react'
 
@@ -8,6 +9,7 @@ const KEY = 'restart-topbar-closed'
 
 /** Bandeau noir au-dessus du header : l'engagement de délai, refermable pour la visite. */
 export function TopBar() {
+  const pathname = usePathname()
   const [closed, setClosed] = useState(false)
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export function TopBar() {
   }
 
   return (
-    <div className="relative bg-[#111] px-10 py-2.5 text-center text-[13px] text-white/80">
+    <div data-home={pathname === '/' || undefined} className="topbar relative bg-[#111] px-10 py-2.5 text-center text-[13px] text-white/80">
       <p className="inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1">
         <Clock className="size-3.5 text-white/60" aria-hidden="true" />
         <span className="font-semibold text-white">Devis gratuit sous 48 heures</span>

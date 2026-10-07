@@ -28,6 +28,7 @@ jobs:
           - { branch: theme-papier, dir: papier }
           - { branch: theme-onde-pixel, dir: onde-pixel }
           - { branch: theme-showroom, dir: showroom }
+          - { branch: theme-panorama, dir: panorama }
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,6 +83,11 @@ jobs:
         with:
           name: site-showroom
           path: out/showroom
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-panorama
+          path: out/panorama
 
       - name: Désactiver le traitement Jekyll
         run: touch out/.nojekyll
