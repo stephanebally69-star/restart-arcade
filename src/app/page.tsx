@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
 import { audiences } from '@/data/catalogue'
 import { audiencePath } from '@/data/audiencePages'
-import { ambiance, universImage } from '@/data/images'
+import { ambiance } from '@/data/images'
 import { chapters, collection, room } from '@/data/panorama'
 import { PanoramaHeader } from '@/components/panorama/PanoramaHeader'
 import { PanoramaChapters } from '@/components/panorama/PanoramaChapters'
@@ -79,7 +79,7 @@ export default function Home() {
                 <Link href={c.href} className="pano-product">
                   <span className="pano-product__shot">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={universImage(c.slug)} alt="" loading="lazy" />
+                    <img src={c.image} alt="" loading="lazy" />
                   </span>
                   <span className="pano-product__name">{c.name}</span>
                   <span className="pano-product__meta">

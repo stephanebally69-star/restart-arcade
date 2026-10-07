@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, type CSSProperties } from 'react'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import type { Chapter, Hotspot, Scene } from '@/data/panorama'
 import { ctaClick } from '@/lib/analytics'
 
-type Product = { slug: string; name: string; price: string; href: string }
+type Product = { slug: string; name: string; price: string; href: string; image: string }
 
 /** Défile jusqu'à la section `id`, sans animation si l'utilisateur les réduit. */
 export function scrollToSection(id: string) {
@@ -62,12 +62,26 @@ export function PanoramaHero({
             const product = bySlug[h.slug]
             if (!product) return null
             return (
-              <li key={h.slug} style={{ left: `${h.x}%`, top: `${h.y}%` }} className="pano-hotspot">
-                <Link href={product.href} className="pano-hotspot__link">
+              <li
+                key={h.slug}
+                style={{ left: `${h.x}%`, top: `${h.y}%` }}
+                className="pano-hotspot"
+                data-flip={h.x > 62 || undefined}
+              >
+                <Link href={product.href} className="pano-hotspot__link" aria-label={`${product.name}, ${product.price}`}>
                   <span className="pano-hotspot__dot" aria-hidden="true" />
-                  <span className="pano-hotspot__card">
-                    <span className="pano-hotspot__name">{product.name}</span>
-                    <span className="pano-hotspot__price">{product.price}</span>
+                  <span className="pano-hotspot__card" aria-hidden="true">
+                    <span className="pano-hotspot__thumb">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={product.image} alt="" loading="lazy" />
+                    </span>
+                    <span className="pano-hotspot__body">
+                      <span className="pano-hotspot__name">{product.name}</span>
+                      <span className="pano-hotspot__price">{product.price}</span>
+                    </span>
+                    <span className="pano-hotspot__go">
+                      <ArrowUpRight className="size-4" strokeWidth={2} />
+                    </span>
                   </span>
                 </Link>
               </li>
@@ -79,7 +93,7 @@ export function PanoramaHero({
       <div className="pano-shade" aria-hidden="true" />
 
       <div className="pano-copy">
-        <p className="pano-eyebrow">Billard · Baby-foot · Fléchettes · Fauteuil massant · Borne d&apos;arcade</p>
+        <p className="pano-eyebrow">Billard · Baby-foot · Fléchettes · Flipper · Fauteuil massant · Borne d&apos;arcade</p>
         <h1 className="pano-title">Transformez vos espaces avec RESTART</h1>
         <p className="pano-lead">Personnalisés à votre image, livrés montés, en vente ou en location.</p>
         <div className="pano-actions">

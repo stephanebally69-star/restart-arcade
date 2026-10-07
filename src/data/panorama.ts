@@ -28,17 +28,17 @@ export type Scene = {
 export const room: Scene & { hotspots: Hotspot[] } = {
   id: 'piece',
   image: asset('/img/panorama/piece.webp'),
-  alt: "Grande pièce lumineuse aux baies vitrées ouvertes sur un lac et des montagnes, avec un billard, un baby-foot, une borne de fléchettes, un fauteuil massant et une borne d'arcade",
+  alt: "Grande pièce lumineuse aux baies vitrées ouvertes sur un lac et des montagnes, avec un billard, un baby-foot, une borne de fléchettes, un flipper, un fauteuil massant et une borne d'arcade",
   ratio: 2048 / 1152,
   focus: [0.5, 0.5],
   hotspots: [
-    { slug: 'flechettes', x: 14.8, y: 30 },
-    { slug: 'baby-foot', x: 17, y: 60 },
-    { slug: 'billard', x: 64, y: 44 },
-    { slug: 'borne-arcade', x: 59.5, y: 26 },
-    { slug: 'fauteuil-massant', x: 77.5, y: 40 },
-  ],
-}
+    { slug: 'flechettes', x: 14.8, y: 29.5 },
+    { slug: 'baby-foot', x: 16.5, y: 61 },
+    { slug: 'billard', x: 50, y: 48 },
+    { slug: 'borne-arcade', x: 59.5, y: 26.5 },
+    { slug: 'flipper-numerique', x: 74.3, y: 30 },
+    { slug: 'fauteuil-massant', x: 86.5, y: 42 },
+  ],}
 
 /** Ambiance de couleur d'un univers, tirée de sa photo (voir `.pano-ch[data-tone]`). */
 export type Tone = 'nuit' | 'sauge' | 'sable'
@@ -115,14 +115,16 @@ export const chapters: Chapter[] = [
   }),
 ]
 
-/** Les cinq familles de la pièce, avec leur prix d'entrée tiré du catalogue. */
-export const collection = ['billard', 'baby-foot', 'flechettes', 'fauteuil-massant', 'borne-arcade'].map((slug) => {
+/** Les six familles de la pièce, avec leur prix d'entrée tiré du catalogue. */
+export const collection = ['billard', 'baby-foot', 'flechettes', 'flipper-numerique', 'fauteuil-massant', 'borne-arcade'].map((slug) => {
   const u = findUnivers(slug)!
   const prices = u.models.flatMap((m) => (m.price != null ? [m.price] : []))
   return {
     slug,
     name: u.name,
     short: u.navLabel,
+    /** Détourage du produit, pour la vignette de l'infobulle. */
+    image: asset(`/img/plateau/${slug}.webp`),
     href: `/produits/${slug}/`,
     price: prices.length ? `dès ${formatPrice(Math.min(...prices))}` : 'Sur devis',
     count: u.models.length,
