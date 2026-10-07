@@ -36,7 +36,7 @@ export const room: Scene & { hotspots: Hotspot[] } = {
     { slug: 'baby-foot', x: 17, y: 64 },
     { slug: 'billard', x: 54.5, y: 46 },
     { slug: 'borne-arcade', x: 59.6, y: 26.5 },
-    { slug: 'fauteuil-massant', x: 76.8, y: 39 },
+    { slug: 'fauteuil-massant', x: 46.5, y: 33 },
     { slug: 'flipper-numerique', x: 84.5, y: 52 },
   ],
 }
