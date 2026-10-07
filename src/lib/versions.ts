@@ -1,44 +1,45 @@
 /**
- * Les propositions de refonte, toutes publiées sur le site GitHub Pages du dépôt
- * restart-arcade. Cette branche ne sert que la version Showroom : l'onglet « Version »
- * renvoie vers les autres, chacune à son adresse.
+ * Les six propositions de refonte, toutes publiées sur le site GitHub Pages du
+ * dépôt restart-arcade : Plateau, Plateau clair, Halo et Carrousel sur main (à la
+ * racine, `?version=`), Panorama et Showroom sur leur branche theme-* (sous-dossier).
+ * Cette branche ne sert qu'une version : l'onglet « Version » renvoie vers les
+ * autres, chacune à son adresse. En local, chaque site pointe vers son serveur de dev.
  */
 const ROOT = 'https://stephanebally69-star.github.io/restart-arcade'
 
-export type SiteVersion = { id: string; name: string; desc: string; url: string }
+type Site = 'main' | 'panorama' | 'showroom'
+const SITE_PATH: Record<Site, string> = { main: '', panorama: '/panorama', showroom: '/showroom' }
+const DEV: Partial<Record<Site, string>> = { main: 'http://localhost:4321', panorama: 'http://localhost:3107' }
+
+export type SiteVersion = { id: string; name: string; desc: string; site: Site; path: string }
 
 export const versions: SiteVersion[] = [
+  { id: 'panorama', name: 'Panorama', desc: 'Une pièce en plein écran qui réunit tous les jeux', site: 'panorama', path: '/' },
   {
     id: 'showroom',
     name: 'Showroom',
     desc: "Mise en page d'après poltronesofa.com : marine, crème et rouge",
-    url: `${ROOT}/showroom/`,
+    site: 'showroom',
+    path: '/',
   },
+  { id: 'plateau', name: 'Plateau', desc: 'Sombre, un produit à la fois sur un plateau tournant en 3D', site: 'main', path: '/?version=plateau' },
   {
-    id: 'plateau',
-    name: 'Plateau',
-    desc: 'Mise en page sombre, produits en photo sur le plateau',
-    url: `${ROOT}/?version=plateau`,
+    id: 'plateau-clair',
+    name: 'Plateau clair',
+    desc: 'La version Plateau en clair, passage au noir au défilement',
+    site: 'main',
+    path: '/?version=plateau-clair',
   },
-  {
-    id: 'studio',
-    name: 'Carrousel',
-    desc: 'Carrousel photo, une gamme par slide',
-    url: `${ROOT}/?version=studio`,
-  },
-  {
-    id: 'papier',
-    name: 'Papier',
-    desc: 'Crème et indigo, gabarit éditorial',
-    url: `${ROOT}/papier/`,
-  },
-  {
-    id: 'onde-pixel',
-    name: 'Onde pixel',
-    desc: 'Grille de pixels vivante, noir et cyan',
-    url: `${ROOT}/onde-pixel/`,
-  },
+  { id: 'halo', name: 'Halo', desc: 'Film plein écran : flipper, fléchettes, baby-foot et sourires', site: 'main', path: '/?version=halo' },
+  { id: 'studio', name: 'Carrousel', desc: 'Carrousel photo, puis la pièce racontée par public', site: 'main', path: '/?version=studio' },
 ]
+
+/** Adresse d'une version : son serveur de dev en local, sinon le site Pages. */
+export function versionUrl(v: SiteVersion) {
+  const local = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+  const dev = DEV[v.site]
+  return local && dev ? dev + v.path : ROOT + SITE_PATH[v.site] + v.path
+}
 
 /** Version servie par ce build. */
 export const CURRENT_VERSION = 'showroom'

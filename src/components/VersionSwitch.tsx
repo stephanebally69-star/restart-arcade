@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Check, Gamepad2 } from 'lucide-react'
-import { CURRENT_VERSION, versions } from '@/lib/versions'
+import { CURRENT_VERSION, versionUrl, versions } from '@/lib/versions'
 import { track } from '@/lib/analytics'
 
 /**
@@ -71,7 +71,7 @@ export function VersionSwitch() {
               return (
                 <li key={v.id}>
                   <a
-                    href={v.url}
+                    href={versionUrl(v)}
                     aria-current={selected ? 'page' : undefined}
                     onClick={() => track('version_change', { version: v.id })}
                     className={`flex items-start gap-3 px-3 py-2.5 transition ${selected ? 'bg-[#283444]/[0.06]' : 'hover:bg-[#283444]/[0.06]'}`}
