@@ -34,7 +34,7 @@ const categories: Category[] = [
   { href: '/produits/flipper-numerique/', label: 'Flippers numériques', image: img('situations/flipper-numerique'), alt: 'Flipper numérique dans un espace de pause' },
   { href: '/produits/fauteuil-massant/', label: 'Fauteuils massants', image: img('situations/fauteuil-massant'), alt: "Fauteuil massant dans l'espace détente d'un bureau" },
   { href: '/produits/cocon-de-repos/', label: 'Cocons de repos', image: img('situations/cocon-de-repos'), alt: 'Cocon de repos dans une salle de récupération' },
-  { href: '/contact/', label: 'Projets sur mesure', image: img('situations/sur-mesure'), alt: 'Salle de jeux sur mesure : baby-foot, borne et fléchettes' },
+  { href: '/contact/', label: 'Projets sur mesure', image: img('situations/borne-personnalisee'), alt: "Borne d'arcade habillée aux couleurs d'un bar client" },
 ]
 
 /** Les trois cartes « Pourquoi nous choisir » : photo, puis titre et engagement dessous (textes de la méthode RESTART). */
@@ -54,8 +54,8 @@ const reasons = [
   {
     title: 'Installation',
     text: "Livré monté, mis en service et pris en main sur place, partout en France. Ni carton à ouvrir ni notice à lire.",
-    image: img('hero/flechettes'),
-    alt: 'Borne de fléchettes électroniques installée chez un client',
+    image: img('situations/sur-mesure'),
+    alt: 'Salle de jeux équipée et éclairée : baby-foot, cible de fléchettes et borne',
   },
 ]
 
