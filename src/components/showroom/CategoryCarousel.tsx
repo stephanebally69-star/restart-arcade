@@ -5,17 +5,23 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { ctaClick } from '@/lib/analytics'
 
+const AUTOPLAY_MS = 4000
+
 export type Category = { href: string; label: string; image: string; alt: string }
 
 /**
  * Carrousel des gammes de poltronesofa.com : deux grandes photos par vue (une sur
  * mobile), légende en capitales sous chacune, flèches rondes blanches posées sur les
  * bords. Défilement natif avec accroche, les flèches avancent d'une carte.
+ * Défilement automatique d'une carte toutes les 4 s, retour au début en fin de liste ;
+ * en pause au survol, au focus, au toucher, hors écran ou si les animations sont réduites.
  */
 export function CategoryCarousel({ items }: { items: Category[] }) {
   const trackRef = useRef<HTMLUListElement>(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
+  const pausedRef = useRef(false)
+  const visibleRef = useRef(false)
 
   const update = useCallback(() => {
     const el = trackRef.current
@@ -35,19 +41,48 @@ export function CategoryCarousel({ items }: { items: Category[] }) {
     }
   }, [update])
 
-  const step = (dir: 1 | -1) => {
+  const step = useCallback((dir: 1 | -1) => {
     const el = trackRef.current
     const card = el?.querySelector('li')
     if (!el || !card) return
     const gap = parseFloat(getComputedStyle(el).columnGap) || 0
     el.scrollBy({ left: dir * (card.clientWidth + gap), behavior: 'smooth' })
-  }
+  }, [])
+
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const observer = new IntersectionObserver(([entry]) => (visibleRef.current = entry.isIntersecting), {
+      threshold: 0.4,
+    })
+    observer.observe(el)
+    const id = window.setInterval(() => {
+      if (pausedRef.current || !visibleRef.current || document.hidden) return
+      if (el.scrollLeft + el.clientWidth > el.scrollWidth - 8) el.scrollTo({ left: 0, behavior: 'smooth' })
+      else step(1)
+    }, AUTOPLAY_MS)
+    return () => {
+      observer.disconnect()
+      window.clearInterval(id)
+    }
+  }, [step])
+
+  const pause = () => (pausedRef.current = true)
+  const resume = () => (pausedRef.current = false)
 
   const arrow =
     'absolute top-[calc(50%-1.5rem)] z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#111] shadow-[0_2px_10px_rgba(0,0,0,0.15)] transition hover:scale-105 disabled:pointer-events-none disabled:opacity-0 md:inline-flex'
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onPointerEnter={pause}
+      onPointerLeave={resume}
+      onFocus={pause}
+      onBlur={resume}
+      onTouchStart={pause}
+      onTouchEnd={() => window.setTimeout(resume, AUTOPLAY_MS)}
+    >
       <ul
         ref={trackRef}
         className="sr-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 sm:px-8 md:gap-8 lg:px-[78px]"
