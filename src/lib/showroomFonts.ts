@@ -1,17 +1,18 @@
 // Polices de la version Showroom, d'après poltronesofa.com : une linéale géométrique
-// (Metropolis là-bas, Montserrat ici, sa plus proche cousine sur Google Fonts) et une
-// écriture manuscrite pour les signatures des cartes « Pourquoi nous choisir ».
-import { Allura, Montserrat } from 'next/font/google'
+// (Metropolis là-bas, Montserrat ici, sa plus proche cousine) et une écriture manuscrite
+// pour les signatures des cartes « Pourquoi nous choisir ». Fichiers locaux (Fontsource,
+// sous-ensemble latin, licence OFL) : le build ne dépend pas de Google Fonts.
+import localFont from 'next/font/local'
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
+const montserrat = localFont({
+  src: '../fonts/montserrat-variable.woff2',
   variable: '--ff-showroom',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: '100 900',
 })
 
-const allura = Allura({
-  subsets: ['latin'],
+const allura = localFont({
+  src: '../fonts/allura-400.woff2',
   variable: '--ff-signature',
   display: 'swap',
   weight: '400',

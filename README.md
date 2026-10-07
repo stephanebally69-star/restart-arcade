@@ -23,7 +23,7 @@ contenu réel de RESTART :
 | « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation, signatures manuscrites (Allura) |
 | Pied de page en dégradé marine, quatre colonnes centrées | Idem, avec NAP et mentions de MG2T |
 
-Palette marine `#283444`, crème `#fffdfc`, rouge `#c4262e` ; Montserrat à la place de Metropolis.
+Palette marine `#283444`, crème `#fffdfc`, rouge `#c4262e` ; Montserrat à la place de Metropolis (fichiers locaux dans `src/fonts/`).
 Elle s'applique à tout le site de la branche (`html[data-site='showroom']` dans `globals.css`).
 Pas de sélecteur de thème ni de versions internes ici : l'onglet « Version » renvoie vers les
 autres propositions (`src/lib/versions.ts`). La pop-in d'inscription à la newsletter de
