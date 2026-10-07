@@ -20,7 +20,7 @@ contenu réel de RESTART :
 | Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, titres en capitales grasses soulignés de rouge ; défilement lent et continu en boucle, freiné au survol, à tirer à la souris ou au doigt (`CategoryCarousel`) |
 | Bandeau marine : vidéo à bouton lecture rouge, bouton rouge | Retiré à la demande du client |
 | « Plus de 300 magasins » | « Un atelier et un showroom près de Lyon, une livraison partout en France » |
-| « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation, signatures manuscrites (Allura) |
+| « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation : photo, puis titre en capitales grasses et engagement en dessous |
 | Pied de page en dégradé marine, quatre colonnes centrées | Idem, avec NAP et mentions de MG2T |
 
 Palette marine `#283444`, crème `#fffdfc`, rouge `#c4262e` ; Montserrat à la place de Metropolis (fichiers locaux dans `src/fonts/`).

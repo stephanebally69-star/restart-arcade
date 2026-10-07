@@ -12,7 +12,7 @@ import { CategoryCarousel, type Category } from './CategoryCarousel'
  *   2. grand titre à gauche, paragraphe en capitales à droite ;
  *   3. carrousel des gammes, deux photos par vue, légendes en capitales ;
  *   4. « Plus de 300 magasins » : média à gauche, accroche et bouton marine à droite ;
- *   5. « Pourquoi nous choisir » : trois photos signées, bouton « Plus d'infos ».
+ *   5. « Pourquoi nous choisir » : trois photos titrées, bouton « Plus d'infos ».
  * Le contenu vient du catalogue et des pages existantes : rien n'est inventé.
  */
 
@@ -37,11 +37,26 @@ const categories: Category[] = [
   { href: '/contact/', label: 'Projets sur mesure', image: img('situations/sur-mesure'), alt: 'Salle de jeux sur mesure : baby-foot, borne et fléchettes' },
 ]
 
-/** Les trois cartes « Pourquoi nous choisir » ; la signature manuscrite remplace « Maestro Bruno ». */
+/** Les trois cartes « Pourquoi nous choisir » : photo, puis titre et engagement dessous (textes de la méthode RESTART). */
 const reasons = [
-  { title: 'Conseil', signature: 'Audit gratuit', image: img('situations/entreprise'), alt: "Collègues autour d'un billard installé par RESTART" },
-  { title: 'Personnalisation', signature: 'À vos couleurs', image: img('hero/baby-foot'), alt: 'Baby-foot en bois gravé au nom du client' },
-  { title: 'Installation', signature: 'Livré monté', image: ambiance.bureau, alt: "Billard installé dans la salle de pause d'un bureau" },
+  {
+    title: 'Conseil',
+    text: "Un échange de 20 minutes, sur place ou en visio, pour cadrer l'usage, la place et le budget. Gratuit et sans engagement.",
+    image: img('situations/entreprise'),
+    alt: "Collègues autour d'un billard installé par RESTART",
+  },
+  {
+    title: 'Personnalisation',
+    text: 'Covering, couleur des boutons, logo : vous validez un visuel avant toute fabrication.',
+    image: img('hero/baby-foot'),
+    alt: 'Baby-foot en bois gravé au nom du client',
+  },
+  {
+    title: 'Installation',
+    text: "Livré monté, mis en service et pris en main sur place, partout en France. Ni carton à ouvrir ni notice à lire.",
+    image: img('hero/flechettes'),
+    alt: 'Borne de fléchettes électroniques installée chez un client',
+  },
 ]
 
 const btn =
@@ -105,23 +120,25 @@ export function ShowroomHome() {
         <ul className="mt-10 grid gap-6 md:grid-cols-3 md:gap-8">
           {reasons.map((r) => (
             <li key={r.title}>
-              <Link href="/qui-sommes-nous/" className="group relative block aspect-[14/15] overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={r.image}
-                  alt={r.alt}
-                  loading="lazy"
-                  className="size-full object-cover transition duration-700 group-hover:scale-[1.03]"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,24,30,0.45)_0%,rgba(20,24,30,0.15)_45%,rgba(20,24,30,0.55)_100%)]"
-                />
-                <span className="absolute inset-x-0 top-[28%] text-center text-[30px] text-white md:text-[34px]">
+              <Link href="/qui-sommes-nous/" className="group block">
+                <span className="block aspect-[14/15] overflow-hidden bg-[#283444]/5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={r.image}
+                    alt={r.alt}
+                    loading="lazy"
+                    className="size-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                  />
+                </span>
+                <span className="block pt-5 text-center text-[19px] font-bold uppercase leading-tight tracking-[0.06em] text-[#283444] md:text-[24px]">
                   {r.title}
                 </span>
-                <span className="sr-signature absolute inset-x-0 bottom-5 text-center text-[28px] text-white">
-                  {r.signature}
+                <span
+                  aria-hidden="true"
+                  className="mx-auto mt-3 block h-[3px] w-10 bg-[#c4262e] transition-all duration-300 group-hover:w-20"
+                />
+                <span className="mx-auto mt-4 block max-w-[340px] text-center text-[15px] leading-relaxed text-[#283444]/80">
+                  {r.text}
                 </span>
               </Link>
             </li>

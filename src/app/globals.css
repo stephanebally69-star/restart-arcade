@@ -1069,10 +1069,6 @@
 .sr-home h2 {
   color: #283444;
 }
-.sr-signature {
-  font-family: var(--ff-signature), cursive;
-  line-height: 1;
-}
 
 /* Film d'accueil : fondu enchaîné et lent travelling avant sur chaque plan. */
 .sr-film-shot {
