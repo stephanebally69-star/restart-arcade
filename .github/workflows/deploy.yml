@@ -1,5 +1,8 @@
 name: Déploiement GitHub Pages
 
+# Toutes les propositions de refonte vivent dans ce dépôt et sur le même site Pages :
+# main à la racine, chaque branche theme-* dans son sous-dossier. Un push sur une
+# branche theme-* relance ce workflow (voir le deploy.yml de ces branches).
 on:
   push:
     branches: [main]
@@ -18,8 +21,16 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { branch: main, dir: '' }
+          - { branch: theme-papier, dir: papier }
+          - { branch: theme-onde-pixel, dir: onde-pixel }
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
 
       - uses: actions/setup-node@v4
         with:
@@ -34,11 +45,37 @@ jobs:
 
       - name: Build statique
         env:
-          # GitHub Pages sert le site sous /<repo>/ : le basePath doit suivre.
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}
+          # GitHub Pages sert le site sous /<repo>/ : le basePath doit suivre,
+          # plus le sous-dossier de la version.
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}${{ matrix.dir && format('/{0}', matrix.dir) || '' }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}${{ matrix.dir && format('/{0}', matrix.dir) || '' }}
           NEXT_PUBLIC_GA4_ID: ${{ vars.GA4_ID }}
         run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ matrix.dir || 'racine' }}
+          path: out
+          retention-days: 1
+
+  assemble:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-racine
+          path: out
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-papier
+          path: out/papier
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-onde-pixel
+          path: out/onde-pixel
 
       - name: Désactiver le traitement Jekyll
         run: touch out/.nojekyll
@@ -48,7 +85,7 @@ jobs:
           path: out
 
   deploy:
-    needs: build
+    needs: assemble
     runs-on: ubuntu-latest
     environment:
       name: github-pages
