@@ -1,15 +1,14 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, MapPin } from 'lucide-react'
 import { audiences } from '@/data/catalogue'
 import { audiencePath } from '@/data/audiencePages'
-import { ambiance } from '@/data/images'
 import { chapters, collection, room } from '@/data/panorama'
 import { PanoramaHeader } from '@/components/panorama/PanoramaHeader'
 import { PanoramaChapters } from '@/components/panorama/PanoramaChapters'
 import { PanoramaHero } from '@/components/panorama/PanoramaHero'
 import { Reveal } from '@/components/Reveal'
-import { site } from '@/lib/site'
+import { asset, site } from '@/lib/site'
 import './panorama.css'
 
 export const metadata: Metadata = {
@@ -18,6 +17,30 @@ export const metadata: Metadata = {
     "RESTART équipe entreprises, bars et particuliers en bornes d'arcade, fléchettes électroniques, baby-foot, billards et fauteuils massants. Personnalisation à votre image, livraison et installation partout en France.",
   alternates: { canonical: '/' },
 }
+
+/** Photos d'installations clients (public/img/realisations), recadrées sans les pastilles incrustées. */
+const installs = [
+  {
+    image: asset('/img/panorama/reel-marseille.webp'),
+    place: 'Marseille (13)',
+    alt: "Partie de billard dans le salon d'un hôtel à Marseille",
+  },
+  {
+    image: asset('/img/panorama/reel-castres.webp'),
+    place: 'Castres (81)',
+    alt: 'Partie de fléchettes électroniques sur une borne RESTART à Castres',
+  },
+  {
+    image: asset('/img/panorama/reel-bourg.webp'),
+    place: 'Bourg-lès-Valence (26)',
+    alt: "Borne d'arcade personnalisée et baby-foot dans un barbier à Bourg-lès-Valence",
+  },
+  {
+    image: asset('/img/panorama/reel-saint-cirgue.webp'),
+    place: 'Saint-Cirgue (81)',
+    alt: 'Prise en main du baby-foot avec une famille à Saint-Cirgue',
+  },
+]
 
 const steps = [
   {
@@ -65,8 +88,7 @@ export default function Home() {
       {/* --- Les collections ------------------------------------------- */}
       <section className="pano-section">
         <div className="pano-head">
-          <p className="pano-kicker">Les collections</p>
-          <h2 className="pano-h2">Tout ce qui se trouve dans la pièce</h2>
+          <h2 className="pano-h2">Nos produits</h2>
           <Link href="/produits/" className="pano-link pano-link--dark">
             Tous les jeux
             <ArrowRight className="size-4" aria-hidden="true" />
@@ -98,8 +120,8 @@ export default function Home() {
         <div className="pano-split__media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={ambiance.salleDePause}
-            alt="Espace de pause équipé d'un baby-foot, d'un billard et d'une borne d'arcade"
+            src={asset('/img/panorama/methode.webp')}
+            alt="Deux clients jouent sur une borne d'arcade RESTART installée dans un pub de Lyon"
             loading="lazy"
           />
         </div>
@@ -126,8 +148,6 @@ export default function Home() {
 
       {/* --- Appel final ----------------------------------------------- */}
       <section className="pano-final">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={room.image} alt="" loading="lazy" className="pano-final__bg" />
         <div className="pano-final__body">
           <p className="pano-kicker pano-kicker--light">Devis gratuit sous 48 heures</p>
           <h2 className="pano-final__title">Un espace vide, une idée vague, un budget à cadrer ?</h2>
@@ -135,7 +155,7 @@ export default function Home() {
             Décrivez-nous votre projet en deux minutes. Nous revenons vers vous sous 48 heures avec une
             proposition chiffrée.
           </p>
-          <div className="pano-actions pano-actions--center">
+          <div className="pano-actions">
             <Link href="/contact/" className="pano-btn pano-btn--light">
               Décrire mon projet
             </Link>
@@ -143,6 +163,27 @@ export default function Home() {
               {site.phone}
             </a>
           </div>
+        </div>
+        <div className="pano-final__proof">
+          <p className="pano-kicker pano-kicker--light">Déjà installés chez nos clients</p>
+          <ul className="pano-final__grid">
+            {installs.map((r) => (
+              <li key={r.image}>
+                <figure>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={r.image} alt={r.alt} loading="lazy" />
+                  <figcaption>
+                    <MapPin className="size-3.5" aria-hidden="true" />
+                    {r.place}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+          <Link href="/realisations/" className="pano-link pano-link--light">
+            Toutes nos réalisations
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
         </div>
       </section>
     </div>
