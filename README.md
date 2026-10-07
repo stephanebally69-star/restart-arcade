@@ -13,8 +13,8 @@ contenu réel de RESTART :
 
 | poltronesofa.com | Showroom |
 |---|---|
-| Bandeau marine des promotions | Devis gratuit sous 48 heures, livré monté partout en France |
-| Logo, gammes en capitales au centre, liens utilitaires à droite | Bornes d'arcade · Baby-foot · Fléchettes · Tous les jeux ; Réalisations, Qui sommes-nous, Contact |
+| Bandeau marine des promotions | Retiré à la demande du client |
+| Logo, gammes en capitales au centre, liens utilitaires à droite | En-tête de la version Panorama : « Menu » et publics à gauche, logo de la version Halo au centre, réalisations, téléphone et devis à droite ; transparent sur le film, menu plein écran |
 | Film plein écran | Photos en situation en fondu enchaîné, lent travelling avant (`HeroFilm`) |
 | « Entrez dans un monde de confort. » + paragraphe en capitales | « Transformez vos espaces avec RESTART. » + chiffres du catalogue, signature « créateur de bien-être en entreprise » |
 | Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, légendes en capitales (`CategoryCarousel`) |

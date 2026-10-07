@@ -21,7 +21,7 @@ export function HeroFilm({ shots }: { shots: FilmShot[] }) {
   }, [shots.length])
 
   return (
-    <div className="sr-film relative h-[min(56.25vw,calc(100svh-7rem))] min-h-[300px] w-full overflow-hidden bg-[#283444]">
+    <div id="showroom-film" className="sr-film relative h-[min(56.25vw,100svh)] min-h-[360px] w-full overflow-hidden bg-[#283444]">
       {shots.map((s, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
