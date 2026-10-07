@@ -18,7 +18,7 @@ contenu réel de RESTART :
 | Film plein écran | Photos en situation en fondu enchaîné, lent travelling avant (`HeroFilm`) |
 | « Entrez dans un monde de confort. » + paragraphe en capitales | « Transformez vos espaces avec RESTART. » + chiffres du catalogue, signature « créateur de bien-être en entreprise » |
 | Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, légendes en capitales, défilement automatique toutes les 4 s (pause au survol) (`CategoryCarousel`) |
-| Bandeau marine : vidéo à bouton lecture rouge, bouton rouge | Le bouton lecture lance le défilé des photos ; « Dès 899 €, en achat ou en location » (`PlayPanel`) |
+| Bandeau marine : vidéo à bouton lecture rouge, bouton rouge | Retiré à la demande du client |
 | « Plus de 300 magasins » | « Un atelier et un showroom près de Lyon, une livraison partout en France » |
 | « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation, signatures manuscrites (Allura) |
 | Pied de page en dégradé marine, quatre colonnes centrées | Idem, avec NAP et mentions de MG2T |
