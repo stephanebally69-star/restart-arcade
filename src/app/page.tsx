@@ -6,7 +6,8 @@ import { audiencePath } from '@/data/audiencePages'
 import { ambiance, universImage } from '@/data/images'
 import { chapters, collection, room } from '@/data/panorama'
 import { PanoramaHeader } from '@/components/panorama/PanoramaHeader'
-import { PanoramaStage } from '@/components/panorama/PanoramaStage'
+import { PanoramaChapters } from '@/components/panorama/PanoramaChapters'
+import { PanoramaHero } from '@/components/panorama/PanoramaHero'
 import { Reveal } from '@/components/Reveal'
 import { site } from '@/lib/site'
 import './panorama.css'
@@ -40,8 +41,9 @@ const steps = [
 /**
  * Accueil « Panorama », d'après roche-bobois.com : une pièce photographiée en
  * plein écran qui réunit tout ce que vend RESTART, puis la même pièce pensée
- * pour un bar, une entreprise et la maison, au fil du défilement. Seul
- * l'accueil change ; les autres pages restent celles du site actuel.
+ * pour un bar, une entreprise et la maison, en trois sections où photo et
+ * texte alternent de côté. Seul l'accueil change ; les autres pages restent
+ * celles du site actuel.
  */
 export default function Home() {
   const audienceItems = (['bar-commerce', 'entreprise', 'particulier'] as const).map((id) => {
@@ -56,7 +58,9 @@ export default function Home() {
         collection={collection.map((c) => ({ href: c.href, label: c.name, detail: c.price }))}
       />
 
-      <PanoramaStage room={room} chapters={chapters} products={collection} />
+      <PanoramaHero room={room} chapters={chapters} products={collection} />
+
+      <PanoramaChapters chapters={chapters} />
 
       {/* --- Les collections ------------------------------------------- */}
       <section className="pano-section">
