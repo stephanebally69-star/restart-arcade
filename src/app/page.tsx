@@ -60,7 +60,7 @@ export default function Home() {
 
       <PanoramaHero room={room} chapters={chapters} products={collection} />
 
-      <PanoramaChapters chapters={chapters} />
+      <PanoramaChapters chapters={chapters} products={collection} />
 
       {/* --- Les collections ------------------------------------------- */}
       <section className="pano-section">

@@ -123,14 +123,52 @@
   align-items: center;
   gap: 8px;
 }
-.pano-header__logo img {
-  height: 34px;
-  width: auto;
-  transition: filter 0.4s ease;
+/* Logo de la version Halo : pastille sombre et icône « marche » blanche, nom en Inter
+   semi-gras. Sur la photo, tout passe en blanc (pastille blanche, icône sombre). */
+.pano-logo {
+  --pill-bg: #fff;
+  --pill-fg: #141416;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--pano-font);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  white-space: nowrap;
 }
-/* Logo blanc cerné de noir : sur fond clair, on l'inverse (lettres noires) en gardant le cyan. */
-.pano-header[data-solid] .pano-header__logo img {
-  filter: invert(1) hue-rotate(180deg);
+.pano-header[data-solid] .pano-logo,
+.pano-menu .pano-logo {
+  --pill-bg: #141416;
+  --pill-fg: #fff;
+  color: #0e0e10;
+}
+.pano-logo__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+.pano-logo__pill svg {
+  width: 17px;
+  height: 17px;
+}
+@media (min-width: 640px) {
+  .pano-logo {
+    font-size: 24px;
+  }
+  .pano-logo__pill {
+    width: 36px;
+    height: 36px;
+  }
 }
 .pano-header__cta {
   display: inline-flex;
@@ -154,11 +192,6 @@
 .pano-header[data-solid] .pano-header__cta:hover {
   background: var(--pano-ink);
   color: #fff;
-}
-@media (min-width: 640px) {
-  .pano-header__logo img {
-    height: 40px;
-  }
 }
 @media (min-width: 1024px) {
   .pano-header {
@@ -621,28 +654,65 @@
 
 /* --- Les trois univers : photo et texte en alternance --------------------- */
 
+/* Chaque univers prend une ambiance tirée de sa photo : la nuit ambrée du bar,
+   le vert du tapis de billard pour l'entreprise, le sable et la terre cuite du
+   salon de famille. Le fond de bande, le texte et l'accent en découlent. */
+.pano-ch[data-tone='nuit'] {
+  --ch-bg: #1d1713;
+  --ch-ink: #f6eee4;
+  --ch-soft: rgba(246, 238, 228, 0.7);
+  --ch-accent: #e3a55a;
+  --ch-accent-ink: #1d1713;
+  --ch-line: rgba(246, 238, 228, 0.14);
+  --ch-chip: rgba(246, 238, 228, 0.08);
+}
+.pano-ch[data-tone='sauge'] {
+  --ch-bg: #e5ebe3;
+  --ch-ink: #1c2a21;
+  --ch-soft: #51625a;
+  --ch-accent: #2f6a4c;
+  --ch-accent-ink: #fff;
+  --ch-line: rgba(28, 42, 33, 0.12);
+  --ch-chip: rgba(47, 106, 76, 0.09);
+}
+.pano-ch[data-tone='sable'] {
+  --ch-bg: #f2e5d7;
+  --ch-ink: #2c1f16;
+  --ch-soft: #6f5a4a;
+  --ch-accent: #bd5f36;
+  --ch-accent-ink: #fff;
+  --ch-line: rgba(44, 31, 22, 0.12);
+  --ch-chip: rgba(189, 95, 54, 0.1);
+}
+
 .pano-ch {
   /* Progression d'entrée écrite au défilement ; 1 par défaut (sans JS, sans animation). */
   --p: 1;
   --dir: -1;
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
   align-items: center;
   min-height: 100svh;
-  padding: clamp(48px, 9svh, 110px) 0;
+  padding: clamp(40px, 8svh, 110px) 0;
   overflow: hidden;
+  background: var(--ch-bg);
+  color: var(--ch-ink);
 }
 .pano-ch[data-side='right'] {
   --dir: 1;
-  grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
 }
 .pano-ch[data-side='right'] .pano-ch__media {
   order: -1;
 }
 .pano-ch__text {
-  padding: 0 clamp(24px, 5vw, 96px);
+  position: relative;
+  max-width: 620px;
+  padding: 0 clamp(28px, 5vw, 88px);
 }
 .pano-ch[data-side='left'] .pano-ch__text {
+  justify-self: end;
   padding-left: clamp(16px, 4vw, 64px);
 }
 .pano-ch[data-side='right'] .pano-ch__text {
@@ -659,12 +729,174 @@
     transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* Numéro en grand et étiquette de l'univers */
+.pano-ch__head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.pano-ch__num {
+  font-family: var(--ff-fraunces), Georgia, serif;
+  font-size: clamp(56px, 6vw, 96px);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--ch-accent);
+}
+.pano-ch__tag {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 18px;
+  border-left: 1px solid var(--ch-line);
+}
+.pano-ch__tag strong {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.pano-ch__tag span {
+  font-size: 14px;
+  color: var(--ch-soft);
+}
+
+/* Titre éditorial en Fraunces, plus spécifique que les titres de la page (Inter). */
+:root:root .pano-page .pano-ch__title {
+  margin-top: clamp(16px, 2.4svh, 30px);
+  font-family: var(--ff-fraunces), Georgia, serif;
+  font-size: clamp(30px, 3vw, 46px);
+  font-weight: 350;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.pano-ch__lead {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ch-soft);
+}
+
+/* Arguments, cochés à la couleur de l'univers */
+.pano-ch__points {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+.pano-ch__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.pano-ch__tick {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-top: -1px;
+  border-radius: 999px;
+  background: var(--ch-accent);
+  color: var(--ch-accent-ink);
+}
+
+/* Produits visibles sur la photo */
+.pano-ch__scene {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ch-line);
+}
+.pano-ch__scene p {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ch-soft);
+}
+.pano-ch__scene ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.pano-ch__scene a {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ch-chip);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition:
+    background-color 0.25s,
+    color 0.25s;
+}
+.pano-ch__scene a:hover {
+  background: var(--ch-accent);
+  color: var(--ch-accent-ink);
+}
+
+/* Bouton de l'univers et lien devis */
+.pano-ch__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: 26px;
+}
+.pano-ch__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 54px;
+  padding: 0 8px 0 24px;
+  border-radius: 999px;
+  background: var(--ch-accent);
+  color: var(--ch-accent-ink);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.25s;
+}
+.pano-ch__cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--ch-accent-ink);
+  color: var(--ch-accent);
+  transition: transform 0.3s;
+}
+.pano-ch__cta:hover .pano-ch__cta-arrow {
+  transform: translateX(4px);
+}
+.pano-ch__quote {
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--ch-line);
+  text-underline-offset: 6px;
+  transition: text-decoration-color 0.25s;
+}
+.pano-ch__quote:hover {
+  text-decoration-color: currentColor;
+}
+
 /* La photo monte d'en dessous et se découvre de bas en haut, en se posant. */
 .pano-ch__media {
   --m: clamp(0, var(--p) / 0.75, 1);
   position: relative;
-  height: min(84svh, 900px);
+  /* Assez court pour rester sous l'en-tête fixe (88 px) quand la section est en haut. */
+  height: min(76svh, 860px);
   min-height: 420px;
+  margin: 0;
   overflow: hidden;
   transform: translateY(calc((1 - var(--m)) * 140px));
   clip-path: inset(calc((1 - var(--m)) * 45%) 0 0 0);
@@ -679,46 +911,25 @@
   transform: scale(calc(1.18 - var(--m) * 0.18));
   transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+.pano-ch__caption {
+  position: absolute;
+  bottom: 20px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(14, 14, 16, 0.55);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.pano-ch[data-side='left'] .pano-ch__caption {
+  right: 20px;
+}
+.pano-ch[data-side='right'] .pano-ch__caption {
+  left: 20px;
+}
 
-.pano-ch__count {
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--pano-soft);
-}
-.pano-ch__count span {
-  color: var(--pano-ink);
-  font-weight: 600;
-}
-.pano-ch .pano-kicker {
-  margin-top: 28px;
-  color: var(--pano-ink);
-}
-.pano-ch__title {
-  margin-top: 14px;
-  font-size: clamp(30px, 3.2vw, 50px);
-  line-height: 1.06;
-  text-wrap: balance;
-}
-.pano-ch__lead {
-  max-width: 34rem;
-  margin-top: 20px;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--pano-soft);
-}
-.pano-ch__points {
-  max-width: 34rem;
-  margin-top: 24px;
-  border-top: 1px solid var(--pano-line);
-}
-.pano-ch__points li {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--pano-line);
-  font-size: 15px;
-}
-.pano-ch .pano-link {
-  margin-top: 30px;
-}
+/* Lien souligné des autres sections */
 .pano-link {
   display: inline-flex;
   align-items: center;
@@ -738,6 +949,16 @@
 
 /* Mobile et tablette : la photo pleine largeur au-dessus, le texte en dessous ;
    tout arrive d'en dessous. */
+/* Écran peu haut : on garde le texte d'un univers dans la hauteur de l'écran. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .pano-ch__lead {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
 @media (max-width: 899px) {
   .pano-ch,
   .pano-ch[data-side='right'] {
@@ -753,7 +974,13 @@
     aspect-ratio: 4 / 3;
   }
   .pano-ch .pano-ch__text {
+    justify-self: stretch;
+    max-width: none;
     padding: 36px 16px 0;
+  }
+  .pano-ch__caption {
+    bottom: 12px;
+    font-size: 11.5px;
   }
 }
 

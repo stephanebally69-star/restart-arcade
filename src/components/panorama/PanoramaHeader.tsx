@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { Menu, Phone, X } from 'lucide-react'
-import { logo } from '@/data/images'
+import { Menu, Phone, Power, X } from 'lucide-react'
 import { site } from '@/lib/site'
 import { contactClick, ctaClick } from '@/lib/analytics'
 
@@ -73,9 +72,12 @@ export function PanoramaHeader({ audiences, collection }: { audiences: Item[]; c
           </nav>
         </div>
 
-        <Link href="/" className="pano-header__logo" aria-label="RESTART, retour à l'accueil">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logo} alt="RESTART" width={1350} height={498} />
+        {/* Marque de la version Halo : pastille « marche » et nom en toutes lettres. */}
+        <Link href="/" className="pano-logo" aria-label="RESTART, retour à l'accueil">
+          <span className="pano-logo__pill" aria-hidden="true">
+            <Power strokeWidth={2.5} />
+          </span>
+          RESTART
         </Link>
 
         <div className="pano-header__right">

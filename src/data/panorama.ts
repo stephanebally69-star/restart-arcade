@@ -1,4 +1,4 @@
-import { findUnivers, formatPrice, type Audience } from '@/data/catalogue'
+import { audiences, findUnivers, formatPrice, type Audience } from '@/data/catalogue'
 import { audiencePage, audiencePath } from '@/data/audiencePages'
 import { asset } from '@/lib/site'
 
@@ -40,65 +40,79 @@ export const room: Scene & { hotspots: Hotspot[] } = {
   ],
 }
 
+/** Ambiance de couleur d'un univers, tirée de sa photo (voir `.pano-ch[data-tone]`). */
+export type Tone = 'nuit' | 'sauge' | 'sable'
+
 export type Chapter = Scene & {
   audience: Audience
   label: string
+  /** Pour qui, en deux ou trois mots (« Pour vos clients »). */
+  short: string
+  tone: Tone
+  /** Ce que la photo montre de la pièce, en légende. */
+  caption: string
+  /** Produits visibles sur la photo, du plus présent au moins présent. */
+  products: string[]
   title: string
   text: string
   points: string[]
   href: string
 }
 
-const chapter = (
-  audience: Audience,
-  label: string,
-  image: string,
-  alt: string,
-  ratio: number,
-  focus: [number, number],
-): Chapter => {
-  const page = audiencePage(audience)
+type ChapterInput = Pick<Chapter, 'audience' | 'label' | 'tone' | 'caption' | 'products' | 'alt' | 'focus'> & {
+  image: string
+}
+
+const chapter = ({ image, ...c }: ChapterInput): Chapter => {
+  const page = audiencePage(c.audience)
   return {
-    id: audience,
-    audience,
-    label,
+    ...c,
+    id: c.audience,
     image: asset(image),
-    alt,
-    ratio,
-    focus,
+    ratio: 1536 / 864,
+    short: audiences.find((a) => a.id === c.audience)!.short,
     title: page.h1,
     text: page.intro.paragraphs[0],
     points: page.brief.slice(0, 3),
-    href: audiencePath(audience),
+    href: audiencePath(c.audience),
   }
 }
 
-/** Ordre du défilement demandé : bar, entreprise, puis la maison. */
+/**
+ * Ordre du défilement demandé : bar, entreprise, puis la maison. Les trois photos
+ * sont la pièce du hero, au même cadrage, réaménagée pour chaque public.
+ */
 export const chapters: Chapter[] = [
-  chapter(
-    'bar-commerce',
-    'Bar & commerce',
-    '/img/panorama/bar.webp',
-    "La même pièce devenue un bar au crépuscule : des clients jouent au baby-foot, au billard et aux fléchettes devant le comptoir et la vue sur le lac",
-    1536 / 864,
-    [0.45, 0.5],
-  ),
-  chapter(
-    'entreprise',
-    'Entreprise',
-    '/img/panorama/entreprise.webp',
-    "La même pièce devenue l'espace de pause d'une entreprise : des collègues jouent au baby-foot, discutent près du billard et se détendent dans le fauteuil massant",
-    1536 / 864,
-    [0.45, 0.5],
-  ),
-  chapter(
-    'particulier',
-    'Chez moi',
-    '/img/panorama/maison.webp',
-    "La même pièce devenue un salon familial : un père et son fils au baby-foot, un enfant à la borne d'arcade, une mère dans le fauteuil massant et un chien sur le tapis",
-    1536 / 864,
-    [0.45, 0.5],
-  ),
+  chapter({
+    audience: 'bar-commerce',
+    label: 'Bar & commerce',
+    tone: 'nuit',
+    caption: 'La pièce, version bar, à la tombée de la nuit',
+    products: ['baby-foot', 'billard', 'flechettes', 'borne-arcade'],
+    image: '/img/panorama/bar.webp',
+    alt: 'La même pièce devenue un bar au crépuscule : des clients jouent au baby-foot, au billard et aux fléchettes devant le comptoir et la vue sur le lac',
+    focus: [0.45, 0.5],
+  }),
+  chapter({
+    audience: 'entreprise',
+    label: 'Entreprise',
+    tone: 'sauge',
+    caption: "La pièce, version espace de pause d'entreprise",
+    products: ['baby-foot', 'billard', 'fauteuil-massant', 'flechettes', 'borne-arcade'],
+    image: '/img/panorama/entreprise.webp',
+    alt: "La même pièce devenue l'espace de pause d'une entreprise : des collègues jouent au baby-foot, discutent près du billard et se détendent dans le fauteuil massant",
+    focus: [0.45, 0.5],
+  }),
+  chapter({
+    audience: 'particulier',
+    label: 'Chez moi',
+    tone: 'sable',
+    caption: 'La pièce, version salon de famille, un dimanche',
+    products: ['baby-foot', 'borne-arcade', 'fauteuil-massant', 'billard', 'flechettes'],
+    image: '/img/panorama/maison.webp',
+    alt: "La même pièce devenue un salon familial : un père et son fils au baby-foot, un enfant à la borne d'arcade, une mère dans le fauteuil massant et un chien sur le tapis",
+    focus: [0.45, 0.5],
+  }),
 ]
 
 /** Les cinq familles de la pièce, avec leur prix d'entrée tiré du catalogue. */
@@ -108,6 +122,7 @@ export const collection = ['billard', 'baby-foot', 'flechettes', 'fauteuil-massa
   return {
     slug,
     name: u.name,
+    short: u.navLabel,
     href: `/produits/${slug}/`,
     price: prices.length ? `dès ${formatPrice(Math.min(...prices))}` : 'Sur devis',
     count: u.models.length,
