@@ -5,6 +5,30 @@ et mesure d'audience. Site statique Next.js 15, déployé sur GitHub Pages.
 
 **URL de test** : voir l'onglet *Actions → Deploy* ou *Settings → Pages* du repo.
 
+## Version Showroom (cette branche)
+
+Proposition publiée sous `/showroom/` du site Pages. L'accueil reprend la disposition et l'esprit
+de [poltronesofa.com/fr-FR](https://www.poltronesofa.com/fr-FR), section par section, avec le
+contenu réel de RESTART :
+
+| poltronesofa.com | Showroom |
+|---|---|
+| Bandeau marine des promotions | Devis gratuit sous 48 heures, livré monté partout en France |
+| Logo, gammes en capitales au centre, liens utilitaires à droite | Bornes d'arcade · Baby-foot · Fléchettes · Tous les jeux ; Réalisations, Qui sommes-nous, Contact |
+| Film plein écran | Photos en situation en fondu enchaîné, lent travelling avant (`HeroFilm`) |
+| « Entrez dans un monde de confort. » + paragraphe en capitales | « Transformez vos espaces avec RESTART. » + chiffres du catalogue, signature « créateur de bien-être en entreprise » |
+| Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, légendes en capitales (`CategoryCarousel`) |
+| Bandeau marine : vidéo à bouton lecture rouge, bouton rouge | Le bouton lecture lance le défilé des photos ; « Dès 899 €, en achat ou en location » (`PlayPanel`) |
+| « Plus de 300 magasins » | « Un atelier et un showroom près de Lyon, une livraison partout en France » |
+| « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation, signatures manuscrites (Allura) |
+| Pied de page en dégradé marine, quatre colonnes centrées | Idem, avec NAP et mentions de MG2T |
+
+Palette marine `#283444`, crème `#fffdfc`, rouge `#c4262e` ; Montserrat à la place de Metropolis.
+Elle s'applique à tout le site de la branche (`html[data-site='showroom']` dans `globals.css`).
+Pas de sélecteur de thème ni de versions internes ici : l'onglet « Version » renvoie vers les
+autres propositions (`src/lib/versions.ts`). La pop-in d'inscription à la newsletter de
+poltronesofa.com n'est pas reprise.
+
 ## Ce que la refonte change
 
 ### Architecture — la duplication disparaît

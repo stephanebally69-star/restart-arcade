@@ -1029,3 +1029,73 @@
     animation: none;
   }
 }
+
+/* --- Version Showroom ---------------------------------------------------- */
+/* D'après poltronesofa.com : marine #283444, crème #fffdfc, rouge pour l'appel à
+ * l'action, linéale géométrique. Imposée sur tout le site de cette branche, pages
+ * intérieures comprises (sélecteur plus fort que celui des thèmes). */
+:root[data-theme][data-site='showroom'] {
+  --t-bg: #fffdfc;
+  --t-bg-2: #f6f3f0;
+  --t-surface: #ffffff;
+  --t-surface-2: #f3f1ee;
+  --t-text: #283444;
+  --t-text-soft: #3b4757;
+  --t-text-muted: #6b7584;
+  --t-heading: #283444;
+  --t-primary: #283444;
+  --t-primary-fg: #ffffff;
+  --t-accent: #c4262e;
+  --t-price: #c4262e;
+  --t-brand-from: #283444;
+  --t-brand-to: #0f1b23;
+  --t-footer: #0f1b23;
+  --t-border: rgba(40, 52, 68, 0.1);
+  --t-input: rgba(40, 52, 68, 0.2);
+  --t-page-bg: none;
+  --t-font-head: var(--ff-showroom), ui-sans-serif, system-ui, sans-serif;
+  --t-font-body: var(--ff-showroom), ui-sans-serif, system-ui, sans-serif;
+  --t-head-tracking: -0.01em;
+}
+
+/* Grands titres : Metropolis demi-gras là-bas, Montserrat 600 ici. */
+.sr-home .sr-display {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: #283444;
+  text-wrap: pretty;
+}
+.sr-home h1,
+.sr-home h2 {
+  color: #283444;
+}
+.sr-signature {
+  font-family: var(--ff-signature), cursive;
+  line-height: 1;
+}
+
+/* Film d'accueil : fondu enchaîné et lent travelling avant sur chaque plan. */
+.sr-film-shot {
+  opacity: 0;
+  transform: scale(1.08);
+  transition:
+    opacity 1.4s ease,
+    transform 7.4s linear;
+}
+.sr-film-shot.is-on {
+  opacity: 1;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sr-film-shot {
+    transform: none;
+  }
+}
+
+/* Carrousel des gammes : défilement natif, barre masquée. */
+.sr-track {
+  scrollbar-width: none;
+}
+.sr-track::-webkit-scrollbar {
+  display: none;
+}
