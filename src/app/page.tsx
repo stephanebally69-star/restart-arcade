@@ -121,13 +121,13 @@ export default function Home() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={asset('/img/panorama/methode.webp')}
-            alt="Deux clients jouent sur une borne d'arcade RESTART installée dans un pub de Lyon"
+            alt="Billard installé par RESTART dans la salle d'un laser game à Tignieu-Jameyzieu"
             loading="lazy"
           />
         </div>
         <div className="pano-split__body">
           <p className="pano-kicker">Notre méthode</p>
-          <h2 className="pano-h2">De l&apos;idée à la première partie, en quatre étapes</h2>
+          <h2 className="pano-h2 pano-split__title">De l&apos;idée à la première partie, en quatre étapes</h2>
           <ol className="pano-steps-list">
             {steps.map((s, i) => (
               <li key={s.title}>

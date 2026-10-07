@@ -1111,58 +1111,69 @@
   color: var(--pano-soft);
 }
 
+/* Méthode : bloc compact, une photo d'installation en 4:3 et les quatre étapes
+   en grille 2 × 2, sans occuper tout l'écran. */
 .pano-split {
   display: grid;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+  padding: clamp(56px, 7vw, 100px) clamp(16px, 5vw, 96px);
   background: var(--pano-sand);
 }
 @media (min-width: 1024px) {
   .pano-split {
-    grid-template-columns: 1fr 1fr;
-    min-height: 100svh;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   }
 }
 .pano-split__media {
   position: relative;
-  min-height: 60svh;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
 }
 .pano-split__media img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .pano-split__body {
-  align-self: center;
-  padding: clamp(48px, 8vw, 120px) clamp(16px, 5vw, 96px);
+  max-width: 720px;
+}
+.pano-split__title {
+  max-width: 24ch;
+  margin-top: 12px;
+  font-size: clamp(28px, 2.8vw, 42px);
 }
 .pano-steps-list {
-  margin-top: clamp(28px, 4vw, 48px);
-  border-top: 1px solid var(--pano-line);
+  display: grid;
+  gap: 22px 36px;
+  margin-top: clamp(24px, 3vw, 36px);
+}
+@media (min-width: 640px) {
+  .pano-steps-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .pano-steps-list li {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 12px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--pano-line);
+  padding-top: 16px;
+  border-top: 1px solid var(--pano-line);
 }
 .pano-steps-list__n {
-  font-size: 13px;
+  display: block;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--pano-soft);
   font-variant-numeric: tabular-nums;
-  padding-top: 3px;
 }
 .pano-steps-list h3 {
-  font-size: 19px;
+  margin-top: 6px;
+  font-size: 17px;
   font-weight: 500;
 }
 .pano-steps-list p {
   margin-top: 6px;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--pano-soft);
 }
 
