@@ -157,8 +157,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConsentBanner />
         <div className="site-chrome">
           <ThemeSwitcher />
-          <VersionSwitch />
         </div>
+        {/* Toujours visible, même sur l'accueil Panorama : on passe d'une version à l'autre partout. */}
+        <VersionSwitch />
       </body>
     </html>
   )
