@@ -88,7 +88,7 @@ export default function Home() {
       {/* --- Les collections ------------------------------------------- */}
       <section className="pano-section">
         <div className="pano-head">
-          <h2 className="pano-h2">Nos produits</h2>
+          <h2 className="pano-h2">Nos gammes de produits</h2>
           <Link href="/produits/" className="pano-link pano-link--dark">
             Tous les jeux
             <ArrowRight className="size-4" aria-hidden="true" />
