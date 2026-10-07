@@ -17,7 +17,7 @@ contenu réel de RESTART :
 | Logo, gammes en capitales au centre, liens utilitaires à droite | En-tête de la version Panorama : « Menu » et publics à gauche, logo de la version Halo au centre, réalisations, téléphone et devis à droite ; transparent sur le film, menu plein écran |
 | Film plein écran | Photos en situation en fondu enchaîné, lent travelling avant (`HeroFilm`) |
 | « Entrez dans un monde de confort. » + paragraphe en capitales | « Transformez vos espaces avec RESTART. » + chiffres du catalogue, signature « créateur de bien-être en entreprise » |
-| Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, légendes en capitales, défilement automatique toutes les 4 s (pause au survol) (`CategoryCarousel`) |
+| Carrousel des gammes, deux photos par vue | Huit gammes, flèches rondes blanches, titres en capitales grasses soulignés de rouge ; défilement lent et continu en boucle, freiné au survol, à tirer à la souris ou au doigt (`CategoryCarousel`) |
 | Bandeau marine : vidéo à bouton lecture rouge, bouton rouge | Retiré à la demande du client |
 | « Plus de 300 magasins » | « Un atelier et un showroom près de Lyon, une livraison partout en France » |
 | « Pourquoi nous choisir » : trois artisans signés « Maestro … » | Conseil, Personnalisation, Installation, signatures manuscrites (Allura) |
