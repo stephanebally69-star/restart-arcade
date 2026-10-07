@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import type { Chapter, Hotspot, Scene } from '@/data/panorama'
 import { ctaClick } from '@/lib/analytics'
 
-type Product = { slug: string; name: string; price: string; href: string; image: string }
+type Product = { slug: string; name: string; price: string; href: string }
 
 /** Défile jusqu'à la section `id`, sans animation si l'utilisateur les réduit. */
 export function scrollToSection(id: string) {
@@ -71,10 +71,6 @@ export function PanoramaHero({
                 <Link href={product.href} className="pano-hotspot__link" aria-label={`${product.name}, ${product.price}`}>
                   <span className="pano-hotspot__dot" aria-hidden="true" />
                   <span className="pano-hotspot__card" aria-hidden="true">
-                    <span className="pano-hotspot__thumb">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={product.image} alt="" loading="lazy" />
-                    </span>
                     <span className="pano-hotspot__body">
                       <span className="pano-hotspot__name">{product.name}</span>
                       <span className="pano-hotspot__price">{product.price}</span>

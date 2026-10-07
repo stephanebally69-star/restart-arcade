@@ -29,16 +29,17 @@ export const room: Scene & { hotspots: Hotspot[] } = {
   id: 'piece',
   image: asset('/img/panorama/piece.webp'),
   alt: "Grande pièce lumineuse aux baies vitrées ouvertes sur un lac et des montagnes, avec un billard, un baby-foot, une borne de fléchettes, un flipper, un fauteuil massant et une borne d'arcade",
-  ratio: 2048 / 1152,
+  ratio: 1536 / 864,
   focus: [0.5, 0.5],
   hotspots: [
-    { slug: 'flechettes', x: 14.8, y: 29.5 },
-    { slug: 'baby-foot', x: 16.5, y: 61 },
-    { slug: 'billard', x: 50, y: 48 },
-    { slug: 'borne-arcade', x: 59.5, y: 26.5 },
-    { slug: 'flipper-numerique', x: 74.3, y: 30 },
-    { slug: 'fauteuil-massant', x: 86.5, y: 42 },
-  ],}
+    { slug: 'flechettes', x: 14.8, y: 26.5 },
+    { slug: 'baby-foot', x: 17, y: 64 },
+    { slug: 'billard', x: 54.5, y: 46 },
+    { slug: 'borne-arcade', x: 59.6, y: 26.5 },
+    { slug: 'fauteuil-massant', x: 76.8, y: 39 },
+    { slug: 'flipper-numerique', x: 84.5, y: 52 },
+  ],
+}
 
 /** Ambiance de couleur d'un univers, tirée de sa photo (voir `.pano-ch[data-tone]`). */
 export type Tone = 'nuit' | 'sauge' | 'sable'
@@ -51,15 +52,13 @@ export type Chapter = Scene & {
   tone: Tone
   /** Ce que la photo montre de la pièce, en légende. */
   caption: string
-  /** Produits visibles sur la photo, du plus présent au moins présent. */
-  products: string[]
   title: string
   text: string
   points: string[]
   href: string
 }
 
-type ChapterInput = Pick<Chapter, 'audience' | 'label' | 'tone' | 'caption' | 'products' | 'alt' | 'focus'> & {
+type ChapterInput = Pick<Chapter, 'audience' | 'label' | 'tone' | 'caption' | 'alt' | 'focus'> & {
   image: string
 }
 
@@ -88,7 +87,6 @@ export const chapters: Chapter[] = [
     label: 'Bar & commerce',
     tone: 'nuit',
     caption: 'La pièce, version bar, à la tombée de la nuit',
-    products: ['baby-foot', 'billard', 'flechettes', 'borne-arcade'],
     image: '/img/panorama/bar.webp',
     alt: 'La même pièce devenue un bar au crépuscule : des clients jouent au baby-foot, au billard et aux fléchettes devant le comptoir et la vue sur le lac',
     focus: [0.45, 0.5],
@@ -98,7 +96,6 @@ export const chapters: Chapter[] = [
     label: 'Entreprise',
     tone: 'sauge',
     caption: "La pièce, version espace de pause d'entreprise",
-    products: ['baby-foot', 'billard', 'fauteuil-massant', 'flechettes', 'borne-arcade'],
     image: '/img/panorama/entreprise.webp',
     alt: "La même pièce devenue l'espace de pause d'une entreprise : des collègues jouent au baby-foot, discutent près du billard et se détendent dans le fauteuil massant",
     focus: [0.45, 0.5],
@@ -108,7 +105,6 @@ export const chapters: Chapter[] = [
     label: 'Chez moi',
     tone: 'sable',
     caption: 'La pièce, version salon de famille, un dimanche',
-    products: ['baby-foot', 'borne-arcade', 'fauteuil-massant', 'billard', 'flechettes'],
     image: '/img/panorama/maison.webp',
     alt: "La même pièce devenue un salon familial : un père et son fils au baby-foot, un enfant à la borne d'arcade, une mère dans le fauteuil massant et un chien sur le tapis",
     focus: [0.45, 0.5],

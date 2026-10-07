@@ -15,13 +15,7 @@ const clamp = (v: number) => Math.min(1, Math.max(0, v))
  * --p passe de 0 à 1 pendant que la section monte dans l'écran ; la photo
  * arrive d'en dessous, le texte glisse depuis son bord, ligne après ligne.
  */
-export function PanoramaChapters({
-  chapters,
-  products,
-}: {
-  chapters: Chapter[]
-  products: { slug: string; short: string; href: string }[]
-}) {
+export function PanoramaChapters({ chapters }: { chapters: Chapter[] }) {
   const refs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
@@ -53,7 +47,6 @@ export function PanoramaChapters({
 
   // Délai de chaque ligne de texte, en part de la progression : la photo part la première.
   const d = (n: number) => ({ '--d': 0.15 + n * 0.07 }) as CSSProperties
-  const bySlug = Object.fromEntries(products.map((p) => [p.slug, p]))
 
   return (
     <div className="pano-chapters">
@@ -93,19 +86,7 @@ export function PanoramaChapters({
                 </li>
               ))}
             </ul>
-            <div className="pano-ch__scene pano-in" style={d(4)}>
-              <p>Dans la scène</p>
-              <ul>
-                {c.products.map((slug) =>
-                  bySlug[slug] ? (
-                    <li key={slug}>
-                      <Link href={bySlug[slug].href}>{bySlug[slug].short}</Link>
-                    </li>
-                  ) : null,
-                )}
-              </ul>
-            </div>
-            <div className="pano-ch__actions pano-in" style={d(5)}>
+            <div className="pano-ch__actions pano-in" style={d(4)}>
               <Link
                 href={c.href}
                 className="pano-ch__cta"

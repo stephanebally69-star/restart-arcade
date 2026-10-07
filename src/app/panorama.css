@@ -446,8 +446,8 @@
   left: calc(100% + 4px);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 6px 6px 6px 6px;
+  gap: 14px;
+  padding: 6px 6px 6px 18px;
   border-radius: 999px;
   background: rgba(16, 16, 18, 0.76);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
@@ -467,6 +467,7 @@
   left: auto;
   right: calc(100% + 4px);
   flex-direction: row-reverse;
+  padding: 6px 18px 6px 6px;
   transform: translate(10px, -50%) scale(0.96);
   transform-origin: right center;
 }
@@ -475,22 +476,6 @@
   opacity: 1;
   transform: translate(0, -50%) scale(1);
   pointer-events: auto;
-}
-.pano-hotspot__thumb {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: #f3efe9;
-}
-.pano-hotspot__thumb img {
-  width: 82%;
-  height: 82%;
-  object-fit: contain;
 }
 .pano-hotspot__body {
   display: flex;
@@ -534,7 +519,6 @@
   .pano-hotspot[data-flip] .pano-hotspot__card {
     transform: translate(0, -50%);
   }
-  .pano-hotspot__thumb,
   .pano-hotspot__go,
   .pano-hotspot__price {
     display: none;
@@ -876,43 +860,6 @@
   height: 22px;
   margin-top: -1px;
   border-radius: 999px;
-  background: var(--ch-accent);
-  color: var(--ch-accent-ink);
-}
-
-/* Produits visibles sur la photo */
-.pano-ch__scene {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--ch-line);
-}
-.pano-ch__scene p {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ch-soft);
-}
-.pano-ch__scene ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
-}
-.pano-ch__scene a {
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: var(--ch-chip);
-  font-size: 13.5px;
-  font-weight: 500;
-  transition:
-    background-color 0.25s,
-    color 0.25s;
-}
-.pano-ch__scene a:hover {
   background: var(--ch-accent);
   color: var(--ch-accent-ink);
 }
